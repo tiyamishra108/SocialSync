@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import BookAppointment from "./pages/patient/BookAppointment";
+import MyAppointments from "./pages/patient/MyAppointments";
+import QueueStatus from "./pages/patient/QueueStatus";
 import doctors from "./data/doctors";
 import "./index.css";
 
@@ -24,6 +26,14 @@ function App() {
     return <Dashboard goTo={goTo} />;
   }
 
+  if (page === "appointments") {
+    return <MyAppointments goTo={goTo} />;
+  }
+
+  if (page === "queueStatus") {
+    return <QueueStatus goTo={goTo} />;
+  }
+
   if (page === "doctors") {
     return (
       <Doctors
@@ -46,11 +56,13 @@ function App() {
     return <Emergency goTo={goTo} />;
   }
 
-  return <Home goTo={goTo} />;
+  return <Home goTo={goTo} setSelectedDoctor={setSelectedDoctor} />;
 }
 
 
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
 
 function ThemeToggle() {
   const [darkMode, setDarkMode] = useState(() => {
@@ -132,9 +144,11 @@ function Navbar({ goTo }) {
 }
 
 
-/* HOME */
+/* =========================
+   HOME
+========================= */
 
-function Home({ goTo }) {
+function Home({ goTo, setSelectedDoctor }) {
   return (
     <>
       <Navbar goTo={goTo} />
@@ -236,8 +250,8 @@ function Home({ goTo }) {
                   <button
                     className="mini-book-btn"
                     onClick={() => {
-                      setTimeout(() => {}, 0);
-                      goTo("doctors");
+                      setSelectedDoctor(doctor);
+                      goTo("bookAppointment");
                     }}
                   >
                     Book
@@ -396,7 +410,9 @@ function Home({ goTo }) {
 }
 
 
-/* FEATURE CARD */
+/* =========================
+   FEATURE CARD
+========================= */
 
 function FeatureCard({
   icon,
@@ -428,7 +444,9 @@ function FeatureCard({
 }
 
 
-/* STEP */
+/* =========================
+   STEP
+========================= */
 
 function Step({ number, title, text }) {
   return (
@@ -541,7 +559,9 @@ function Login({ goTo }) {
 }
 
 
-/* REGISTER */
+/* =========================
+   REGISTER
+========================= */
 
 function Register({ goTo }) {
 
@@ -641,77 +661,76 @@ function Register({ goTo }) {
 }
 
 
-/* DOCTORS */
+/* =========================
+   DOCTORS
+========================= */
 
-function Doctors({
-  goTo,
-  setSelectedDoctor
-}) {
+function Doctors({ goTo, setSelectedDoctor }) {
+  const departments = [
+    "All Departments",
+    "Cardiology",
+    "Dermatology",
+    "Orthopedics",
+    "Pediatrics",
+    "Neurology",
+    "Ophthalmology",
+    "General Medicine",
+  ];
+
+  const [activeDepartment, setActiveDepartment] = useState("All Departments");
+
+  const visibleDoctors =
+    activeDepartment === "All Departments"
+      ? doctors
+      : doctors.filter((doctor) => doctor.department === activeDepartment);
 
   return (
     <div className="doctors-page">
-
       <Navbar goTo={goTo} />
 
       <div className="doctors-container">
-
         <div className="doctors-heading">
-
-          <span className="hero-badge">
-            🩺 Find Your Doctor
-          </span>
-
-          <h1>
-            Choose the right doctor
-            <br />
-            for your care.
-          </h1>
-
-          <p>
-            Browse our available doctors and book
-            your appointment.
-          </p>
-
+          <span className="hero-badge">🩺 Find Your Doctor</span>
+          <h1>Choose the right doctor<br />for your care.</h1>
+          <p>Choose a department first, then select a doctor for your appointment.</p>
         </div>
 
+        <div className="department-tabs" role="tablist" aria-label="Doctor departments">
+          {departments.map((department) => (
+            <button
+              key={department}
+              className={`department-tab ${activeDepartment === department ? "active" : ""}`}
+              onClick={() => setActiveDepartment(department)}
+            >
+              {department}
+            </button>
+          ))}
+        </div>
+
+        <div className="department-results-label">
+          <span className="small-label">
+            {activeDepartment === "All Departments" ? "ALL SPECIALISTS" : activeDepartment.toUpperCase()}
+          </span>
+          <strong>{visibleDoctors.length} doctors available</strong>
+        </div>
 
         <div className="doctor-grid">
-
-          {doctors.map((doctor) => (
-
-            <div
-              className="doctor-card"
-              key={doctor.id}
-            >
-
+          {visibleDoctors.map((doctor) => (
+            <div className="doctor-card" key={doctor.id}>
               <div className="doctor-card-top">
-
                 <div className="doctor-large-avatar">
                   <img src={doctor.image} alt={doctor.name} />
                 </div>
-
-                <span className="available-badge">
-                  ● Available
-                </span>
-
+                <span className="available-badge">● {doctor.availability || "Available Today"}</span>
               </div>
 
               <h3>{doctor.name}</h3>
-
-              <p className="doctor-specialty">
-                {doctor.specialty}
-              </p>
+              <p className="doctor-specialty">{doctor.specialty}</p>
+              <p className="doctor-department-label">{doctor.department}</p>
 
               <div className="doctor-details">
-
-                <span>
-                  ⭐ {doctor.rating}
-                </span>
-
-                <span>
-                  {doctor.experience}
-                </span>
-
+                <span>⭐ {doctor.rating}</span>
+                <span>{doctor.experience}</span>
               </div>
 
               <button
@@ -723,21 +742,17 @@ function Doctors({
               >
                 Book Appointment →
               </button>
-
             </div>
-
           ))}
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-
-/* DASHBOARD */
+/* =========================
+   DASHBOARD
+========================= */
 
 function Dashboard({ goTo }) {
 
@@ -751,9 +766,15 @@ function Dashboard({ goTo }) {
       localStorage.getItem("currentAppointment")
     );
 
+  const isActiveAppointment = (item) =>
+    ["Confirmed", "Upcoming", "In Progress"].includes(item?.status);
+
+  const activeAppointments = appointments.filter(isActiveAppointment);
+
   const appointment =
-    currentAppointment ||
-    appointments[appointments.length - 1];
+    currentAppointment && isActiveAppointment(currentAppointment)
+      ? currentAppointment
+      : activeAppointments[activeAppointments.length - 1];
 
   const handleLogout = () => {
 
@@ -792,17 +813,26 @@ function Dashboard({ goTo }) {
             Doctors
           </button>
 
-          <button className="sidebar-item">
+          <button
+            className="sidebar-item"
+            onClick={() => goTo("appointments")}
+          >
             <span>📅</span>
             Appointments
           </button>
 
-          <button className="sidebar-item">
+          <button
+            className="sidebar-item"
+            onClick={() => goTo("queueStatus")}
+          >
             <span>🎟️</span>
             My Token
           </button>
 
-          <button className="sidebar-item">
+          <button
+            className="sidebar-item"
+            onClick={() => goTo("queueStatus")}
+          >
             <span>📍</span>
             Queue Status
           </button>
@@ -858,9 +888,9 @@ function Dashboard({ goTo }) {
             </h1>
           </div>
 
-          <ThemeToggle />
-
-        <div className="dashboard-user">
+          <div className="dashboard-actions">
+            <ThemeToggle />
+            <div className="dashboard-user">
 
             <span className="notification">
               🔔
@@ -875,6 +905,7 @@ function Dashboard({ goTo }) {
               <span>Patient</span>
             </div>
 
+            </div>
           </div>
 
         </div>
@@ -1001,7 +1032,10 @@ function Dashboard({ goTo }) {
                 </div>
 
 
-                <button className="primary-btn track-btn">
+                <button
+                  className="primary-btn track-btn"
+                  onClick={() => goTo("queueStatus")}
+                >
                   Track Queue →
                 </button>
 
@@ -1098,9 +1132,9 @@ function Dashboard({ goTo }) {
 
             <button
               className="secondary-btn full-btn"
-              onClick={() => goTo("doctors")}
+              onClick={() => goTo("queueStatus")}
             >
-              View Doctors
+              Track Queue →
             </button>
 
           </div>
@@ -1124,14 +1158,17 @@ function Dashboard({ goTo }) {
 
             </div>
 
-            <span className="view-all">
-              View all →
-            </span>
+            <button
+              className="view-all"
+              onClick={() => goTo("appointments")}
+            >
+              View Full History →
+            </button>
 
           </div>
 
 
-          {appointments.length > 0 ? (
+          {activeAppointments.length > 0 || appointments.some((item) => item.status === "Cancelled") ? (
 
             <div className="appointment-table">
 
@@ -1142,11 +1179,14 @@ function Dashboard({ goTo }) {
                 <span>Status</span>
               </div>
 
-              {appointments
-                .slice()
-                .reverse()
-                .slice(0, 5)
-                .map((item) => (
+              {[
+                ...appointments.filter(isActiveAppointment).slice().reverse(),
+                ...appointments
+                  .filter((item) => item.status === "Cancelled")
+                  .slice()
+                  .reverse()
+                  .slice(0, 2),
+              ].map((item) => (
 
                   <div
                     className="table-row"
@@ -1213,7 +1253,9 @@ function Dashboard({ goTo }) {
 }
 
 
-/* DASHBOARD STAT*/
+/* =========================
+   DASHBOARD STAT
+========================= */
 
 function DashboardStat({
   icon,
@@ -1240,7 +1282,9 @@ function DashboardStat({
 }
 
 
-/* EMERGENCY */
+/* =========================
+   EMERGENCY
+========================= */
 
 function Emergency({ goTo }) {
 
@@ -1299,7 +1343,9 @@ function Emergency({ goTo }) {
 }
 
 
-/* FOOTER */
+/* =========================
+   FOOTER
+========================= */
 
 function Footer({ goTo }) {
 

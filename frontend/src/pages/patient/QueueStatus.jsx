@@ -1,332 +1,125 @@
 import { useEffect, useState } from "react";
 
 function QueueStatus({ goTo }) {
-
-  const [appointment, setAppointment] = useState(
-    JSON.parse(
-      localStorage.getItem("currentAppointment")
-    )
+  const [appointment, setAppointment] = useState(() =>
+    JSON.parse(localStorage.getItem("currentAppointment"))
   );
-
-  const [currentToken, setCurrentToken] = useState(21);
-
   const [patientsAhead, setPatientsAhead] = useState(3);
-
   const [waitTime, setWaitTime] = useState(30);
 
-
-  /* Simulate queue movement */
-
   useEffect(() => {
-
-    const interval = setInterval(() => {
-
-      setPatientsAhead((previous) => {
-
-        if (previous <= 0) {
-          return 0;
-        }
-
-        return previous - 1;
-      });
-
-      setWaitTime((previous) => {
-
-        if (previous <= 5) {
-          return 5;
-        }
-
-        return previous - 5;
-      });
-
+    const timer = setInterval(() => {
+      setPatientsAhead((value) => (value > 0 ? value - 1 : 0));
+      setWaitTime((value) => (value > 0 ? Math.max(0, value - 10) : 0));
     }, 15000);
 
-    return () => clearInterval(interval);
-
+    return () => clearInterval(timer);
   }, []);
 
-
   if (!appointment) {
-
     return (
       <div className="queue-status-page">
-
-        <div className="queue-empty">
-
-          <div>
-            🎟️
-          </div>
-
-          <h1>No active queue</h1>
-
-          <p>
-            Book an appointment first to receive your
-            queue token.
-          </p>
-
-          <button
-            className="primary-btn"
-            onClick={() => goTo("doctors")}
-          >
-            Find a Doctor →
+        <div className="patient-page-topbar">
+          <button className="back-button" onClick={() => goTo("dashboard")}>
+            ← Back to Dashboard
           </button>
-
+          <span className="patient-page-badge">📍 LIVE QUEUE</span>
         </div>
 
+        <div className="queue-empty-card">
+          <div className="queue-empty-icon">🎟️</div>
+          <h1>No active queue</h1>
+          <p>Book an appointment first to receive your queue token.</p>
+          <button className="primary-btn" onClick={() => goTo("doctors")}>
+            Find a Doctor →
+          </button>
+        </div>
       </div>
     );
   }
 
-
   return (
     <div className="queue-status-page">
-
-      {/* HEADER */}
-
-      <div className="queue-status-header">
-
-        <button
-          className="back-button"
-          onClick={() => goTo("dashboard")}
-        >
+      <div className="patient-page-topbar">
+        <button className="back-button" onClick={() => goTo("dashboard")}>
           ← Back to Dashboard
         </button>
-
-        <span className="hero-badge">
-          📍 Live Queue Tracking
-        </span>
-
-        <h1>Your Queue Status</h1>
-
-        <p>
-          Track your position while you wait.
-        </p>
-
+        <span className="patient-page-badge live-page-badge">● LIVE QUEUE</span>
       </div>
 
+      <div className="queue-status-header">
+        <span className="small-label">LIVE QUEUE TRACKING</span>
+        <h1>Your Queue Status</h1>
+        <p>Track your position while you wait for your appointment.</p>
+      </div>
 
-      {/* MAIN CARD */}
-
-      <div className="queue-status-container">
-
-        <div className="queue-live-card">
-
-          <div className="queue-live-header">
-
-            <div>
-
-              <span className="small-label">
-                CURRENTLY SERVING
-              </span>
-
-              <h2>
-                {appointment.doctorName}
-              </h2>
-
-              <p>
-                {appointment.specialty}
-              </p>
-
-            </div>
-
-            <span className="live-badge">
-              ● LIVE
-            </span>
-
+      <div className="queue-live-card">
+        <div className="queue-status-doctor">
+          <div className="doctor-large-avatar">👨‍⚕️</div>
+          <div>
+            <span className="small-label">YOUR DOCTOR</span>
+            <h2>{appointment.doctorName}</h2>
+            <p>{appointment.specialty}</p>
           </div>
-
-
-          {/* TOKEN */}
-
-          <div className="big-token-section">
-
-            <div className="token-box">
-
-              <span>
-                CURRENT TOKEN
-              </span>
-
-              <strong>
-                T-{String(currentToken).padStart(3, "0")}
-              </strong>
-
-            </div>
-
-            <div className="token-line">
-              →
-            </div>
-
-            <div className="token-box your-token">
-
-              <span>
-                YOUR TOKEN
-              </span>
-
-              <strong>
-                {appointment.token}
-              </strong>
-
-            </div>
-
-          </div>
-
-
-          {/* PROGRESS */}
-
-          <div className="queue-progress">
-
-            <div className="progress-header">
-
-              <span>
-                Queue Progress
-              </span>
-
-              <strong>
-                {patientsAhead === 0
-                  ? "Your turn!"
-                  : `${patientsAhead} patients ahead`}
-              </strong>
-
-            </div>
-
-            <div className="progress-bar">
-
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${
-                    Math.max(
-                      20,
-                      100 - patientsAhead * 20
-                    )
-                  }%`,
-                }}
-              ></div>
-
-            </div>
-
-          </div>
-
-
-          {/* INFO */}
-
-          <div className="queue-status-info">
-
-            <div className="queue-status-item">
-
-              <div className="status-info-icon">
-                👥
-              </div>
-
-              <div>
-                <span>Patients Ahead</span>
-                <strong>
-                  {patientsAhead}
-                </strong>
-              </div>
-
-            </div>
-
-
-            <div className="queue-status-item">
-
-              <div className="status-info-icon">
-                ⏱️
-              </div>
-
-              <div>
-                <span>Estimated Wait</span>
-                <strong>
-                  ~{waitTime} min
-                </strong>
-              </div>
-
-            </div>
-
-
-            <div className="queue-status-item">
-
-              <div className="status-info-icon">
-                🎟️
-              </div>
-
-              <div>
-                <span>Your Token</span>
-                <strong>
-                  {appointment.token}
-                </strong>
-              </div>
-
-            </div>
-
-          </div>
-
-
-          {/* APPOINTMENT INFO */}
-
-          <div className="queue-appointment-info">
-
-            <h3>Appointment Details</h3>
-
-            <div className="appointment-info-grid">
-
-              <div>
-                <span>Doctor</span>
-                <strong>
-                  {appointment.doctorName}
-                </strong>
-              </div>
-
-              <div>
-                <span>Department</span>
-                <strong>
-                  {appointment.specialty}
-                </strong>
-              </div>
-
-              <div>
-                <span>Date</span>
-                <strong>
-                  {appointment.date}
-                </strong>
-              </div>
-
-              <div>
-                <span>Time</span>
-                <strong>
-                  {appointment.time}
-                </strong>
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <div className="queue-note">
-
-            <span>💡</span>
-
-            <p>
-              This queue status is a prototype simulation.
-              Actual hospital queue information would be
-              updated through the MediQueue backend.
-            </p>
-
-          </div>
-
-
-          <button
-            className="secondary-btn queue-back-btn"
-            onClick={() => goTo("dashboard")}
-          >
-            Back to Dashboard
-          </button>
-
+          <span className="live-badge">● LIVE</span>
         </div>
 
-      </div>
+        <div className="big-token-section">
+          <div className="token-box">
+            <span>Current Token</span>
+            <strong>T-021</strong>
+          </div>
+          <div className="token-arrow">→</div>
+          <div className="token-box your-token-box">
+            <span>Your Token</span>
+            <strong>{appointment.token}</strong>
+          </div>
+        </div>
 
+        <div className="queue-progress">
+          <div className="queue-progress-top">
+            <span>Queue progress</span>
+            <strong>{patientsAhead === 0 ? "Your turn is next" : `${patientsAhead} patients ahead`}</strong>
+          </div>
+          <div className="queue-progress-track">
+            <div className="queue-progress-fill" style={{ width: `${Math.max(10, 100 - patientsAhead * 18)}%` }} />
+          </div>
+        </div>
+
+        <div className="queue-status-info">
+          <div>
+            <span>👥</span>
+            <small>Patients Ahead</small>
+            <strong>{patientsAhead}</strong>
+          </div>
+          <div>
+            <span>⏱️</span>
+            <small>Estimated Wait</small>
+            <strong>~{waitTime} min</strong>
+          </div>
+          <div>
+            <span>🎟️</span>
+            <small>Your Token</small>
+            <strong>{appointment.token}</strong>
+          </div>
+        </div>
+
+        <div className="queue-appointment-info">
+          <div>
+            <span>Appointment</span>
+            <strong>{appointment.date} · {appointment.time}</strong>
+          </div>
+          <div>
+            <span>Concern</span>
+            <strong>{appointment.concern || "General consultation"}</strong>
+          </div>
+        </div>
+
+        <div className="queue-note">
+          <strong>Prototype live simulation</strong>
+          <p>The queue movement shown here is demo data for the college project and does not represent a real hospital queue.</p>
+        </div>
+      </div>
     </div>
   );
 }
