@@ -1,10 +1,13 @@
 import { useState } from "react";
 
 import Sidebar from "../../components/Sidebar";
+
 import DoctorCard from "../../components/DoctorCard";
+
 import doctors from "../../data/doctors";
 
 function Doctors({ goTo, setSelectedDoctor }) {
+
   const departments = [
     "All",
     "Cardiology",
@@ -24,8 +27,7 @@ function Doctors({ goTo, setSelectedDoctor }) {
       ? doctors
       : doctors.filter(
           (doctor) =>
-            doctor.department ===
-            selectedDepartment
+            doctor.department === selectedDepartment
         );
 
   const handleBook = (doctor) => {
@@ -62,7 +64,17 @@ function Doctors({ goTo, setSelectedDoctor }) {
 
           </div>
 
+          {/* BACK TO DASHBOARD */}
+
+          <button
+            className="text-btn"
+            onClick={() => goTo("dashboard")}
+          >
+            ← Dashboard
+          </button>
+
         </div>
+
 
         {/* DEPARTMENT FILTER */}
 
@@ -78,9 +90,7 @@ function Doctors({ goTo, setSelectedDoctor }) {
                   : ""
               }`}
               onClick={() =>
-                setSelectedDepartment(
-                  department
-                )
+                setSelectedDepartment(department)
               }
             >
               {department}
@@ -90,17 +100,22 @@ function Doctors({ goTo, setSelectedDoctor }) {
 
         </div>
 
+
         <div className="department-results-label">
 
           Showing{" "}
+
           <strong>
             {filteredDoctors.length}
           </strong>{" "}
+
           doctors
+
           {selectedDepartment !== "All" &&
             ` in ${selectedDepartment}`}
 
         </div>
+
 
         {/* DOCTORS */}
 

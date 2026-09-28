@@ -2076,3 +2076,368 @@ body.dark-mode .doctor-department-label {
     margin-top: 20px;
   }
 }
+
+/* =========================================================
+   MY TOKEN PAGE
+========================================================= */
+
+.token-appointments-list {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  gap: 22px;
+}
+
+.token-appointment-item {
+  width: 100%;
+}
+
+.token-page-content {
+  display: grid;
+  gap: 18px;
+}
+
+/* Appointment Confirmed */
+
+.appointment-confirmed {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 22px;
+  background: linear-gradient(
+    135deg,
+    var(--soft-teal),
+    var(--soft-blue)
+  );
+  border: 1px solid #CFE7E2;
+  border-radius: 16px;
+}
+
+.confirmed-icon {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #DDF5EF;
+  color: #277A70;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.appointment-confirmed h2 {
+  color: var(--navy);
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.appointment-confirmed p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Token Card */
+
+.token-card {
+  padding: 26px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.token-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.token-card-header .small-label {
+  margin-bottom: 0;
+}
+
+.token-number {
+  margin: 15px 0 20px;
+  color: var(--navy);
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.token-details {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.token-details > div {
+  padding: 15px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.token-details span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.token-details strong {
+  display: block;
+  color: var(--navy);
+  font-size: 17px;
+}
+
+/* Appointment Details */
+
+.appointment-confirmation-card {
+  padding: 24px;
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  box-shadow: var(--shadow-sm);
+}
+
+.confirmation-heading {
+  margin-bottom: 20px;
+}
+
+.confirmation-heading h3 {
+  color: var(--navy);
+  font-size: 19px;
+  margin-bottom: 3px;
+}
+
+.confirmation-heading p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.confirmation-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.confirmation-detail {
+  padding: 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+}
+
+.confirmation-detail span {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.confirmation-detail strong {
+  display: block;
+  color: var(--navy);
+  font-size: 12px;
+  word-break: break-word;
+}
+
+/* Before Your Visit */
+
+.precautions-card {
+  padding: 24px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,.92),
+    var(--soft-blue)
+  );
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  box-shadow: var(--shadow-sm);
+}
+
+.precautions-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.precautions-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #FFF4D6;
+  font-size: 19px;
+}
+
+.precautions-header h3 {
+  color: var(--navy);
+  font-size: 18px;
+}
+
+.precautions-header p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.precautions-list {
+  display: grid;
+  gap: 9px;
+}
+
+.precaution-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 13px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.precaution-check {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--soft-teal);
+  color: #277A70;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.precaution-item p {
+  color: var(--text);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* Token Page Buttons */
+
+.token-actions {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.token-actions button {
+  min-height: 42px;
+}
+
+/* Empty Token Page */
+
+.empty-card {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 42px;
+  text-align: center;
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.empty-icon {
+  font-size: 38px;
+  margin-bottom: 12px;
+}
+
+.empty-card h3 {
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+
+.empty-card p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/* Dark Mode */
+
+body.dark-mode .appointment-confirmed,
+body.dark-mode .token-card,
+body.dark-mode .appointment-confirmation-card,
+body.dark-mode .precautions-card,
+body.dark-mode .empty-card {
+  background: rgba(20,37,50,.88);
+  border-color: var(--border);
+}
+
+body.dark-mode .confirmation-detail,
+body.dark-mode .token-details > div,
+body.dark-mode .precaution-item {
+  background: #10222E;
+  border-color: var(--border);
+}
+
+body.dark-mode .confirmed-icon {
+  background: #173D3A;
+}
+
+body.dark-mode .precautions-icon {
+  background: #3A3420;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+
+  .token-card,
+  .appointment-confirmation-card,
+  .precautions-card {
+    padding: 20px;
+  }
+
+  .token-number {
+    font-size: 40px;
+  }
+
+  .token-details {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .confirmation-details {
+    grid-template-columns: 1fr;
+  }
+
+  .token-actions {
+    flex-direction: column;
+  }
+
+  .token-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 430px) {
+
+  .token-details {
+    grid-template-columns: 1fr;
+  }
+
+  .appointment-confirmed {
+    align-items: flex-start;
+  }
+
+  .token-number {
+    font-size: 36px;
+  }
+
+  .empty-card {
+    padding: 30px 20px;
+  }
+}

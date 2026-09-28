@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 
 function QueueManagement({ goTo }) {
-  const [appointments, setAppointments] =
-    useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   const loadAppointments = () => {
     const saved = JSON.parse(
@@ -18,44 +17,40 @@ function QueueManagement({ goTo }) {
     loadAppointments();
   }, []);
 
-  const activeAppointments =
-    appointments.filter(
-      (appointment) =>
-        appointment.status !== "Cancelled"
-    );
+  const activeAppointments = appointments.filter(
+    (appointment) =>
+      appointment.status === "Confirmed" ||
+      appointment.status === "Upcoming" ||
+      appointment.status === "In Progress"
+  );
 
-  const groupedQueues =
-    activeAppointments.reduce(
-      (groups, appointment) => {
-        const doctor =
-          appointment.doctorName ||
-          "Unknown Doctor";
+  const groupedQueues = activeAppointments.reduce(
+    (groups, appointment) => {
+      const doctor =
+        appointment.doctorName ||
+        "Unknown Doctor";
 
-        if (!groups[doctor]) {
-          groups[doctor] = [];
-        }
+      if (!groups[doctor]) {
+        groups[doctor] = [];
+      }
 
-        groups[doctor].push(appointment);
+      groups[doctor].push(appointment);
 
-        return groups;
-      },
-      {}
-    );
+      return groups;
+    },
+    {}
+  );
 
   return (
     <div className="dashboard-layout">
-
       <Sidebar
         currentPage="queueManagement"
         goTo={goTo}
       />
 
       <main className="dashboard-main">
-
         <div className="dashboard-top">
-
           <div>
-
             <span className="dashboard-section-label">
               ADMIN
             </span>
@@ -67,7 +62,6 @@ function QueueManagement({ goTo }) {
             <p>
               Monitor doctor-wise patient queues.
             </p>
-
           </div>
 
           <button
@@ -78,25 +72,18 @@ function QueueManagement({ goTo }) {
           >
             ← Dashboard
           </button>
-
         </div>
 
         {Object.keys(groupedQueues).length > 0 ? (
-
           <div className="queue-management-grid">
-
             {Object.entries(groupedQueues).map(
               ([doctorName, queue]) => (
-
                 <div
                   className="admin-queue-card"
                   key={doctorName}
                 >
-
                   <div className="admin-queue-header">
-
                     <div>
-
                       <span className="small-label">
                         DOCTOR QUEUE
                       </span>
@@ -104,7 +91,6 @@ function QueueManagement({ goTo }) {
                       <h2>
                         {doctorName}
                       </h2>
-
                     </div>
 
                     <span className="status-badge">
@@ -113,21 +99,16 @@ function QueueManagement({ goTo }) {
                         ? "Patient"
                         : "Patients"}
                     </span>
-
                   </div>
 
                   <div className="queue-patients">
-
                     {queue.map(
                       (appointment, index) => (
-
                         <div
                           className="queue-patient-row"
                           key={appointment.id}
                         >
-
                           <div>
-
                             <strong>
                               #{index + 1}
                             </strong>
@@ -136,31 +117,21 @@ function QueueManagement({ goTo }) {
                               {appointment.patientName ||
                                 "Patient"}
                             </span>
-
                           </div>
 
                           <span className="queue-token">
                             {appointment.token}
                           </span>
-
                         </div>
-
                       )
                     )}
-
                   </div>
-
                 </div>
-
               )
             )}
-
           </div>
-
         ) : (
-
           <div className="empty-card">
-
             <div className="empty-icon">
               🎟️
             </div>
@@ -173,13 +144,9 @@ function QueueManagement({ goTo }) {
               Active patient queues will appear
               here.
             </p>
-
           </div>
-
         )}
-
       </main>
-
     </div>
   );
 }

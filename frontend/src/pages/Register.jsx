@@ -18,11 +18,21 @@ function Register({ goTo }) {
       name,
       email,
       phone,
+      password,
     };
 
     localStorage.setItem(
-      "currentUser",
+      "registeredUser",
       JSON.stringify(user)
+    );
+
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify({
+        name,
+        email,
+        phone,
+      })
     );
 
     localStorage.setItem("isLoggedIn", "true");

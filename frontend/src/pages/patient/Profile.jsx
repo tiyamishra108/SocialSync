@@ -38,26 +38,50 @@ function Profile({ goTo }) {
       return;
     }
 
+    const currentUser = JSON.parse(
+      localStorage.getItem("currentUser") || "{}"
+    );
+
+    const updatedUser = {
+      ...currentUser,
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+    };
+
     localStorage.setItem(
       "currentUser",
-      JSON.stringify(form)
+      JSON.stringify(updatedUser)
     );
+
+    const registeredUser = JSON.parse(
+      localStorage.getItem("registeredUser") || "null"
+    );
+
+    if (registeredUser) {
+      localStorage.setItem(
+        "registeredUser",
+        JSON.stringify({
+          ...registeredUser,
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+        })
+      );
+    }
 
     alert("Profile updated successfully.");
   };
 
   return (
     <div className="dashboard-layout">
-
       <Sidebar
         currentPage="profile"
         goTo={goTo}
       />
 
       <main className="dashboard-main patient-page">
-
         <div className="patient-page-topbar">
-
           <button
             className="back-button"
             onClick={() => goTo("dashboard")}
@@ -68,27 +92,23 @@ function Profile({ goTo }) {
           <span className="patient-page-badge">
             PROFILE
           </span>
-
         </div>
 
         <div className="patient-page-header">
-
           <div>
+            <span className="small-label">
+              ACCOUNT SETTINGS
+            </span>
 
-            <h1>
-              My Profile
-            </h1>
+            <h1>My Profile</h1>
 
             <p>
               Manage your personal information.
             </p>
-
           </div>
-
         </div>
 
         <div className="profile-card">
-
           <div className="profile-avatar">
             {form.name
               ? form.name
@@ -98,27 +118,19 @@ function Profile({ goTo }) {
           </div>
 
           <div className="profile-info">
-
             <h2>
               {form.name || "MediQueue Patient"}
             </h2>
 
-            <p>
-              Patient Account
-            </p>
-
+            <p>Patient Account</p>
           </div>
 
           <form
             className="profile-form"
             onSubmit={handleSave}
           >
-
             <div className="input-group">
-
-              <label>
-                Full Name
-              </label>
+              <label>Full Name</label>
 
               <input
                 type="text"
@@ -128,14 +140,10 @@ function Profile({ goTo }) {
                 placeholder="Enter your full name"
                 required
               />
-
             </div>
 
             <div className="input-group">
-
-              <label>
-                Email
-              </label>
+              <label>Email</label>
 
               <input
                 type="email"
@@ -145,14 +153,10 @@ function Profile({ goTo }) {
                 placeholder="Enter your email"
                 required
               />
-
             </div>
 
             <div className="input-group">
-
-              <label>
-                Phone
-              </label>
+              <label>Phone</label>
 
               <input
                 type="tel"
@@ -162,7 +166,6 @@ function Profile({ goTo }) {
                 placeholder="Enter your phone number"
                 required
               />
-
             </div>
 
             <button
@@ -171,13 +174,9 @@ function Profile({ goTo }) {
             >
               Save Changes
             </button>
-
           </form>
-
         </div>
-
       </main>
-
     </div>
   );
 }

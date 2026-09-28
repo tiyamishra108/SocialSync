@@ -7,8 +7,7 @@ import AppointmentCard from "../../components/AppointmentCard";
 
 function PatientDashboard({ goTo }) {
   const [appointments, setAppointments] = useState([]);
-  const [currentAppointment, setCurrentAppointment] =
-    useState(null);
+  const [currentAppointment, setCurrentAppointment] = useState(null);
 
   const loadAppointments = () => {
     const savedAppointments = JSON.parse(
@@ -16,8 +15,7 @@ function PatientDashboard({ goTo }) {
     );
 
     const activeAppointments = savedAppointments.filter(
-      (appointment) =>
-        appointment.status !== "Cancelled"
+      (appointment) => appointment.status !== "Cancelled"
     );
 
     setAppointments(savedAppointments);
@@ -32,8 +30,7 @@ function PatientDashboard({ goTo }) {
     ) {
       setCurrentAppointment(savedCurrent);
     } else if (activeAppointments.length > 0) {
-      const latest =
-        activeAppointments[activeAppointments.length - 1];
+      const latest = activeAppointments[activeAppointments.length - 1];
 
       setCurrentAppointment(latest);
 
@@ -51,14 +48,12 @@ function PatientDashboard({ goTo }) {
   }, []);
 
   const activeAppointments = appointments.filter(
-    (appointment) =>
-      appointment.status !== "Cancelled"
+    (appointment) => appointment.status !== "Cancelled"
   );
 
   const cancelledAppointments = appointments
     .filter(
-      (appointment) =>
-        appointment.status === "Cancelled"
+      (appointment) => appointment.status === "Cancelled"
     )
     .slice(-2)
     .reverse();
@@ -99,9 +94,7 @@ function PatientDashboard({ goTo }) {
       currentAppointment &&
       currentAppointment.id === appointment.id
     ) {
-      localStorage.removeItem(
-        "currentAppointment"
-      );
+      localStorage.removeItem("currentAppointment");
       setCurrentAppointment(null);
     }
 
@@ -112,12 +105,10 @@ function PatientDashboard({ goTo }) {
     localStorage.getItem("currentUser") || "{}"
   );
 
-  const patientName =
-    user.name || "Patient";
+  const patientName = user.name || "Patient";
 
   return (
     <div className="dashboard-layout">
-
       <Sidebar
         currentPage="dashboard"
         goTo={goTo}
@@ -125,8 +116,9 @@ function PatientDashboard({ goTo }) {
 
       <main className="dashboard-main">
 
-        <div className="dashboard-top">
+        {/* DASHBOARD HEADER */}
 
+        <div className="dashboard-top">
           <div className="dashboard-welcome">
 
             <div>
@@ -152,7 +144,6 @@ function PatientDashboard({ goTo }) {
             </button>
 
           </div>
-
         </div>
 
         {/* STATS */}
@@ -162,14 +153,12 @@ function PatientDashboard({ goTo }) {
           <StatCard
             icon="📅"
             title="Appointments"
-            label="Appointments"
             value={activeAppointments.length}
           />
 
           <StatCard
             icon="🎟️"
             title="Active Token"
-            label="Active Token"
             value={
               currentAppointment?.token || "—"
             }
@@ -178,26 +167,22 @@ function PatientDashboard({ goTo }) {
           <StatCard
             icon="⏱️"
             title="Estimated Wait"
-            label="Estimated Wait"
             value={
-              currentAppointment?.estimatedWait ||
-              "—"
+              currentAppointment?.estimatedWait || "—"
             }
           />
 
           <StatCard
             icon="👨‍⚕️"
             title="Doctor"
-            label="Doctor"
             value={
-              currentAppointment?.doctorName ||
-              "—"
+              currentAppointment?.doctorName || "—"
             }
           />
 
         </div>
 
-        {/* QUEUE */}
+        {/* QUEUE + NEXT APPOINTMENT */}
 
         <div className="dashboard-grid">
 
@@ -223,6 +208,7 @@ function PatientDashboard({ goTo }) {
             </div>
 
             {currentAppointment ? (
+
               <div className="next-appointment-content">
 
                 <div className="appointment-doctor-avatar">
@@ -263,7 +249,9 @@ function PatientDashboard({ goTo }) {
                 </button>
 
               </div>
+
             ) : (
+
               <div className="dashboard-empty-card">
 
                 <div className="dashboard-empty-icon">
@@ -287,6 +275,7 @@ function PatientDashboard({ goTo }) {
                 </button>
 
               </div>
+
             )}
 
           </div>
@@ -311,9 +300,7 @@ function PatientDashboard({ goTo }) {
 
             <button
               className="text-btn"
-              onClick={() =>
-                goTo("appointments")
-              }
+              onClick={() => goTo("appointments")}
             >
               View All →
             </button>
@@ -330,15 +317,15 @@ function PatientDashboard({ goTo }) {
                   <AppointmentCard
                     key={appointment.id}
                     appointment={appointment}
+
                     onTrack={
-                      appointment.status !==
-                      "Cancelled"
+                      appointment.status !== "Cancelled"
                         ? handleTrack
                         : undefined
                     }
+
                     onCancel={
-                      appointment.status !==
-                      "Cancelled"
+                      appointment.status !== "Cancelled"
                         ? handleCancel
                         : undefined
                     }
@@ -380,7 +367,6 @@ function PatientDashboard({ goTo }) {
         </div>
 
       </main>
-
     </div>
   );
 }

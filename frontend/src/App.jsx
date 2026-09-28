@@ -1,146 +1,102 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
 import BookAppointment from "./pages/patient/BookAppointment";
 import MyAppointments from "./pages/patient/MyAppointments";
 import QueueStatus from "./pages/patient/QueueStatus";
+import Token from "./pages/patient/Token";
+import Navbar from "./components/Navbar";
+import ThemeToggle from "./components/ThemeToggle";
+
 import doctors from "./data/doctors";
+
 import "./index.css";
 
+
 function App() {
+
   const [page, setPage] = useState("home");
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+  const [selectedDoctor, setSelectedDoctor] =
+    useState(null);
+
 
   const goTo = (newPage) => {
+
     setPage(newPage);
+
     window.scrollTo(0, 0);
+
   };
+
 
   if (page === "login") {
     return <Login goTo={goTo} />;
   }
 
+
   if (page === "register") {
     return <Register goTo={goTo} />;
   }
+
 
   if (page === "dashboard") {
     return <Dashboard goTo={goTo} />;
   }
 
+
   if (page === "appointments") {
     return <MyAppointments goTo={goTo} />;
   }
+
 
   if (page === "queueStatus") {
     return <QueueStatus goTo={goTo} />;
   }
 
+  if (page === "token") {
+  return (
+    <Token
+      goTo={goTo}
+    />
+  );
+}
+
   if (page === "doctors") {
+
     return (
       <Doctors
         goTo={goTo}
         setSelectedDoctor={setSelectedDoctor}
       />
     );
+
   }
 
+
   if (page === "bookAppointment") {
+
     return (
       <BookAppointment
         selectedDoctor={selectedDoctor}
         goTo={goTo}
       />
     );
+
   }
+
 
   if (page === "emergency") {
     return <Emergency goTo={goTo} />;
   }
 
-  return <Home goTo={goTo} setSelectedDoctor={setSelectedDoctor} />;
-}
-
-
-/* =========================
-   NAVBAR
-========================= */
-
-function ThemeToggle() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
-
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
 
   return (
-    <button
-      className="theme-toggle"
-      onClick={() => setDarkMode((current) => !current)}
-      aria-label="Toggle light and dark theme"
-      title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      {darkMode ? "☀️" : "🌙"}
-    </button>
+    <Home
+      goTo={goTo}
+      setSelectedDoctor={setSelectedDoctor}
+    />
   );
-}
 
-function Navbar({ goTo }) {
-  return (
-    <nav className="navbar">
-      <div className="nav-container">
-
-        <div
-          className="logo"
-          onClick={() => goTo("home")}
-        >
-          <div className="logo-icon">+</div>
-          <span>MediQueue</span>
-        </div>
-
-        <div className="nav-links">
-          <button onClick={() => goTo("home")}>
-            Home
-          </button>
-
-          <button onClick={() => goTo("doctors")}>
-            Doctors
-          </button>
-
-          <a href="#features">Features</a>
-
-          <a href="#how-it-works">How It Works</a>
-
-          <button
-            className="emergency-btn"
-            onClick={() => goTo("emergency")}
-          >
-            🚨 Emergency
-          </button>
-        </div>
-
-        <div className="nav-actions">
-          <ThemeToggle />
-
-          <button
-            className="login-btn"
-            onClick={() => goTo("login")}
-          >
-            Login
-          </button>
-
-          <button
-            className="register-btn"
-            onClick={() => goTo("register")}
-          >
-            Register
-          </button>
-        </div>
-
-      </div>
-    </nav>
-  );
 }
 
 
@@ -148,12 +104,60 @@ function Navbar({ goTo }) {
    HOME
 ========================= */
 
-function Home({ goTo, setSelectedDoctor }) {
+function Home({
+  goTo,
+  setSelectedDoctor
+}) {
+
+  const handleFeatures = () => {
+
+    goTo("home");
+
+    setTimeout(() => {
+
+      document
+        .getElementById("features")
+        ?.scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }, 100);
+
+  };
+
+
+  const handleHowItWorks = () => {
+
+    goTo("home");
+
+    setTimeout(() => {
+
+      document
+        .getElementById("how-it-works")
+        ?.scrollIntoView({
+          behavior: "smooth"
+        });
+
+    }, 100);
+
+  };
+
+
   return (
     <>
-      <Navbar goTo={goTo} />
+
+      <Navbar
+        goTo={goTo}
+        onFeatures={handleFeatures}
+        onHowItWorks={handleHowItWorks}
+      />
+
 
       <main>
+
+        {/* =========================
+           HERO
+        ========================= */}
 
         <section className="hero">
 
@@ -165,11 +169,15 @@ function Home({ goTo, setSelectedDoctor }) {
                 🏥 Smarter Hospital Visits
               </span>
 
+
               <h1>
                 Your time matters.
                 <br />
-                <span>We make waiting simpler.</span>
+                <span>
+                  We make waiting simpler.
+                </span>
               </h1>
+
 
               <p>
                 MediQueue helps patients book appointments,
@@ -177,89 +185,138 @@ function Home({ goTo, setSelectedDoctor }) {
                 queue in real time.
               </p>
 
+
               <div className="hero-buttons">
 
                 <button
                   className="primary-btn"
-                  onClick={() => goTo("login")}
+                  onClick={() =>
+                    goTo("login")
+                  }
                 >
                   Book an Appointment →
                 </button>
 
+
                 <button
                   className="secondary-btn"
-                  onClick={() => goTo("login")}
+                  onClick={() =>
+                    goTo("login")
+                  }
                 >
                   Check Queue Status
                 </button>
 
               </div>
 
+
               <div className="trust-row">
-                <span>✓ Easy Booking</span>
-                <span>✓ Digital Tokens</span>
-                <span>✓ Live Queue</span>
+
+                <span>
+                  ✓ Easy Booking
+                </span>
+
+                <span>
+                  ✓ Digital Tokens
+                </span>
+
+                <span>
+                  ✓ Live Queue
+                </span>
+
               </div>
 
             </div>
 
 
-            {/* TOP DOCTORS */}
+            {/* =========================
+               TOP DOCTORS
+            ========================= */}
 
             <div className="top-doctors-preview">
 
               <div className="preview-header">
+
                 <div>
+
                   <span className="small-label">
                     AVAILABLE TODAY
                   </span>
 
-                  <h3>Top Doctors</h3>
+                  <h3>
+                    Top Doctors
+                  </h3>
+
                 </div>
 
+
                 <button
-                  onClick={() => goTo("doctors")}
+                  onClick={() =>
+                    goTo("doctors")
+                  }
                 >
                   View all →
                 </button>
+
               </div>
 
-              {doctors.slice(0, 3).map((doctor) => (
 
-                <div
-                  className="doctor-mini-card"
-                  key={doctor.id}
-                >
+              {doctors
+                .slice(0, 3)
+                .map((doctor) => (
 
-                  <div className="doctor-avatar">
-                    <img src={doctor.image} alt={doctor.name} />
-                  </div>
-
-                  <div className="doctor-mini-info">
-
-                    <h4>{doctor.name}</h4>
-
-                    <p>{doctor.specialty}</p>
-
-                    <span>
-                      ⭐ {doctor.rating}
-                    </span>
-
-                  </div>
-
-                  <button
-                    className="mini-book-btn"
-                    onClick={() => {
-                      setSelectedDoctor(doctor);
-                      goTo("bookAppointment");
-                    }}
+                  <div
+                    className="doctor-mini-card"
+                    key={doctor.id}
                   >
-                    Book
-                  </button>
 
-                </div>
+                    <div className="doctor-avatar">
 
-              ))}
+                      <img
+                        src={doctor.image}
+                        alt={doctor.name}
+                      />
+
+                    </div>
+
+
+                    <div className="doctor-mini-info">
+
+                      <h4>
+                        {doctor.name}
+                      </h4>
+
+                      <p>
+                        {doctor.specialty}
+                      </p>
+
+                      <span>
+                        ⭐ {doctor.rating}
+                      </span>
+
+                    </div>
+
+
+                    <button
+                      className="mini-book-btn"
+                      onClick={() => {
+
+                        setSelectedDoctor(
+                          doctor
+                        );
+
+                        goTo(
+                          "bookAppointment"
+                        );
+
+                      }}
+                    >
+                      Book
+                    </button>
+
+                  </div>
+
+                ))}
 
             </div>
 
@@ -268,7 +325,9 @@ function Home({ goTo, setSelectedDoctor }) {
         </section>
 
 
-        {/* FEATURES */}
+        {/* =========================
+           FEATURES
+        ========================= */}
 
         <section
           className="features-section"
@@ -277,7 +336,9 @@ function Home({ goTo, setSelectedDoctor }) {
 
           <div className="section-heading">
 
-            <span>WHY MEDIQUEUE</span>
+            <span>
+              WHY MEDIQUEUE
+            </span>
 
             <h2>
               Everything you need for a
@@ -287,6 +348,7 @@ function Home({ goTo, setSelectedDoctor }) {
 
           </div>
 
+
           <div className="feature-grid">
 
             <FeatureCard
@@ -295,11 +357,13 @@ function Home({ goTo, setSelectedDoctor }) {
               text="Get your queue token digitally without standing in long lines."
             />
 
+
             <FeatureCard
               icon="📍"
               title="Live Queue Tracking"
               text="Know your current position and track the queue from anywhere."
             />
+
 
             <FeatureCard
               icon="🚨"
@@ -313,7 +377,9 @@ function Home({ goTo, setSelectedDoctor }) {
         </section>
 
 
-        {/* HOW IT WORKS */}
+        {/* =========================
+           HOW IT WORKS
+        ========================= */}
 
         <section
           className="how-section"
@@ -322,13 +388,16 @@ function Home({ goTo, setSelectedDoctor }) {
 
           <div className="section-heading">
 
-            <span>HOW IT WORKS</span>
+            <span>
+              HOW IT WORKS
+            </span>
 
             <h2>
               Simple from start to finish.
             </h2>
 
           </div>
+
 
           <div className="steps">
 
@@ -338,17 +407,20 @@ function Home({ goTo, setSelectedDoctor }) {
               text="Browse doctors and select the specialist you need."
             />
 
+
             <Step
               number="02"
               title="Book Appointment"
               text="Choose your preferred date and time."
             />
 
+
             <Step
               number="03"
               title="Get Your Token"
               text="Receive a digital queue token instantly."
             />
+
 
             <Step
               number="04"
@@ -361,16 +433,20 @@ function Home({ goTo, setSelectedDoctor }) {
         </section>
 
 
-        {/* ABOUT */}
+        {/* =========================
+           ABOUT
+        ========================= */}
 
         <section className="about-section">
 
           <div className="about-card">
 
             <div>
+
               <span className="small-label">
                 ABOUT MEDIQUEUE
               </span>
+
 
               <h2>
                 Less waiting.
@@ -378,17 +454,23 @@ function Home({ goTo, setSelectedDoctor }) {
                 More care.
               </h2>
 
+
               <p>
                 MediQueue is designed to make hospital
                 visits more organized and convenient for
                 patients while helping hospitals manage
                 queues efficiently.
               </p>
+
             </div>
+
 
             <div className="about-stat">
 
-              <strong>24/7</strong>
+              <strong>
+                24/7
+              </strong>
+
 
               <span>
                 Access to your
@@ -404,9 +486,12 @@ function Home({ goTo, setSelectedDoctor }) {
 
       </main>
 
+
       <Footer goTo={goTo} />
+
     </>
   );
+
 }
 
 
@@ -420,10 +505,14 @@ function FeatureCard({
   text,
   emergency
 }) {
+
   return (
+
     <div
       className={`feature-card ${
-        emergency ? "feature-emergency" : ""
+        emergency
+          ? "feature-emergency"
+          : ""
       }`}
     >
 
@@ -431,16 +520,25 @@ function FeatureCard({
         {icon}
       </div>
 
-      <h3>{title}</h3>
 
-      <p>{text}</p>
+      <h3>
+        {title}
+      </h3>
+
+
+      <p>
+        {text}
+      </p>
+
 
       <span className="feature-arrow">
         →
       </span>
 
     </div>
+
   );
+
 }
 
 
@@ -448,20 +546,34 @@ function FeatureCard({
    STEP
 ========================= */
 
-function Step({ number, title, text }) {
+function Step({
+  number,
+  title,
+  text
+}) {
+
   return (
+
     <div className="step">
 
       <span className="step-number">
         {number}
       </span>
 
-      <h3>{title}</h3>
 
-      <p>{text}</p>
+      <h3>
+        {title}
+      </h3>
+
+
+      <p>
+        {text}
+      </p>
 
     </div>
+
   );
+
 }
 
 
@@ -472,61 +584,98 @@ function Step({ number, title, text }) {
 function Login({ goTo }) {
 
   const handleLogin = (e) => {
+
     e.preventDefault();
 
-    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem(
+      "isLoggedIn",
+      "true"
+    );
 
     goTo("dashboard");
+
   };
 
+
   return (
+
     <div className="auth-page">
 
       <div className="auth-card">
 
         <button
           className="auth-back"
-          onClick={() => goTo("home")}
+          onClick={() =>
+            goTo("home")
+          }
         >
           ← Back to Home
         </button>
 
+
         <div className="auth-logo">
-          <div className="logo-icon">+</div>
-          <span>MediQueue</span>
+
+          <div className="logo-icon">
+            +
+          </div>
+
+          <span>
+            MediQueue
+          </span>
+
         </div>
 
-        <h1>Welcome back 👋</h1>
+
+        <h1>
+          Welcome back 👋
+        </h1>
+
 
         <p className="auth-subtitle">
           Login to manage your appointments and queue.
         </p>
 
-        <form onSubmit={handleLogin}>
+
+        <form
+          onSubmit={handleLogin}
+        >
 
           <div className="input-group">
-            <label>Email or Phone</label>
+
+            <label>
+              Email or Phone
+            </label>
+
 
             <input
               type="text"
               placeholder="Enter email or phone"
               required
             />
+
           </div>
 
+
           <div className="input-group">
-            <label>Password</label>
+
+            <label>
+              Password
+            </label>
+
 
             <input
               type="password"
               placeholder="Enter password"
               required
             />
+
           </div>
+
 
           <div className="forgot-password">
             Forgot password?
           </div>
+
 
           <button
             type="submit"
@@ -537,25 +686,41 @@ function Login({ goTo }) {
 
         </form>
 
+
         <div className="auth-divider">
-          <span>or</span>
+
+          <span>
+            or
+          </span>
+
         </div>
+
 
         <button className="google-btn">
           Continue with Google
         </button>
 
+
         <p className="auth-switch">
+
           Don't have an account?{" "}
-          <button onClick={() => goTo("register")}>
+
+          <button
+            onClick={() =>
+              goTo("register")
+            }
+          >
             Register
           </button>
+
         </p>
 
       </div>
 
     </div>
+
   );
+
 }
 
 
@@ -566,77 +731,182 @@ function Login({ goTo }) {
 function Register({ goTo }) {
 
   const handleRegister = (e) => {
+
     e.preventDefault();
 
-    localStorage.setItem("isLoggedIn", "true");
+    const formData =
+      new FormData(e.target);
+
+    const name =
+      formData.get("name");
+
+    const email =
+      formData.get("email");
+
+    const phone =
+      formData.get("phone");
+
+    const password =
+      formData.get("password");
+
+
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !password
+    ) {
+
+      alert(
+        "Please fill all fields."
+      );
+
+      return;
+
+    }
+
+
+    const user = {
+      name,
+      email,
+      phone,
+      password
+    };
+
+
+    localStorage.setItem(
+      "registeredUser",
+      JSON.stringify(user)
+    );
+
+
+    localStorage.setItem(
+      "currentUser",
+      JSON.stringify({
+        name,
+        email,
+        phone
+      })
+    );
+
+
+    localStorage.setItem(
+      "isLoggedIn",
+      "true"
+    );
+
 
     goTo("dashboard");
+
   };
 
+
   return (
+
     <div className="auth-page">
 
       <div className="auth-card">
 
         <button
           className="auth-back"
-          onClick={() => goTo("home")}
+          onClick={() =>
+            goTo("home")
+          }
         >
           ← Back to Home
         </button>
 
+
         <div className="auth-logo">
-          <div className="logo-icon">+</div>
-          <span>MediQueue</span>
+
+          <div className="logo-icon">
+            +
+          </div>
+
+          <span>
+            MediQueue
+          </span>
+
         </div>
 
-        <h1>Create your account</h1>
+
+        <h1>
+          Create your account
+        </h1>
+
 
         <p className="auth-subtitle">
           Start managing your hospital visits easily.
         </p>
 
-        <form onSubmit={handleRegister}>
+
+        <form
+          onSubmit={handleRegister}
+        >
 
           <div className="input-group">
-            <label>Full Name</label>
+
+            <label>
+              Full Name
+            </label>
 
             <input
               type="text"
+              name="name"
               placeholder="Enter your full name"
               required
             />
+
           </div>
 
+
           <div className="input-group">
-            <label>Email</label>
+
+            <label>
+              Email
+            </label>
 
             <input
               type="email"
+              name="email"
               placeholder="Enter your email"
               required
             />
+
           </div>
 
+
           <div className="input-group">
-            <label>Phone</label>
+
+            <label>
+              Phone
+            </label>
 
             <input
               type="tel"
+              name="phone"
               placeholder="Enter phone number"
               required
             />
+
           </div>
 
+
           <div className="input-group">
-            <label>Password</label>
+
+            <label>
+              Password
+            </label>
 
             <input
               type="password"
+              name="password"
               placeholder="Create a password"
               required
             />
+
           </div>
+
 
           <button
             type="submit"
@@ -647,17 +917,27 @@ function Register({ goTo }) {
 
         </form>
 
+
         <p className="auth-switch">
+
           Already have an account?{" "}
-          <button onClick={() => goTo("login")}>
+
+          <button
+            onClick={() =>
+              goTo("login")
+            }
+          >
             Login
           </button>
+
         </p>
 
       </div>
 
     </div>
+
   );
+
 }
 
 
@@ -665,7 +945,11 @@ function Register({ goTo }) {
    DOCTORS
 ========================= */
 
-function Doctors({ goTo, setSelectedDoctor }) {
+function Doctors({
+  goTo,
+  setSelectedDoctor
+}) {
+
   const departments = [
     "All Departments",
     "Cardiology",
@@ -674,81 +958,208 @@ function Doctors({ goTo, setSelectedDoctor }) {
     "Pediatrics",
     "Neurology",
     "Ophthalmology",
-    "General Medicine",
+    "General Medicine"
   ];
 
-  const [activeDepartment, setActiveDepartment] = useState("All Departments");
+
+  const [
+    activeDepartment,
+    setActiveDepartment
+  ] = useState(
+    "All Departments"
+  );
+
 
   const visibleDoctors =
-    activeDepartment === "All Departments"
+    activeDepartment ===
+    "All Departments"
+
       ? doctors
-      : doctors.filter((doctor) => doctor.department === activeDepartment);
+
+      : doctors.filter(
+          (doctor) =>
+            doctor.department ===
+            activeDepartment
+        );
+
 
   return (
+
     <div className="doctors-page">
-      <Navbar goTo={goTo} />
+
+      <Navbar
+        goTo={goTo}
+      />
+
 
       <div className="doctors-container">
+
         <div className="doctors-heading">
-          <span className="hero-badge">🩺 Find Your Doctor</span>
-          <h1>Choose the right doctor<br />for your care.</h1>
-          <p>Choose a department first, then select a doctor for your appointment.</p>
-        </div>
 
-        <div className="department-tabs" role="tablist" aria-label="Doctor departments">
-          {departments.map((department) => (
-            <button
-              key={department}
-              className={`department-tab ${activeDepartment === department ? "active" : ""}`}
-              onClick={() => setActiveDepartment(department)}
-            >
-              {department}
-            </button>
-          ))}
-        </div>
-
-        <div className="department-results-label">
-          <span className="small-label">
-            {activeDepartment === "All Departments" ? "ALL SPECIALISTS" : activeDepartment.toUpperCase()}
+          <span className="hero-badge">
+            🩺 Find Your Doctor
           </span>
-          <strong>{visibleDoctors.length} doctors available</strong>
+
+
+          <h1>
+            Choose the right doctor
+            <br />
+            for your care.
+          </h1>
+
+
+          <p>
+            Choose a department first, then select
+            a doctor for your appointment.
+          </p>
+
         </div>
 
-        <div className="doctor-grid">
-          {visibleDoctors.map((doctor) => (
-            <div className="doctor-card" key={doctor.id}>
-              <div className="doctor-card-top">
-                <div className="doctor-large-avatar">
-                  <img src={doctor.image} alt={doctor.name} />
-                </div>
-                <span className="available-badge">● {doctor.availability || "Available Today"}</span>
-              </div>
 
-              <h3>{doctor.name}</h3>
-              <p className="doctor-specialty">{doctor.specialty}</p>
-              <p className="doctor-department-label">{doctor.department}</p>
+        <div
+          className="department-tabs"
+          role="tablist"
+          aria-label="Doctor departments"
+        >
 
-              <div className="doctor-details">
-                <span>⭐ {doctor.rating}</span>
-                <span>{doctor.experience}</span>
-              </div>
+          {departments.map(
+            (department) => (
 
               <button
-                className="primary-btn doctor-book-btn"
-                onClick={() => {
-                  setSelectedDoctor(doctor);
-                  goTo("bookAppointment");
-                }}
+                key={department}
+                className={`department-tab ${
+                  activeDepartment ===
+                  department
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  setActiveDepartment(
+                    department
+                  )
+                }
               >
-                Book Appointment →
+                {department}
               </button>
-            </div>
-          ))}
+
+            )
+          )}
+
         </div>
+
+
+        <div className="department-results-label">
+
+          <span className="small-label">
+
+            {activeDepartment ===
+            "All Departments"
+              ? "ALL SPECIALISTS"
+              : activeDepartment.toUpperCase()}
+
+          </span>
+
+
+          <strong>
+            {visibleDoctors.length} doctors available
+          </strong>
+
+        </div>
+
+
+        <div className="doctor-grid">
+
+          {visibleDoctors.map(
+            (doctor) => (
+
+              <div
+                className="doctor-card"
+                key={doctor.id}
+              >
+
+                <div className="doctor-card-top">
+
+                  <div className="doctor-large-avatar">
+
+                    <img
+                      src={doctor.image}
+                      alt={doctor.name}
+                    />
+
+                  </div>
+
+
+                  <span className="available-badge">
+
+                    ●{" "}
+                    {doctor.availability ||
+                      "Available Today"}
+
+                  </span>
+
+                </div>
+
+
+                <h3>
+                  {doctor.name}
+                </h3>
+
+
+                <p className="doctor-specialty">
+                  {doctor.specialty}
+                </p>
+
+
+                <p className="doctor-department-label">
+                  {doctor.department}
+                </p>
+
+
+                <div className="doctor-details">
+
+                  <span>
+                    ⭐ {doctor.rating}
+                  </span>
+
+                  <span>
+                    {doctor.experience}
+                  </span>
+
+                </div>
+
+
+                <button
+                  className="primary-btn doctor-book-btn"
+                  onClick={() => {
+
+                    setSelectedDoctor(
+                      doctor
+                    );
+
+                    goTo(
+                      "bookAppointment"
+                    );
+
+                  }}
+                >
+                  Book Appointment →
+                </button>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
       </div>
+
     </div>
+
   );
+
 }
+
 
 /* =========================
    DASHBOARD
@@ -758,107 +1169,370 @@ function Dashboard({ goTo }) {
 
   const appointments =
     JSON.parse(
-      localStorage.getItem("appointments")
-    ) || [];
+      localStorage.getItem(
+        "appointments"
+      ) || "[]"
+    );
+
 
   const currentAppointment =
     JSON.parse(
-      localStorage.getItem("currentAppointment")
+      localStorage.getItem(
+        "currentAppointment"
+      ) || "null"
     );
 
-  const isActiveAppointment = (item) =>
-    ["Confirmed", "Upcoming", "In Progress"].includes(item?.status);
 
-  const activeAppointments = appointments.filter(isActiveAppointment);
+  /* =========================
+     ACTIVE STATUS
+  ========================= */
 
-  const appointment =
-    currentAppointment && isActiveAppointment(currentAppointment)
-      ? currentAppointment
-      : activeAppointments[activeAppointments.length - 1];
+  const isActiveAppointment =
+    (item) => {
+
+      return [
+        "Confirmed",
+        "Upcoming",
+        "In Progress"
+      ].includes(
+        item?.status
+      );
+
+    };
+
+
+  /* =========================
+     LOCAL TODAY
+  ========================= */
+
+  const currentDate =
+    new Date();
+
+
+  const today =
+    `${currentDate.getFullYear()}-${String(
+      currentDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(
+      currentDate.getDate()
+    ).padStart(2, "0")}`;
+
+
+  /* =========================
+     DATE + TIME
+  ========================= */
+
+  const getAppointmentDateTime =
+    (item) => {
+
+      if (!item?.date) {
+        return Number.MAX_SAFE_INTEGER;
+      }
+
+
+      const date =
+        item.date;
+
+
+      const time =
+        item.time ||
+        "12:00 AM";
+
+
+      const parsed =
+        new Date(
+          `${date} ${time}`
+        ).getTime();
+
+
+      if (
+        Number.isNaN(parsed)
+      ) {
+
+        return new Date(
+          date
+        ).getTime();
+
+      }
+
+
+      return parsed;
+
+    };
+
+
+  /* =========================
+     ACTIVE APPOINTMENTS
+  ========================= */
+
+  const activeAppointments =
+    appointments
+      .filter(
+        isActiveAppointment
+      )
+      .slice()
+      .sort(
+        (a, b) =>
+          getAppointmentDateTime(a) -
+          getAppointmentDateTime(b)
+      );
+
+
+  /* =========================
+     ALL UPCOMING
+     
+     TODAY + FUTURE
+  ========================= */
+
+  const upcomingAppointments =
+    activeAppointments.filter(
+      (item) =>
+        item.date &&
+        item.date >= today
+    );
+
+
+  /* =========================
+     YOUR QUEUE APPOINTMENT
+     
+     ALWAYS EARLIEST UPCOMING
+  ========================= */
+
+  const queueAppointment =
+    upcomingAppointments.length > 0
+      ? upcomingAppointments[0]
+      : null;
+
+
+  /* =========================
+     NEXT APPOINTMENTS
+     
+     NEXT 2 AFTER YOUR QUEUE
+  ========================= */
+
+  const nextAppointments =
+    upcomingAppointments.slice(1, 3);
+
+
+  /* =========================
+     TODAY'S APPOINTMENT
+     
+     ONLY TODAY
+     
+     Used for LIVE QUEUE.
+  ========================= */
+
+  const todayAppointments =
+    activeAppointments.filter(
+      (item) =>
+        item.date === today
+    );
+
+
+
+
+
+  /* =========================
+     LATEST PAST APPOINTMENT
+     
+     ONLY ONE PAST APPOINTMENT
+     ON DASHBOARD.
+  ========================= */
+
+  const latestPastAppointment =
+    appointments
+      .filter(
+        (item) =>
+          item.date &&
+          item.date < today
+      )
+      .slice()
+      .sort(
+        (a, b) =>
+          getAppointmentDateTime(b) -
+          getAppointmentDateTime(a)
+      )[0];
+
+
+  /* =========================
+     RECENT APPOINTMENTS
+     
+     ALL ACTIVE UPCOMING
+     + ONE LATEST PAST
+  ========================= */
+
+  const recentAppointments = [
+    ...upcomingAppointments,
+    ...(latestPastAppointment
+      ? [latestPastAppointment]
+      : [])
+  ];
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
 
   const handleLogout = () => {
 
-    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem(
+      "isLoggedIn"
+    );
+
+    localStorage.removeItem(
+      "currentUser"
+    );
+
+    localStorage.removeItem(
+      "currentAppointment"
+    );
 
     goTo("home");
+
   };
 
+
   return (
+
     <div className="dashboard-layout">
 
-      {/* SIDEBAR */}
+
+      {/* =========================
+         SIDEBAR
+      ========================= */}
 
       <aside className="sidebar">
 
         <div className="sidebar-logo">
 
-          <div className="logo-icon">+</div>
+          <div className="logo-icon">
+            +
+          </div>
 
-          <span>MediQueue</span>
+          <span>
+            MediQueue
+          </span>
 
         </div>
 
+
         <div className="sidebar-menu">
 
-          <button className="sidebar-item active">
-            <span>▦</span>
+          <button
+            className="sidebar-item active"
+          >
+            <span>
+              ▦
+            </span>
+
             Dashboard
           </button>
 
+
           <button
             className="sidebar-item"
-            onClick={() => goTo("doctors")}
+            onClick={() =>
+              goTo("doctors")
+            }
           >
-            <span>🩺</span>
+            <span>
+              🩺
+            </span>
+
             Doctors
           </button>
 
+
           <button
             className="sidebar-item"
-            onClick={() => goTo("appointments")}
+            onClick={() =>
+              goTo("appointments")
+            }
           >
-            <span>📅</span>
+            <span>
+              📅
+            </span>
+
             Appointments
           </button>
 
+
           <button
             className="sidebar-item"
-            onClick={() => goTo("queueStatus")}
+            onClick={() =>
+              goTo("token")
+            }
           >
-            <span>🎟️</span>
+            <span>
+              🎟️
+            </span>
+
             My Token
           </button>
 
+
           <button
             className="sidebar-item"
-            onClick={() => goTo("queueStatus")}
+            onClick={() =>
+              goTo("queueStatus")
+            }
           >
-            <span>📍</span>
+            <span>
+              📍
+            </span>
+
             Queue Status
           </button>
 
-          <div className="sidebar-divider"></div>
 
-          <button className="sidebar-item">
-            <span>👤</span>
+          <div className="sidebar-divider">
+          </div>
+
+
+          <button
+            className="sidebar-item"
+            onClick={() =>
+              alert(
+                "Profile will be available in the next version."
+              )
+            }
+          >
+            <span>
+              👤
+            </span>
+
             Profile
           </button>
 
-          <button className="sidebar-item">
-            <span>⚙️</span>
+
+          <button
+            className="sidebar-item"
+            onClick={() =>
+              alert(
+                "Settings will be available in the next version."
+              )
+            }
+          >
+            <span>
+              ⚙️
+            </span>
+
             Settings
           </button>
 
         </div>
 
+
         <div className="sidebar-bottom">
 
           <button
             className="sidebar-emergency"
-            onClick={() => goTo("emergency")}
+            onClick={() =>
+              goTo("emergency")
+            }
           >
             🚨 Emergency
           </button>
+
 
           <button
             className="sidebar-logout"
@@ -872,83 +1546,127 @@ function Dashboard({ goTo }) {
       </aside>
 
 
-      {/* MAIN */}
+      {/* =========================
+         MAIN DASHBOARD
+      ========================= */}
 
       <main className="dashboard-main">
+
+
+        {/* TOP */}
 
         <div className="dashboard-top">
 
           <div>
+
             <span className="small-label">
               PATIENT DASHBOARD
             </span>
 
+
             <h1>
               Good morning, Tiya 👋
             </h1>
+
           </div>
 
+
           <div className="dashboard-actions">
+
             <ThemeToggle />
+
+
             <div className="dashboard-user">
 
-            <span className="notification">
-              🔔
-            </span>
+              <span className="notification">
+                🔔
+              </span>
 
-            <div className="user-avatar">
-              T
+
+              <div className="user-avatar">
+                T
+              </div>
+
+
+              <div>
+
+                <strong>
+                  Tiya
+                </strong>
+
+                <span>
+                  Patient
+                </span>
+
+              </div>
+
             </div>
 
-            <div>
-              <strong>Tiya</strong>
-              <span>Patient</span>
-            </div>
-
-            </div>
           </div>
 
         </div>
 
 
-        {/* STATS */}
+        {/* =========================
+           STATS
+        ========================= */}
 
         <div className="dashboard-stats">
 
           <DashboardStat
             icon="📅"
             label="Upcoming"
-            value={appointment ? "1" : "0"}
+            value={
+              upcomingAppointments.length
+            }
           />
+
 
           <DashboardStat
             icon="🎟️"
             label="My Token"
             value={
-              appointment
-                ? appointment.token
+              queueAppointment
+                ? queueAppointment.token
                 : "—"
             }
           />
 
+
           <DashboardStat
             icon="👥"
             label="Ahead of You"
-            value={appointment ? "3" : "—"}
+            value={
+              queueAppointment
+                ? "3"
+                : "—"
+            }
           />
+
 
           <DashboardStat
             icon="🟢"
             label="Status"
-            value={appointment ? "Live" : "—"}
+            value={
+              queueAppointment
+                ? "Live"
+                : "—"
+            }
           />
 
         </div>
 
 
+        {/* =========================
+           QUEUE + NEXT
+        ========================= */}
+
         <div className="dashboard-grid">
 
-          {/* QUEUE */}
+
+          {/* =========================
+             LIVE QUEUE
+          ========================= */}
 
           <div className="queue-dashboard-card">
 
@@ -960,18 +1678,26 @@ function Dashboard({ goTo }) {
                   LIVE QUEUE
                 </span>
 
-                <h2>Your Queue</h2>
+
+                <h2>
+                  Your Queue
+                </h2>
 
               </div>
 
-              <span className="live-badge">
-                ● LIVE
-              </span>
+
+              {queueAppointment && (
+
+                <span className="live-badge">
+                  ● LIVE
+                </span>
+
+              )}
 
             </div>
 
 
-            {appointment ? (
+            {queueAppointment ? (
 
               <>
 
@@ -981,14 +1707,20 @@ function Dashboard({ goTo }) {
                     👨‍⚕️
                   </div>
 
+
                   <div>
 
                     <h3>
-                      {appointment.doctorName}
+                      {
+                        queueAppointment.doctorName
+                      }
                     </h3>
 
+
                     <p>
-                      {appointment.specialty}
+                      {
+                        queueAppointment.specialty
+                      }
                     </p>
 
                   </div>
@@ -999,19 +1731,35 @@ function Dashboard({ goTo }) {
                 <div className="queue-tokens">
 
                   <div>
-                    <span>Current Token</span>
-                    <strong>T-021</strong>
+
+                    <span>
+                      Current Token
+                    </span>
+
+                    <strong>
+                      T-021
+                    </strong>
+
                   </div>
+
 
                   <div className="token-arrow">
                     →
                   </div>
 
+
                   <div>
-                    <span>Your Token</span>
+
+                    <span>
+                      Your Token
+                    </span>
+
                     <strong>
-                      {appointment.token}
+                      {
+                        queueAppointment.token
+                      }
                     </strong>
+
                   </div>
 
                 </div>
@@ -1020,13 +1768,28 @@ function Dashboard({ goTo }) {
                 <div className="queue-info">
 
                   <div>
-                    <span>👥</span>
-                    <strong>3 patients ahead</strong>
+
+                    <span>
+                      👥
+                    </span>
+
+                    <strong>
+                      3 patients ahead
+                    </strong>
+
                   </div>
 
+
                   <div>
-                    <span>⏱️</span>
-                    <strong>~30 min wait</strong>
+
+                    <span>
+                      ⏱️
+                    </span>
+
+                    <strong>
+                      ~30 min wait
+                    </strong>
+
                   </div>
 
                 </div>
@@ -1034,7 +1797,9 @@ function Dashboard({ goTo }) {
 
                 <button
                   className="primary-btn track-btn"
-                  onClick={() => goTo("queueStatus")}
+                  onClick={() =>
+                    goTo("queueStatus")
+                  }
                 >
                   Track Queue →
                 </button>
@@ -1045,21 +1810,45 @@ function Dashboard({ goTo }) {
 
               <div className="empty-dashboard">
 
-                <div>📅</div>
+                <div>
+                  📅
+                </div>
 
-                <h3>No appointment yet</h3>
+
+                <h3>
+                  No active queue today
+                </h3>
+
 
                 <p>
-                  Book an appointment to get your
-                  queue token.
+                  You don't have an appointment
+                  scheduled for today.
                 </p>
 
-                <button
-                  className="primary-btn"
-                  onClick={() => goTo("doctors")}
-                >
-                  Find a Doctor →
-                </button>
+
+                {nextAppointment ? (
+
+                  <button
+                    className="primary-btn"
+                    onClick={() =>
+                      goTo("appointments")
+                    }
+                  >
+                    View Next Appointment →
+                  </button>
+
+                ) : (
+
+                  <button
+                    className="primary-btn"
+                    onClick={() =>
+                      goTo("doctors")
+                    }
+                  >
+                    Find a Doctor →
+                  </button>
+
+                )}
 
               </div>
 
@@ -1068,7 +1857,9 @@ function Dashboard({ goTo }) {
           </div>
 
 
-          {/* NEXT APPOINTMENT */}
+          {/* =========================
+             NEXT APPOINTMENT
+          ========================= */}
 
           <div className="next-appointment-card">
 
@@ -1080,13 +1871,15 @@ function Dashboard({ goTo }) {
                   NEXT APPOINTMENT
                 </span>
 
+
                 <h2>
-                  {appointment
-                    ? appointment.time
+                  {nextAppointments.length > 0
+                    ? "Next Appointments"
                     : "No booking"}
                 </h2>
 
               </div>
+
 
               <span className="appointment-icon">
                 📅
@@ -1095,29 +1888,48 @@ function Dashboard({ goTo }) {
             </div>
 
 
-            {appointment ? (
+            {nextAppointments.length > 0 ? (
 
-              <div className="next-doctor">
+              <div>
 
-                <div className="doctor-small-avatar">
-                  👨‍⚕️
-                </div>
+                {nextAppointments.map(
+                  (appointment) => (
 
-                <div>
+                    <div
+                      className="next-doctor"
+                      key={
+                        appointment.id ||
+                        `${appointment.doctorName}-${appointment.date}-${appointment.time}`
+                      }
+                    >
 
-                  <h3>
-                    {appointment.doctorName}
-                  </h3>
+                      <div className="doctor-small-avatar">
+                        👨‍⚕️
+                      </div>
 
-                  <p>
-                    {appointment.specialty}
-                  </p>
 
-                  <span>
-                    {appointment.date}
-                  </span>
+                      <div>
 
-                </div>
+                        <h3>
+                          {appointment.doctorName}
+                        </h3>
+
+
+                        <p>
+                          {appointment.specialty}
+                        </p>
+
+
+                        <span>
+                          {appointment.date} • {appointment.time}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  )
+                )}
 
               </div>
 
@@ -1130,11 +1942,14 @@ function Dashboard({ goTo }) {
 
             )}
 
+
             <button
               className="secondary-btn full-btn"
-              onClick={() => goTo("queueStatus")}
+              onClick={() =>
+                goTo("appointments")
+              }
             >
-              Track Queue →
+              View Appointment →
             </button>
 
           </div>
@@ -1142,7 +1957,9 @@ function Dashboard({ goTo }) {
         </div>
 
 
-        {/* RECENT APPOINTMENTS */}
+        {/* =========================
+           RECENT APPOINTMENTS
+        ========================= */}
 
         <div className="recent-card">
 
@@ -1154,13 +1971,19 @@ function Dashboard({ goTo }) {
                 ACTIVITY
               </span>
 
-              <h2>Recent Appointments</h2>
+
+              <h2>
+                Recent Appointments
+              </h2>
 
             </div>
 
+
             <button
               className="view-all"
-              onClick={() => goTo("appointments")}
+              onClick={() =>
+                goTo("appointments")
+              }
             >
               View Full History →
             </button>
@@ -1168,58 +1991,86 @@ function Dashboard({ goTo }) {
           </div>
 
 
-          {activeAppointments.length > 0 || appointments.some((item) => item.status === "Cancelled") ? (
+          {recentAppointments.length > 0 ? (
 
             <div className="appointment-table">
 
               <div className="table-header">
-                <span>Doctor</span>
-                <span>Date</span>
-                <span>Token</span>
-                <span>Status</span>
+
+                <span>
+                  Doctor
+                </span>
+
+                <span>
+                  Date
+                </span>
+
+                <span>
+                  Token
+                </span>
+
+                <span>
+                  Status
+                </span>
+
               </div>
 
-              {[
-                ...appointments.filter(isActiveAppointment).slice().reverse(),
-                ...appointments
-                  .filter((item) => item.status === "Cancelled")
-                  .slice()
-                  .reverse()
-                  .slice(0, 2),
-              ].map((item) => (
+
+              {recentAppointments.map(
+                (item) => (
 
                   <div
                     className="table-row"
-                    key={item.id}
+                    key={
+                      item.id ||
+                      `${item.doctorName}-${item.date}-${item.time}`
+                    }
                   >
 
                     <span>
+
                       <strong>
-                        {item.doctorName}
+                        {
+                          item.doctorName
+                        }
                       </strong>
 
+
                       <small>
-                        {item.specialty}
+                        {
+                          item.specialty
+                        }
                       </small>
+
                     </span>
+
 
                     <span>
                       {item.date}
                     </span>
 
-                    <span>
-                      {item.token}
-                    </span>
 
                     <span>
+                      {item.token || "—"}
+                    </span>
+
+
+                    <span>
+
                       <em className="status-confirmed">
-                        {item.status}
+
+                        {
+                          item.status
+                        }
+
                       </em>
+
                     </span>
 
                   </div>
 
-                ))}
+                )
+              )}
 
             </div>
 
@@ -1227,15 +2078,21 @@ function Dashboard({ goTo }) {
 
             <div className="empty-table">
 
-              <span>📋</span>
+              <span>
+                📋
+              </span>
+
 
               <p>
                 No appointments found.
               </p>
 
+
               <button
                 className="secondary-btn"
-                onClick={() => goTo("doctors")}
+                onClick={() =>
+                  goTo("doctors")
+                }
               >
                 Book Your First Appointment
               </button>
@@ -1249,7 +2106,9 @@ function Dashboard({ goTo }) {
       </main>
 
     </div>
+
   );
+
 }
 
 
@@ -1262,23 +2121,33 @@ function DashboardStat({
   label,
   value
 }) {
+
   return (
+
     <div className="dashboard-stat">
 
       <div className="stat-icon">
         {icon}
       </div>
 
+
       <div>
 
-        <span>{label}</span>
+        <span>
+          {label}
+        </span>
 
-        <strong>{value}</strong>
+
+        <strong>
+          {value}
+        </strong>
 
       </div>
 
     </div>
+
   );
+
 }
 
 
@@ -1289,9 +2158,11 @@ function DashboardStat({
 function Emergency({ goTo }) {
 
   return (
+
     <div className="emergency-page">
 
       <Navbar goTo={goTo} />
+
 
       <div className="emergency-container">
 
@@ -1299,34 +2170,56 @@ function Emergency({ goTo }) {
           🚨
         </div>
 
+
         <span className="emergency-label">
           EMERGENCY ASSISTANCE
         </span>
 
+
         <h1>
           Need urgent medical attention?
         </h1>
+
 
         <p>
           If you are experiencing a genuine medical
           emergency, seek immediate professional help.
         </p>
 
+
         <div className="emergency-actions">
 
-          <button className="emergency-main-btn">
+          <button
+            className="emergency-main-btn"
+            onClick={() =>
+              alert(
+                "Emergency request received. Please contact emergency medical services immediately."
+              )
+            }
+          >
             🚨 Request Emergency Token
           </button>
 
-          <button className="secondary-btn">
+
+          <button
+            className="secondary-btn"
+            onClick={() => {
+              window.location.href =
+                "tel:112";
+            }}
+          >
             📞 Emergency Contact
           </button>
 
         </div>
 
+
         <div className="emergency-note">
 
-          <strong>Important</strong>
+          <strong>
+            Important
+          </strong>
+
 
           <p>
             MediQueue is a queue management prototype.
@@ -1339,7 +2232,9 @@ function Emergency({ goTo }) {
       </div>
 
     </div>
+
   );
+
 }
 
 
@@ -1350,9 +2245,11 @@ function Emergency({ goTo }) {
 function Footer({ goTo }) {
 
   return (
+
     <footer className="footer">
 
       <div className="footer-container">
+
 
         <div className="footer-brand">
 
@@ -1362,9 +2259,12 @@ function Footer({ goTo }) {
               +
             </div>
 
-            <span>MediQueue</span>
+            <span>
+              MediQueue
+            </span>
 
           </div>
+
 
           <p>
             Making hospital visits simpler,
@@ -1376,40 +2276,82 @@ function Footer({ goTo }) {
 
         <div className="footer-links">
 
-          <div>
-            <h4>Quick Links</h4>
 
-            <button onClick={() => goTo("home")}>
+          <div>
+
+            <h4>
+              Quick Links
+            </h4>
+
+
+            <button
+              onClick={() =>
+                goTo("home")
+              }
+            >
               Home
             </button>
 
-            <button onClick={() => goTo("doctors")}>
+
+            <button
+              onClick={() =>
+                goTo("doctors")
+              }
+            >
               Doctors
             </button>
 
-            <button onClick={() => goTo("login")}>
+
+            <button
+              onClick={() =>
+                goTo("login")
+              }
+            >
               Login
             </button>
+
           </div>
 
-          <div>
-            <h4>Support</h4>
 
-            <span>Help Center</span>
-            <span>Contact Us</span>
-            <span>Privacy</span>
+          <div>
+
+            <h4>
+              Support
+            </h4>
+
+
+            <span>
+              Help Center
+            </span>
+
+
+            <span>
+              Contact Us
+            </span>
+
+
+            <span>
+              Privacy
+            </span>
+
           </div>
 
         </div>
 
       </div>
 
+
       <div className="footer-bottom">
+
         © 2026 MediQueue. College Project.
+
       </div>
 
     </footer>
+
   );
+
 }
+
 
 export default App;

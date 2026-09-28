@@ -12,23 +12,33 @@ function Login({ goTo }) {
       return;
     }
 
-    const existingUser = JSON.parse(
-      localStorage.getItem("currentUser") || "null"
+    const registeredUser = JSON.parse(
+      localStorage.getItem("registeredUser") || "null"
     );
 
-    const user = existingUser || {
-      name: "MediQueue Patient",
-      email: emailOrPhone.includes("@")
-        ? emailOrPhone
-        : "",
-      phone: emailOrPhone.includes("@")
-        ? ""
-        : emailOrPhone,
-    };
+    if (!registeredUser) {
+      alert("No account found. Please register first.");
+      goTo("register");
+      return;
+    }
+
+    const isValidUser =
+      (emailOrPhone === registeredUser.email ||
+        emailOrPhone === registeredUser.phone) &&
+      password === registeredUser.password;
+
+    if (!isValidUser) {
+      alert("Invalid email/phone or password.");
+      return;
+    }
 
     localStorage.setItem(
       "currentUser",
-      JSON.stringify(user)
+      JSON.stringify({
+        name: registeredUser.name,
+        email: registeredUser.email,
+        phone: registeredUser.phone,
+      })
     );
 
     localStorage.setItem("isLoggedIn", "true");

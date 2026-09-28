@@ -1,26 +1,64 @@
 import ThemeToggle from "./ThemeToggle";
 
 function Navbar({ goTo }) {
+
+  const handleFeatures = () => {
+    goTo("home");
+
+    setTimeout(() => {
+      document
+        .getElementById("features")
+        ?.scrollIntoView({
+          behavior: "smooth",
+        });
+    }, 100);
+  };
+
+  const handleHowItWorks = () => {
+    goTo("home");
+
+    setTimeout(() => {
+      document
+        .getElementById("how-it-works")
+        ?.scrollIntoView({
+          behavior: "smooth",
+        });
+    }, 100);
+  };
+
   return (
     <nav className="navbar">
 
       <div className="nav-container">
 
+        {/* LOGO */}
+
         <div
           className="logo"
           onClick={() => goTo("home")}
         >
-          <div className="logo-icon">+</div>
-          <span>MediQueue</span>
+          <div className="logo-icon">
+            +
+          </div>
+
+          <span>
+            MediQueue
+          </span>
         </div>
+
+
+        {/* NAV LINKS */}
 
         <div className="nav-links">
 
+          {/* Home button intentionally opens Dashboard */}
+
           <button
-            onClick={() => goTo("home")}
+            onClick={() => goTo("dashboard")}
           >
             Home
           </button>
+
 
           <button
             onClick={() => goTo("doctors")}
@@ -28,22 +66,34 @@ function Navbar({ goTo }) {
             Doctors
           </button>
 
-          <a href="#features">
-            Features
-          </a>
 
-          <a href="#how-it-works">
+          <button
+            onClick={handleFeatures}
+          >
+            Features
+          </button>
+
+
+          <button
+            onClick={handleHowItWorks}
+          >
             How It Works
-          </a>
+          </button>
+
 
           <button
             className="emergency-btn"
-            onClick={() => goTo("emergency")}
+            onClick={() =>
+              goTo("emergency")
+            }
           >
             🚨 Emergency
           </button>
 
         </div>
+
+
+        {/* RIGHT SIDE */}
 
         <div className="nav-actions">
 
@@ -51,14 +101,18 @@ function Navbar({ goTo }) {
 
           <button
             className="login-btn"
-            onClick={() => goTo("login")}
+            onClick={() =>
+              goTo("login")
+            }
           >
             Login
           </button>
 
           <button
             className="register-btn"
-            onClick={() => goTo("register")}
+            onClick={() =>
+              goTo("register")
+            }
           >
             Register
           </button>

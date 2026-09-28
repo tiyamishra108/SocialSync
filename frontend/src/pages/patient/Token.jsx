@@ -4,17 +4,63 @@ import Sidebar from "../../components/Sidebar";
 import TokenCard from "../../components/TokenCard";
 
 function Token({ goTo }) {
-  const [appointment, setAppointment] =
-    useState(null);
+  const [appointments, setAppointments] =
+    useState([]);
 
   useEffect(() => {
-    const savedAppointment = JSON.parse(
-      localStorage.getItem("currentAppointment") ||
-        "null"
+    const savedAppointments = JSON.parse(
+      localStorage.getItem("appointments") || "[]"
     );
 
-    setAppointment(savedAppointment);
+    const today = new Date();
+
+    const todayString = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}-${String(
+      today.getDate()
+    ).padStart(2, "0")}`;
+
+    /*
+      Show only today's and future appointments.
+      Past appointments are not shown here.
+    */
+
+    const activeAppointments =
+      savedAppointments
+        .filter((appointment) => {
+          const isActive =
+            appointment.status === "Confirmed" ||
+            appointment.status === "Upcoming" ||
+            appointment.status === "In Progress";
+
+          const isTodayOrFuture =
+            appointment.date >= todayString;
+
+          return (
+            isActive &&
+            isTodayOrFuture
+          );
+        })
+        .sort((a, b) => {
+          /*
+            Sort appointments by date.
+            If dates are same, sort by time.
+          */
+
+          const dateA = new Date(
+            `${a.date} ${a.time || "00:00"}`
+          );
+
+          const dateB = new Date(
+            `${b.date} ${b.time || "00:00"}`
+          );
+
+          return dateA - dateB;
+        });
+
+    setAppointments(activeAppointments);
   }, []);
+
 
   return (
     <div className="dashboard-layout">
@@ -23,6 +69,7 @@ function Token({ goTo }) {
         currentPage="token"
         goTo={goTo}
       />
+
 
       <main className="dashboard-main">
 
@@ -35,34 +82,85 @@ function Token({ goTo }) {
             </span>
 
             <h1>
-              Appointment Token
+              Appointment Tokens
             </h1>
 
             <p>
-              Your appointment and queue details.
+              View your current and upcoming
+              appointment details.
             </p>
 
           </div>
 
+
           <button
             className="text-btn"
-            onClick={() => goTo("dashboard")}
+            onClick={() =>
+              goTo("dashboard")
+            }
           >
             ← Dashboard
           </button>
 
         </div>
 
+
         <div className="dashboard-section">
 
-          {appointment ? (
+          {appointments.length > 0 ? (
 
-            <TokenCard
-              appointment={appointment}
-              onTrackQueue={() =>
-                goTo("queueStatus")
-              }
-            />
+            <div className="token-appointments-list">
+
+              {appointments.map(
+                (appointment) => {
+
+                  const today =
+                    new Date();
+
+                  const todayString =
+                    `${today.getFullYear()}-${String(
+                      today.getMonth() + 1
+                    ).padStart(2, "0")}-${String(
+                      today.getDate()
+                    ).padStart(2, "0")}`;
+
+                  const isToday =
+                    appointment.date ===
+                    todayString;
+
+
+                  return (
+                    <div
+                      key={appointment.id}
+                      className="token-appointment-item"
+                    >
+
+                      <TokenCard
+                        appointment={
+                          appointment
+                        }
+
+                        /*
+                          Queue tracking is available
+                          only for today's appointment.
+                        */
+
+                        onTrackQueue={
+                          isToday
+                            ? () =>
+                                goTo(
+                                  "queueStatus"
+                                )
+                            : null
+                        }
+                      />
+
+                    </div>
+                  );
+                }
+              )}
+
+            </div>
 
           ) : (
 
@@ -73,7 +171,7 @@ function Token({ goTo }) {
               </div>
 
               <h3>
-                No active token
+                No upcoming appointments
               </h3>
 
               <p>
@@ -83,7 +181,9 @@ function Token({ goTo }) {
 
               <button
                 className="primary-btn"
-                onClick={() => goTo("doctors")}
+                onClick={() =>
+                  goTo("doctors")
+                }
               >
                 Book Appointment →
               </button>
@@ -94,7 +194,8 @@ function Token({ goTo }) {
 
         </div>
 
-        {appointment && (
+
+        {appointments.length > 0 && (
 
           <div className="token-actions">
 
