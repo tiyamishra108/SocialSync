@@ -1,25 +1,99 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Sidebar from "../../components/Sidebar";
 
 function Settings({ goTo }) {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
   );
 
-  const handleThemeChange = (newTheme) => {
-    setTheme(newTheme);
+  const [notifications, setNotifications] = useState(
+    localStorage.getItem("notifications") !== "off"
+  );
+
+  const [reminders, setReminders] = useState(
+    localStorage.getItem("appointmentReminders") !== "off"
+  );
+
+  const [queueUpdates, setQueueUpdates] = useState(
+    localStorage.getItem("queueUpdates") !== "off"
+  );
+
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle(
+      "dark-mode",
+      darkMode
+    );
 
     localStorage.setItem(
       "theme",
-      newTheme
+      darkMode ? "dark" : "light"
+    );
+  }, [darkMode]);
+
+  const handleNotifications = () => {
+    const value = !notifications;
+
+    setNotifications(value);
+
+    localStorage.setItem(
+      "notifications",
+      value ? "on" : "off"
+    );
+  };
+
+  const handleReminders = () => {
+    const value = !reminders;
+
+    setReminders(value);
+
+    localStorage.setItem(
+      "appointmentReminders",
+      value ? "on" : "off"
+    );
+  };
+
+  const handleQueueUpdates = () => {
+    const value = !queueUpdates;
+
+    setQueueUpdates(value);
+
+    localStorage.setItem(
+      "queueUpdates",
+      value ? "on" : "off"
+    );
+  };
+
+  const handleSavePreferences = () => {
+    localStorage.setItem(
+      "notifications",
+      notifications ? "on" : "off"
     );
 
-    if (newTheme === "dark") {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
+    localStorage.setItem(
+      "appointmentReminders",
+      reminders ? "on" : "off"
+    );
+
+    localStorage.setItem(
+      "queueUpdates",
+      queueUpdates ? "on" : "off"
+    );
+
+    setSaved(true);
+
+    setTimeout(() => {
+      setSaved(false);
+    }, 3000);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("currentAppointment");
+
+    goTo("home");
   };
 
   return (
@@ -36,20 +110,18 @@ function Settings({ goTo }) {
 
           <div>
             <span className="dashboard-section-label">
-              SETTINGS
+              ACCOUNT SETTINGS
             </span>
 
-            <h1>
-              Settings
-            </h1>
+            <h1>Settings</h1>
 
             <p>
-              Manage your MediQueue preferences.
+              Customize your MediQueue experience and manage
+              your account preferences.
             </p>
           </div>
 
           <button
-            type="button"
             className="text-btn"
             onClick={() => goTo("dashboard")}
           >
@@ -58,54 +130,283 @@ function Settings({ goTo }) {
 
         </div>
 
-        <div className="dashboard-section">
+        <div className="settings-page">
 
+          {/* APPEARANCE */}
           <div className="settings-card">
 
-            <div>
-              <span className="small-label">
-                APPEARANCE
-              </span>
+            <div className="settings-heading">
 
-              <h2>
-                Theme
-              </h2>
+              <div className="settings-icon">
+                🎨
+              </div>
 
-              <p>
-                Choose how MediQueue looks on your
-                device.
-              </p>
+              <div>
+                <h2>Appearance</h2>
+
+                <p>
+                  Personalize how MediQueue looks on your device.
+                </p>
+              </div>
+
             </div>
 
-            <div className="settings-theme-buttons">
+            <div className="settings-row">
+
+              <div>
+                <strong>Dark Mode</strong>
+
+                <span>
+                  Use the dark theme across the dashboard
+                  for a comfortable viewing experience.
+                </span>
+              </div>
 
               <button
-                type="button"
-                className={
-                  theme === "light"
-                    ? "primary-btn"
-                    : "secondary-btn"
-                }
+                className={`settings-toggle ${
+                  darkMode ? "on" : ""
+                }`}
                 onClick={() =>
-                  handleThemeChange("light")
+                  setDarkMode((current) => !current)
                 }
+                aria-label="Toggle dark mode"
               >
-                ☀️ Light
+                <span></span>
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* NOTIFICATIONS */}
+          <div className="settings-card">
+
+            <div className="settings-heading">
+
+              <div className="settings-icon">
+                🔔
+              </div>
+
+              <div>
+                <h2>Notifications</h2>
+
+                <p>
+                  Choose which MediQueue updates you want to receive.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="settings-row">
+
+              <div>
+                <strong>Notifications</strong>
+
+                <span>
+                  Receive important updates about appointments,
+                  tokens and your MediQueue account.
+                </span>
+              </div>
+
+              <button
+                className={`settings-toggle ${
+                  notifications ? "on" : ""
+                }`}
+                onClick={handleNotifications}
+                aria-label="Toggle notifications"
+              >
+                <span></span>
+              </button>
+
+            </div>
+
+            <div className="settings-row">
+
+              <div>
+                <strong>Appointment Reminders</strong>
+
+                <span>
+                  Get reminders before your scheduled hospital appointments.
+                </span>
+              </div>
+
+              <button
+                className={`settings-toggle ${
+                  reminders ? "on" : ""
+                }`}
+                onClick={handleReminders}
+                aria-label="Toggle appointment reminders"
+              >
+                <span></span>
+              </button>
+
+            </div>
+
+            <div className="settings-row">
+
+              <div>
+                <strong>Queue Updates</strong>
+
+                <span>
+                  Stay informed when your queue position or
+                  estimated waiting time changes.
+                </span>
+              </div>
+
+              <button
+                className={`settings-toggle ${
+                  queueUpdates ? "on" : ""
+                }`}
+                onClick={handleQueueUpdates}
+                aria-label="Toggle queue updates"
+              >
+                <span></span>
+              </button>
+
+            </div>
+
+            <div className="settings-actions">
+
+              <button
+                className="primary-btn"
+                onClick={handleSavePreferences}
+              >
+                Save Preferences →
+              </button>
+
+            </div>
+
+            {saved && (
+              <div className="profile-success-message">
+                ✓ Preferences saved successfully.
+              </div>
+            )}
+
+          </div>
+
+          {/* PRIVACY & SECURITY */}
+          <div className="settings-card">
+
+            <div className="settings-heading">
+
+              <div className="settings-icon">
+                🔐
+              </div>
+
+              <div>
+                <h2>Privacy & Security</h2>
+
+                <p>
+                  Keep your account information safe and under your control.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="settings-row">
+
+              <div>
+                <strong>Personal Information</strong>
+
+                <span>
+                  Your profile information is used to manage
+                  appointments and provide MediQueue services.
+                </span>
+              </div>
+
+              <span className="settings-status">
+                Protected
+              </span>
+
+            </div>
+
+            <div className="settings-row">
+
+              <div>
+                <strong>Account Status</strong>
+
+                <span>
+                  Your MediQueue patient account is currently active.
+                </span>
+              </div>
+
+              <span className="settings-status">
+                Active
+              </span>
+
+            </div>
+
+          </div>
+
+          {/* ACCOUNT */}
+          <div className="settings-card">
+
+            <div className="settings-heading">
+
+              <div className="settings-icon">
+                👤
+              </div>
+
+              <div>
+                <h2>Account</h2>
+
+                <p>
+                  Manage your profile and sign out of MediQueue.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="settings-actions">
+
+              <button
+                className="secondary-btn"
+                onClick={() => goTo("profile")}
+              >
+                👤 Edit Profile
               </button>
 
               <button
-                type="button"
-                className={
-                  theme === "dark"
-                    ? "primary-btn"
-                    : "secondary-btn"
-                }
-                onClick={() =>
-                  handleThemeChange("dark")
-                }
+                className="settings-danger-btn"
+                onClick={handleLogout}
               >
-                🌙 Dark
+                ↪ Logout
               </button>
+
+            </div>
+
+          </div>
+
+          {/* ABOUT */}
+          <div className="settings-card">
+
+            <div className="settings-heading">
+
+              <div className="settings-icon">
+                ℹ️
+              </div>
+
+              <div>
+                <h2>About MediQueue</h2>
+
+                <p>
+                  A simple digital hospital queue management experience.
+                </p>
+              </div>
+
+            </div>
+
+            <div className="settings-about">
+
+              <p>
+                MediQueue helps patients book appointments,
+                receive digital tokens and track hospital queues
+                without unnecessary waiting.
+              </p>
+
+              <span>
+                MediQueue • Patient Portal
+              </span>
 
             </div>
 
@@ -114,7 +415,6 @@ function Settings({ goTo }) {
         </div>
 
       </main>
-
     </div>
   );
 }

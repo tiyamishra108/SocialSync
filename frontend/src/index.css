@@ -2077,75 +2077,573 @@ body.dark-mode .doctor-department-label {
   }
 }
 
-/* =========================================================
-   MY TOKEN PAGE
-========================================================= */
-
-.token-appointments-list {
-  max-width: 1040px;
-  margin: 0 auto;
-  display: grid;
-  gap: 22px;
+/* =========================
+   HOME TOP BAR
+========================= */
+.home-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255,255,255,.94);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
 }
 
-.token-appointment-item {
-  width: 100%;
+.home-topbar-inner {
+  max-width: 1180px;
+  min-height: 68px;
+  margin: auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.token-page-content {
+.home-topbar .logo {
+  color: var(--navy);
+}
+
+.home-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-topbar-actions > span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.home-login-btn {
+  background: var(--navy);
+  color: white;
+  padding: 10px 17px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.home-login-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(.96);
+}
+
+body.dark-mode .home-topbar {
+  background: rgba(13,29,40,.92);
+  border-color: var(--border);
+}
+
+body.dark-mode .home-topbar .logo {
+  color: var(--text);
+}
+
+@media (max-width: 700px) {
+  .home-topbar-inner {
+    min-height: 65px;
+    padding: 0 15px;
+  }
+
+  .home-topbar-actions > span {
+    display: none;
+  }
+
+  .home-login-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+}
+
+/* =========================
+   PROFILE + SETTINGS
+========================= */
+
+.profile-page-grid {
   display: grid;
+  grid-template-columns: 0.75fr 1.5fr;
   gap: 18px;
 }
 
-/* Appointment Confirmed */
-
-.appointment-confirmed {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px 22px;
-  background: linear-gradient(
-    135deg,
-    var(--soft-teal),
-    var(--soft-blue)
-  );
-  border: 1px solid #CFE7E2;
-  border-radius: 16px;
+.profile-card,
+.settings-card {
+  background: rgba(255,255,255,.82);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 25px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(12px);
 }
 
-.confirmed-icon {
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
+.profile-summary-card {
+  text-align: center;
+}
+
+.profile-avatar-large {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 15px;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: #DDF5EF;
-  color: #277A70;
-  font-size: 22px;
+  background: var(--soft-blue);
+  color: var(--blue);
+  font-size: 30px;
   font-weight: 800;
 }
 
-.appointment-confirmed h2 {
+.profile-summary-card h2 {
   color: var(--navy);
-  font-size: 20px;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
-.appointment-confirmed p {
+.profile-summary-card > p {
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+
+.profile-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+
+.profile-summary-item > span {
+  font-size: 18px;
+}
+
+.profile-summary-item small,
+.profile-summary-item strong {
+  display: block;
+}
+
+.profile-summary-item small {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.profile-summary-item strong {
+  color: var(--navy);
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.profile-card-heading {
+  margin-bottom: 24px;
+}
+
+.profile-card-heading h2,
+.settings-heading h2 {
+  color: var(--navy);
+  margin: 5px 0;
+  font-size: 20px;
+}
+
+.profile-card-heading p,
+.settings-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.profile-form .input-group {
+  margin-bottom: 0;
+}
+
+.settings-page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 20px;
+}
+
+.settings-icon {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  background: var(--soft-blue);
+  border-radius: 11px;
+  font-size: 20px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 17px 0;
+  border-top: 1px solid var(--border);
+}
+
+.settings-row div strong,
+.settings-row div span {
+  display: block;
+}
+
+.settings-row strong {
+  color: var(--navy);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.settings-row span {
   color: var(--muted);
   font-size: 12px;
 }
 
-/* Token Card */
+.settings-toggle {
+  width: 48px;
+  height: 27px;
+  padding: 3px;
+  border: 0;
+  border-radius: 999px;
+  background: #cbd5e1;
+  flex-shrink: 0;
+}
 
-.token-card {
-  padding: 26px;
-  background: rgba(255,255,255,.86);
+.settings-toggle span {
+  display: block;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: white;
+  transition: transform .2s ease;
+}
+
+.settings-toggle.on {
+  background: var(--blue);
+}
+
+.settings-toggle.on span {
+  transform: translateX(21px);
+}
+
+.settings-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.settings-danger-btn {
+  padding: 11px 17px;
+  border-radius: 9px;
+  border: 1px solid rgba(220, 38, 38, .25);
+  background: rgba(220, 38, 38, .08);
+  color: #dc2626;
+  font-weight: 700;
+}
+
+body.dark-mode .profile-card,
+body.dark-mode .settings-card {
+  background: rgba(15, 35, 48, .82);
+}
+
+body.dark-mode .profile-summary-card h2,
+body.dark-mode .profile-summary-item strong,
+body.dark-mode .profile-card-heading h2,
+body.dark-mode .settings-heading h2,
+body.dark-mode .settings-row strong {
+  color: white;
+}
+
+@media (max-width: 850px) {
+  .profile-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   HOME EMERGENCY BUTTON
+========================================================= */
+
+.home-emergency-btn {
+  background: var(--emergency);
+  color: white;
+  padding: 10px 17px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: .2s ease;
+}
+
+.home-emergency-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(.96);
+}
+
+/* =========================================================
+   EMERGENCY PAGE - NO LOGIN REQUIRED
+========================================================= */
+
+.emergency-page {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.emergency-container {
+  max-width: 760px;
+  margin: auto;
+  min-height: 100vh;
+  padding: 105px 24px 75px;
+  text-align: center;
+}
+
+.emergency-back-btn {
+  position: absolute;
+  top: 28px;
+  left: 28px;
+  z-index: 5;
+  background: transparent;
+  color: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.emergency-back-btn:hover {
+  background: var(--soft-blue);
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.emergency-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(7, 20, 29, .68);
+  backdrop-filter: blur(5px);
+}
+
+.emergency-modal {
+  position: relative;
+  width: min(440px, 100%);
+  background: var(--white);
   border: 1px solid var(--border);
   border-radius: 18px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(12px);
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(0,0,0,.25);
+}
+
+.emergency-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.emergency-modal-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 15px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #FCEAEA;
+  font-size: 27px;
+}
+
+.emergency-modal-label {
+  color: var(--emergency);
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: 800;
+}
+
+.emergency-modal h2 {
+  color: var(--navy);
+  font-size: 23px;
+  margin: 9px 0 8px;
+}
+
+.emergency-modal p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.emergency-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.emergency-modal-call,
+.emergency-modal-ok {
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.emergency-modal-call {
+  background: var(--emergency);
+  color: white;
+}
+
+.emergency-modal-ok {
+  background: var(--soft-blue);
+  color: var(--navy);
+  border: 1px solid var(--border);
+}
+
+body.dark-mode .home-emergency-btn {
+  color: white;
+}
+
+body.dark-mode .emergency-back-btn {
+  background: #142A38;
+  color: #DCEAF4;
+  border-color: #315064;
+}
+
+body.dark-mode .emergency-back-btn:hover {
+  background: #19384A;
+  color: white;
+  border-color: #47718A;
+}
+
+body.dark-mode .emergency-modal {
+  background: #10222F;
+  border-color: #315064;
+}
+
+body.dark-mode .emergency-modal h2 {
+  color: #DCEAF4;
+}
+
+body.dark-mode .emergency-modal p {
+  color: #91A7B8;
+}
+
+body.dark-mode .emergency-modal-ok {
+  background: #163448;
+  color: #DCEAF4;
+  border-color: #315064;
+}
+
+@media (max-width: 700px) {
+  .home-emergency-btn {
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .emergency-back-btn {
+    top: 16px;
+    left: 16px;
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .emergency-container {
+    padding: 90px 18px 50px;
+  }
+
+  .emergency-container h1 {
+    font-size: 31px;
+  }
+
+  .emergency-modal-actions {
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   MY TOKEN PAGE — RESTORED STYLING
+========================================================= */
+
+.token-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.appointment-confirmed {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 24px 28px;
+  background: var(--soft-teal);
+  border: 1px solid rgba(42, 157, 143, .35);
+  border-radius: 16px;
+}
+
+.confirmed-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #FFFFFF;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.appointment-confirmed h2 {
+  margin: 0 0 5px;
+  color: var(--navy);
+  font-size: 21px;
+}
+
+.appointment-confirmed p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.token-card {
+  padding: 30px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #15577A, #1D6D92);
+  color: #FFFFFF;
+  box-shadow: 0 14px 35px rgba(22, 50, 79, .12);
 }
 
 .token-card-header {
@@ -2155,289 +2653,933 @@ body.dark-mode .doctor-department-label {
   gap: 15px;
 }
 
-.token-card-header .small-label {
-  margin-bottom: 0;
+.token-card .small-label {
+  color: #C7F4EC;
+}
+
+.token-card .live-badge {
+  color: #56E0C8;
+  background: rgba(42, 157, 143, .18);
+  border: 1px solid rgba(86, 224, 200, .3);
 }
 
 .token-number {
-  margin: 15px 0 20px;
-  color: var(--navy);
-  font-size: 48px;
+  margin: 18px 0 28px;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: clamp(52px, 8vw, 78px);
   line-height: 1;
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: 2px;
 }
 
 .token-details {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 
 .token-details > div {
-  padding: 15px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  min-height: 92px;
+  padding: 17px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  background: rgba(255, 255, 255, .10);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
 }
 
 .token-details span {
-  display: block;
-  color: var(--muted);
-  font-size: 10px;
-  margin-bottom: 4px;
+  margin-bottom: 7px;
+  color: rgba(255,255,255,.78);
+  font-size: 12px;
 }
 
 .token-details strong {
-  display: block;
-  color: var(--navy);
-  font-size: 17px;
+  color: #FFFFFF;
+  font-size: 21px;
 }
 
-/* Appointment Details */
-
-.appointment-confirmation-card {
-  padding: 24px;
-  background: rgba(255,255,255,.86);
+.appointment-confirmation-card,
+.precautions-card {
+  padding: 26px 28px;
+  background: var(--white);
   border: 1px solid var(--border);
-  border-radius: 17px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .confirmation-heading {
-  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
 }
 
-.confirmation-heading h3 {
+.confirmation-heading h3,
+.precautions-heading h3 {
+  margin: 0 0 5px;
   color: var(--navy);
-  font-size: 19px;
-  margin-bottom: 3px;
+  font-size: 20px;
 }
 
-.confirmation-heading p {
+.confirmation-heading p,
+.precautions-header p {
+  margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .confirmation-details {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 0;
 }
 
 .confirmation-detail {
-  padding: 14px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 11px;
+  padding: 17px 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-bottom: 1px solid var(--border);
+}
+
+.confirmation-detail:nth-last-child(-n+2) {
+  border-bottom: 0;
 }
 
 .confirmation-detail span {
-  display: block;
   color: var(--muted);
-  font-size: 10px;
-  margin-bottom: 4px;
+  font-size: 12px;
 }
 
 .confirmation-detail strong {
-  display: block;
-  color: var(--navy);
-  font-size: 12px;
-  word-break: break-word;
-}
-
-/* Before Your Visit */
-
-.precautions-card {
-  padding: 24px;
-  background: linear-gradient(
-    135deg,
-    rgba(255,255,255,.92),
-    var(--soft-blue)
-  );
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  font-size: 14px;
 }
 
 .precautions-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .precautions-icon {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
   display: grid;
   place-items: center;
-  border-radius: 11px;
-  background: #FFF4D6;
-  font-size: 19px;
+  border-radius: 12px;
+  background: #FFF4DD;
+  font-size: 21px;
 }
 
 .precautions-header h3 {
+  margin: 0 0 4px;
   color: var(--navy);
-  font-size: 18px;
-}
-
-.precautions-header p {
-  color: var(--muted);
-  font-size: 11px;
+  font-size: 19px;
 }
 
 .precautions-list {
-  display: grid;
-  gap: 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .precaution-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 11px 13px;
-  background: rgba(255,255,255,.65);
+  gap: 11px;
+  padding: 12px 14px;
+  background: var(--soft-blue);
   border: 1px solid var(--border);
   border-radius: 10px;
 }
 
 .precaution-check {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
   display: grid;
   place-items: center;
   border-radius: 50%;
   background: var(--soft-teal);
-  color: #277A70;
-  font-size: 11px;
+  color: var(--teal);
+  font-size: 12px;
   font-weight: 800;
 }
 
 .precaution-item p {
+  margin: 1px 0 0;
   color: var(--text);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
-/* Token Page Buttons */
-
-.token-actions {
-  max-width: 1040px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+.token-page-content > .primary-btn {
+  align-self: flex-start;
 }
 
-.token-actions button {
-  min-height: 42px;
+/* Dark mode */
+body.dark-mode .appointment-confirmed {
+  background: #102F32;
+  border-color: #245B58;
 }
 
-/* Empty Token Page */
-
-.empty-card {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 42px;
-  text-align: center;
-  background: rgba(255,255,255,.86);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  box-shadow: var(--shadow);
+body.dark-mode .appointment-confirmed h2 {
+  color: #DCEAF4;
 }
 
-.empty-icon {
-  font-size: 38px;
-  margin-bottom: 12px;
+body.dark-mode .appointment-confirmed p {
+  color: #91A7B8;
 }
 
-.empty-card h3 {
-  color: var(--navy);
-  margin-bottom: 5px;
-}
-
-.empty-card p {
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-/* Dark Mode */
-
-body.dark-mode .appointment-confirmed,
-body.dark-mode .token-card,
 body.dark-mode .appointment-confirmation-card,
-body.dark-mode .precautions-card,
-body.dark-mode .empty-card {
-  background: rgba(20,37,50,.88);
-  border-color: var(--border);
+body.dark-mode .precautions-card {
+  background: #10222F;
+  border-color: #315064;
 }
 
-body.dark-mode .confirmation-detail,
-body.dark-mode .token-details > div,
+body.dark-mode .confirmation-heading,
+body.dark-mode .confirmation-detail {
+  border-color: #294557;
+}
+
+body.dark-mode .confirmation-heading h3,
+body.dark-mode .precautions-header h3 {
+  color: #DCEAF4;
+}
+
+body.dark-mode .confirmation-heading p,
+body.dark-mode .confirmation-detail span,
+body.dark-mode .precautions-header p {
+  color: #91A7B8;
+}
+
+body.dark-mode .confirmation-detail strong,
+body.dark-mode .precaution-item p {
+  color: #DCEAF4;
+}
+
 body.dark-mode .precaution-item {
-  background: #10222E;
-  border-color: var(--border);
-}
-
-body.dark-mode .confirmed-icon {
-  background: #173D3A;
+  background: #142A38;
+  border-color: #315064;
 }
 
 body.dark-mode .precautions-icon {
-  background: #3A3420;
+  background: #3A3020;
 }
 
-/* Responsive */
-
 @media (max-width: 700px) {
-
-  .token-card,
-  .appointment-confirmation-card,
-  .precautions-card {
+  .appointment-confirmed {
+    align-items: flex-start;
     padding: 20px;
   }
 
-  .token-number {
-    font-size: 40px;
+  .token-card {
+    padding: 22px 18px;
   }
 
   .token-details {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .confirmation-details {
     grid-template-columns: 1fr;
   }
 
-  .token-actions {
-    flex-direction: column;
+  .confirmation-detail:nth-last-child(-n+2) {
+    border-bottom: 1px solid var(--border);
   }
 
-  .token-actions button {
-    width: 100%;
+  .confirmation-detail:last-child {
+    border-bottom: 0;
+  }
+
+  .appointment-confirmation-card,
+  .precautions-card {
+    padding: 21px 18px;
   }
 }
 
-@media (max-width: 430px) {
+/* =========================================================
+   MEDICAL INFORMATION — PROFILE
+========================================================= */
 
-  .token-details {
-    grid-template-columns: 1fr;
-  }
+.medical-information-card {
+  margin-top: 22px;
+  width: 100%;
+}
 
-  .appointment-confirmed {
-    align-items: flex-start;
-  }
+.medical-information-card .profile-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
 
-  .token-number {
-    font-size: 36px;
-  }
+.medical-information-card .profile-card-heading > div:first-child {
+  flex: 1;
+}
 
-  .empty-card {
-    padding: 30px 20px;
-  }
+.medical-info-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+/* Medical form */
+
+.medical-information-form {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.medical-information-form .input-group {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.medical-information-form .input-group label {
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+/* Main textarea */
+
+.medical-information-form textarea {
+  display: block;
+  width: 100% !important;
+  min-width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--white);
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+
+  outline: none;
+
+  transition: border-color .2s ease,
+              box-shadow .2s ease;
+}
+
+.medical-information-form textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(40, 120, 168, .10);
+}
+
+.medical-information-form textarea::placeholder {
+  color: var(--muted);
+  white-space: pre-line;
+}
+
+/* Helper text */
+
+.medical-input-help {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Information note */
+
+.medical-information-note {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 18px;
+  padding: 14px 16px;
+
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.medical-information-note span {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.medical-information-note p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Save button */
+
+.medical-save-btn {
+  margin-top: 18px;
+}
+
+/* Success message */
+
+.profile-success-message {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 14px;
+  padding: 11px 14px;
+
+  border-radius: 9px;
+
+  background: var(--soft-teal);
+  color: var(--teal);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MEDICAL INFORMATION — DARK MODE
+========================================================= */
+
+body.dark-mode .medical-information-form textarea {
+  background: #10222F;
+  color: #DCEAF4;
+  border-color: #385466;
+}
+
+body.dark-mode .medical-information-form textarea::placeholder {
+  color: #71899A;
+}
+
+body.dark-mode .medical-information-form textarea:focus {
+  border-color: #63B6E8;
+  box-shadow: 0 0 0 3px rgba(99, 182, 232, .12);
+}
+
+body.dark-mode .medical-information-note {
+  background: #102A38;
+  border-color: #294252;
+}
+
+body.dark-mode .medical-information-note p {
+  color: #91A7B8;
+}
+
+body.dark-mode .medical-info-icon {
+  background: #163448;
+  border-color: #294252;
+}
+
+body.dark-mode .profile-success-message {
+  background: #143A38;
+  color: #55C7B8;
+}
+
+/* =========================================================
+   MEDICAL INFORMATION — PROFILE
+========================================================= */
+
+.medical-information-card {
+  margin-top: 22px;
+  width: 100%;
+}
+
+.medical-information-card .profile-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.medical-information-card .profile-card-heading > div:first-child {
+  flex: 1;
+}
+
+.medical-info-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+/* Medical form */
+
+.medical-information-form {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.medical-information-form .input-group {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.medical-information-form .input-group label {
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+/* Main textarea */
+
+.medical-information-form textarea {
+  display: block;
+  width: 100% !important;
+  min-width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--white);
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+
+  outline: none;
+
+  transition: border-color .2s ease,
+              box-shadow .2s ease;
+}
+
+.medical-information-form textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(40, 120, 168, .10);
+}
+
+.medical-information-form textarea::placeholder {
+  color: var(--muted);
+  white-space: pre-line;
+}
+
+/* Helper text */
+
+.medical-input-help {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Information note */
+
+.medical-information-note {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 18px;
+  padding: 14px 16px;
+
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.medical-information-note span {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.medical-information-note p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Save button */
+
+.medical-save-btn {
+  margin-top: 18px;
+}
+
+/* Success message */
+
+.profile-success-message {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 14px;
+  padding: 11px 14px;
+
+  border-radius: 9px;
+
+  background: var(--soft-teal);
+  color: var(--teal);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MEDICAL INFORMATION — DARK MODE
+========================================================= */
+
+body.dark-mode .medical-information-form textarea {
+  background: #10222F;
+  color: #DCEAF4;
+  border-color: #385466;
+}
+
+body.dark-mode .medical-information-form textarea::placeholder {
+  color: #71899A;
+}
+
+body.dark-mode .medical-information-form textarea:focus {
+  border-color: #63B6E8;
+  box-shadow: 0 0 0 3px rgba(99, 182, 232, .12);
+}
+
+body.dark-mode .medical-information-note {
+  background: #102A38;
+  border-color: #294252;
+}
+
+body.dark-mode .medical-information-note p {
+  color: #91A7B8;
+}
+
+body.dark-mode .medical-info-icon {
+  background: #163448;
+  border-color: #294252;
+}
+
+body.dark-mode .profile-success-message {
+  background: #143A38;
+  color: #55C7B8;
+}
+
+/* =========================================================
+   MEDICAL INFORMATION — PROFILE
+========================================================= */
+
+.medical-information-card {
+  margin-top: 22px;
+  width: 100%;
+}
+
+.medical-information-card .profile-card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.medical-information-card .profile-card-heading > div:first-child {
+  flex: 1;
+}
+
+.medical-info-icon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+/* Medical form */
+
+.medical-information-form {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.medical-information-form .input-group {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.medical-information-form .input-group label {
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+}
+
+/* Main textarea */
+
+.medical-information-form textarea {
+  display: block;
+  width: 100% !important;
+  min-width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+
+  resize: vertical;
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--white);
+  color: var(--text);
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+
+  outline: none;
+
+  transition: border-color .2s ease,
+              box-shadow .2s ease;
+}
+
+.medical-information-form textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(40, 120, 168, .10);
+}
+
+.medical-information-form textarea::placeholder {
+  color: var(--muted);
+  white-space: pre-line;
+}
+
+/* Helper text */
+
+.medical-input-help {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Information note */
+
+.medical-information-note {
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  margin-top: 18px;
+  padding: 14px 16px;
+
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.medical-information-note span {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.medical-information-note p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Save button */
+
+.medical-save-btn {
+  margin-top: 18px;
+}
+
+/* Success message */
+
+.profile-success-message {
+  width: 100%;
+  box-sizing: border-box;
+
+  margin-top: 14px;
+  padding: 11px 14px;
+
+  border-radius: 9px;
+
+  background: var(--soft-teal);
+  color: var(--teal);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MEDICAL INFORMATION — DARK MODE
+========================================================= */
+
+body.dark-mode .medical-information-form textarea {
+  background: #10222F;
+  color: #DCEAF4;
+  border-color: #385466;
+}
+
+body.dark-mode .medical-information-form textarea::placeholder {
+  color: #71899A;
+}
+
+body.dark-mode .medical-information-form textarea:focus {
+  border-color: #63B6E8;
+  box-shadow: 0 0 0 3px rgba(99, 182, 232, .12);
+}
+
+body.dark-mode .medical-information-note {
+  background: #102A38;
+  border-color: #294252;
+}
+
+body.dark-mode .medical-information-note p {
+  color: #91A7B8;
+}
+
+body.dark-mode .medical-info-icon {
+  background: #163448;
+  border-color: #294252;
+}
+
+body.dark-mode .profile-success-message {
+  background: #143A38;
+  color: #55C7B8;
+}
+
+.medical-information-card {
+  margin-top: 22px;
+}
+
+.medical-information-form textarea {
+  display: block;
+  width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+  resize: vertical;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: none;
+}
+
+.medical-information-form textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(40,120,168,.10);
+}
+
+.medical-input-help {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.medical-information-note {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--soft-blue);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.medical-information-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.medical-save-btn {
+  margin-top: 18px;
+}
+
+body.dark-mode .medical-information-form textarea {
+  background: #10222F;
+  color: #DCEAF4;
+}
+
+/* Back to Dashboard button */
+.text-btn {
+  background: var(--soft-blue);
+  color: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.text-btn:hover {
+  background: var(--blue);
+  color: white;
+  border-color: var(--blue);
+  transform: translateY(-1px);
+}
+
+/* Dark mode */
+body.dark-mode .text-btn {
+  background: #163448;
+  color: #DCEAF4;
+  border-color: #315064;
+}
+
+body.dark-mode .text-btn:hover {
+  background: #2878A8;
+  color: white;
+  border-color: #2878A8;
 }

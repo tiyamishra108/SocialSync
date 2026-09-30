@@ -1,27 +1,19 @@
 function Sidebar({ currentPage, goTo }) {
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("currentAppointment");
-
-    goTo("home");
-  };
-
   return (
     <aside className="sidebar">
 
+      {/* Logo */}
       <div className="sidebar-logo">
         <div className="logo-icon">+</div>
         <span>MediQueue</span>
       </div>
 
+      {/* Menu */}
       <div className="sidebar-menu">
 
         <button
           className={`sidebar-item ${
-            currentPage === "dashboard"
-              ? "active"
-              : ""
+            currentPage === "dashboard" ? "active" : ""
           }`}
           onClick={() => goTo("dashboard")}
         >
@@ -31,9 +23,7 @@ function Sidebar({ currentPage, goTo }) {
 
         <button
           className={`sidebar-item ${
-            currentPage === "doctors"
-              ? "active"
-              : ""
+            currentPage === "doctors" ? "active" : ""
           }`}
           onClick={() => goTo("doctors")}
         >
@@ -43,9 +33,7 @@ function Sidebar({ currentPage, goTo }) {
 
         <button
           className={`sidebar-item ${
-            currentPage === "appointments"
-              ? "active"
-              : ""
+            currentPage === "appointments" ? "active" : ""
           }`}
           onClick={() => goTo("appointments")}
         >
@@ -55,9 +43,7 @@ function Sidebar({ currentPage, goTo }) {
 
         <button
           className={`sidebar-item ${
-            currentPage === "token"
-              ? "active"
-              : ""
+            currentPage === "token" ? "active" : ""
           }`}
           onClick={() => goTo("token")}
         >
@@ -67,9 +53,7 @@ function Sidebar({ currentPage, goTo }) {
 
         <button
           className={`sidebar-item ${
-            currentPage === "queueStatus"
-              ? "active"
-              : ""
+            currentPage === "queueStatus" ? "active" : ""
           }`}
           onClick={() => goTo("queueStatus")}
         >
@@ -81,9 +65,7 @@ function Sidebar({ currentPage, goTo }) {
 
         <button
           className={`sidebar-item ${
-            currentPage === "profile"
-              ? "active"
-              : ""
+            currentPage === "profile" ? "active" : ""
           }`}
           onClick={() => goTo("profile")}
         >
@@ -92,12 +74,10 @@ function Sidebar({ currentPage, goTo }) {
         </button>
 
         <button
-          className="sidebar-item"
-          onClick={() =>
-            alert(
-              "Settings will be available in the next version."
-            )
-          }
+          className={`sidebar-item ${
+            currentPage === "settings" ? "active" : ""
+          }`}
+          onClick={() => goTo("settings")}
         >
           <span>⚙️</span>
           Settings
@@ -105,6 +85,7 @@ function Sidebar({ currentPage, goTo }) {
 
       </div>
 
+      {/* Bottom Emergency */}
       <div className="sidebar-bottom">
 
         <button
@@ -112,13 +93,6 @@ function Sidebar({ currentPage, goTo }) {
           onClick={() => goTo("emergency")}
         >
           🚨 Emergency
-        </button>
-
-        <button
-          className="sidebar-logout"
-          onClick={handleLogout}
-        >
-          ↪ Logout
         </button>
 
       </div>

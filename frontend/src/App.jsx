@@ -4,10 +4,14 @@ import BookAppointment from "./pages/patient/BookAppointment";
 import MyAppointments from "./pages/patient/MyAppointments";
 import QueueStatus from "./pages/patient/QueueStatus";
 import Token from "./pages/patient/Token";
+
 import Navbar from "./components/Navbar";
 import ThemeToggle from "./components/ThemeToggle";
 
 import doctors from "./data/doctors";
+
+import Profile from "./pages/patient/Profile";
+import Settings from "./pages/patient/Settings";
 
 import "./index.css";
 
@@ -49,17 +53,15 @@ function App() {
   }
 
 
+  if (page === "token") {
+    return <Token goTo={goTo} />;
+  }
+
+
   if (page === "queueStatus") {
     return <QueueStatus goTo={goTo} />;
   }
 
-  if (page === "token") {
-  return (
-    <Token
-      goTo={goTo}
-    />
-  );
-}
 
   if (page === "doctors") {
 
@@ -89,6 +91,13 @@ function App() {
     return <Emergency goTo={goTo} />;
   }
 
+if (page === "profile") {
+  return <Profile goTo={goTo} />;
+}
+
+if (page === "settings") {
+  return <Settings goTo={goTo} />;
+}
 
   return (
     <Home
@@ -146,11 +155,34 @@ function Home({
   return (
     <>
 
-      <Navbar
-        goTo={goTo}
-        onFeatures={handleFeatures}
-        onHowItWorks={handleHowItWorks}
-      />
+      <div className="home-topbar">
+
+        <div className="home-topbar-inner">
+
+          <div
+            className="logo"
+            onClick={() => goTo("home")}
+          >
+            <div className="logo-icon">+</div>
+            <span>MediQueue</span>
+          </div>
+
+          <div className="home-topbar-actions">
+
+            <ThemeToggle />
+
+            <button
+              className="home-emergency-btn"
+              onClick={() => goTo("emergency")}
+            >
+              🚨 Emergency
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
 
 
       <main>
@@ -252,7 +284,7 @@ function Home({
 
                 <button
                   onClick={() =>
-                    goTo("doctors")
+                    goTo("login")
                   }
                 >
                   View all →
@@ -299,17 +331,9 @@ function Home({
 
                     <button
                       className="mini-book-btn"
-                      onClick={() => {
-
-                        setSelectedDoctor(
-                          doctor
-                        );
-
-                        goTo(
-                          "bookAppointment"
-                        );
-
-                      }}
+                      onClick={() =>
+                        goTo("login")
+                      }
                     >
                       Book
                     </button>
@@ -1292,9 +1316,16 @@ function Dashboard({ goTo }) {
 
 
   /* =========================
-     YOUR QUEUE APPOINTMENT
-     
-     ALWAYS EARLIEST UPCOMING
+     YOUR QUEUE + NEXT APPOINTMENTS
+
+     The earliest upcoming appointment
+     is always YOUR QUEUE.
+
+     The next 2 appointments after it
+     are shown in NEXT APPOINTMENT.
+
+     This prevents the same appointment
+     from appearing in both sections.
   ========================= */
 
   const queueAppointment =
@@ -1303,32 +1334,14 @@ function Dashboard({ goTo }) {
       : null;
 
 
-  /* =========================
-     NEXT APPOINTMENTS
-     
-     NEXT 2 AFTER YOUR QUEUE
-  ========================= */
-
   const nextAppointments =
     upcomingAppointments.slice(1, 3);
 
 
-  /* =========================
-     TODAY'S APPOINTMENT
-     
-     ONLY TODAY
-     
-     Used for LIVE QUEUE.
-  ========================= */
-
-  const todayAppointments =
-    activeAppointments.filter(
-      (item) =>
-        item.date === today
-    );
-
-
-
+  const nextAppointment =
+    nextAppointments.length > 0
+      ? nextAppointments[0]
+      : null;
 
 
   /* =========================
@@ -1368,28 +1381,6 @@ function Dashboard({ goTo }) {
   ];
 
 
-  /* =========================
-     LOGOUT
-  ========================= */
-
-  const handleLogout = () => {
-
-    localStorage.removeItem(
-      "isLoggedIn"
-    );
-
-    localStorage.removeItem(
-      "currentUser"
-    );
-
-    localStorage.removeItem(
-      "currentAppointment"
-    );
-
-    goTo("home");
-
-  };
-
 
   return (
 
@@ -1414,131 +1405,83 @@ function Dashboard({ goTo }) {
 
         </div>
 
-
         <div className="sidebar-menu">
 
           <button
             className="sidebar-item active"
+            title="Dashboard"
           >
-            <span>
-              ▦
-            </span>
-
-            Dashboard
+            <span>▦</span>
+            <span className="sidebar-label">Dashboard</span>
           </button>
-
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              goTo("doctors")
-            }
+            onClick={() => goTo("doctors")}
+            title="Doctors"
           >
-            <span>
-              🩺
-            </span>
-
-            Doctors
+            <span>🩺</span>
+            <span className="sidebar-label">Doctors</span>
           </button>
-
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              goTo("appointments")
-            }
+            onClick={() => goTo("appointments")}
+            title="Appointments"
           >
-            <span>
-              📅
-            </span>
-
-            Appointments
+            <span>📅</span>
+            <span className="sidebar-label">Appointments</span>
           </button>
-
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              goTo("token")
-            }
+            onClick={() => goTo("token")}
+            title="My Token"
           >
-            <span>
-              🎟️
-            </span>
-
-            My Token
+            <span>🎟️</span>
+            <span className="sidebar-label">My Token</span>
           </button>
-
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              goTo("queueStatus")
-            }
+            onClick={() => goTo("queueStatus")}
+            title="Queue Status"
           >
-            <span>
-              📍
-            </span>
-
-            Queue Status
+            <span>📍</span>
+            <span className="sidebar-label">Queue Status</span>
           </button>
 
-
-          <div className="sidebar-divider">
-          </div>
-
+          <div className="sidebar-divider"></div>
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              alert(
-                "Profile will be available in the next version."
-              )
-            }
+            onClick={() => goTo("profile")}
+            title="Profile"
           >
-            <span>
-              👤
-            </span>
-
-            Profile
+            <span>👤</span>
+            <span className="sidebar-label">Profile</span>
           </button>
-
 
           <button
             className="sidebar-item"
-            onClick={() =>
-              alert(
-                "Settings will be available in the next version."
-              )
-            }
+            onClick={() => goTo("settings")}
+            title="Settings"
           >
-            <span>
-              ⚙️
-            </span>
-
-            Settings
+            <span>⚙️</span>
+            <span className="sidebar-label">Settings</span>
           </button>
 
         </div>
-
 
         <div className="sidebar-bottom">
 
           <button
             className="sidebar-emergency"
-            onClick={() =>
-              goTo("emergency")
-            }
+            onClick={() => goTo("emergency")}
+            title="Emergency"
           >
-            🚨 Emergency
-          </button>
-
-
-          <button
-            className="sidebar-logout"
-            onClick={handleLogout}
-          >
-            ↪ Logout
+            <span>🚨</span>
+            <span className="sidebar-label">Emergency</span>
           </button>
 
         </div>
@@ -1873,9 +1816,11 @@ function Dashboard({ goTo }) {
 
 
                 <h2>
+
                   {nextAppointments.length > 0
-                    ? "Next Appointments"
+                    ? nextAppointments[0].time
                     : "No booking"}
+
                 </h2>
 
               </div>
@@ -1897,16 +1842,12 @@ function Dashboard({ goTo }) {
 
                     <div
                       className="next-doctor"
-                      key={
-                        appointment.id ||
-                        `${appointment.doctorName}-${appointment.date}-${appointment.time}`
-                      }
+                      key={appointment.id}
                     >
 
                       <div className="doctor-small-avatar">
                         👨‍⚕️
                       </div>
-
 
                       <div>
 
@@ -1914,11 +1855,9 @@ function Dashboard({ goTo }) {
                           {appointment.doctorName}
                         </h3>
 
-
                         <p>
                           {appointment.specialty}
                         </p>
-
 
                         <span>
                           {appointment.date} • {appointment.time}
@@ -2157,12 +2096,18 @@ function DashboardStat({
 
 function Emergency({ goTo }) {
 
+  const [showMessage, setShowMessage] = useState(false);
+
   return (
 
     <div className="emergency-page">
 
-      <Navbar goTo={goTo} />
-
+      <button
+        className="emergency-back-btn"
+        onClick={() => goTo("home")}
+      >
+        ← Back to Home
+      </button>
 
       <div className="emergency-container">
 
@@ -2170,56 +2115,44 @@ function Emergency({ goTo }) {
           🚨
         </div>
 
-
         <span className="emergency-label">
           EMERGENCY ASSISTANCE
         </span>
 
-
         <h1>
           Need urgent medical attention?
         </h1>
-
 
         <p>
           If you are experiencing a genuine medical
           emergency, seek immediate professional help.
         </p>
 
-
         <div className="emergency-actions">
 
           <button
             className="emergency-main-btn"
-            onClick={() =>
-              alert(
-                "Emergency request received. Please contact emergency medical services immediately."
-              )
-            }
+            onClick={() => setShowMessage(true)}
           >
-            🚨 Request Emergency Token
+            🚨 Request Emergency Assistance
           </button>
-
 
           <button
             className="secondary-btn"
             onClick={() => {
-              window.location.href =
-                "tel:112";
+              window.location.href = "tel:112";
             }}
           >
-            📞 Emergency Contact
+            📞 Call Emergency Services
           </button>
 
         </div>
-
 
         <div className="emergency-note">
 
           <strong>
             Important
           </strong>
-
 
           <p>
             MediQueue is a queue management prototype.
@@ -2230,6 +2163,68 @@ function Emergency({ goTo }) {
         </div>
 
       </div>
+
+      {showMessage && (
+
+        <div
+          className="emergency-modal-overlay"
+          onClick={() => setShowMessage(false)}
+        >
+
+          <div
+            className="emergency-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            <button
+              className="emergency-modal-close"
+              onClick={() => setShowMessage(false)}
+            >
+              ×
+            </button>
+
+            <div className="emergency-modal-icon">
+              🚨
+            </div>
+
+            <span className="emergency-modal-label">
+              EMERGENCY REQUEST
+            </span>
+
+            <h2>
+              Emergency assistance requested
+            </h2>
+
+            <p>
+              Please contact emergency medical services
+              immediately if you need urgent help.
+            </p>
+
+            <div className="emergency-modal-actions">
+
+              <button
+                className="emergency-modal-call"
+                onClick={() => {
+                  window.location.href = "tel:112";
+                }}
+              >
+                📞 Call 112
+              </button>
+
+              <button
+                className="emergency-modal-ok"
+                onClick={() => setShowMessage(false)}
+              >
+                Okay
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
 
@@ -2295,7 +2290,7 @@ function Footer({ goTo }) {
 
             <button
               onClick={() =>
-                goTo("doctors")
+                goTo("login")
               }
             >
               Doctors

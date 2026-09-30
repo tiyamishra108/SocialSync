@@ -7,39 +7,99 @@ import AppointmentCard from "../../components/AppointmentCard";
 
 function PatientDashboard({ goTo }) {
   const [appointments, setAppointments] = useState([]);
-  const [currentAppointment, setCurrentAppointment] = useState(null);
+  const [currentAppointment, setCurrentAppointment] =
+    useState(null);
+
+  const getToday = () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+
+    const month = String(
+      today.getMonth() + 1
+    ).padStart(2, "0");
+
+    const day = String(
+      today.getDate()
+    ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
 
   const loadAppointments = () => {
     const savedAppointments = JSON.parse(
       localStorage.getItem("appointments") || "[]"
     );
 
-    const activeAppointments = savedAppointments.filter(
-      (appointment) => appointment.status !== "Cancelled"
-    );
+    const activeAppointments =
+      savedAppointments.filter(
+        (appointment) =>
+          appointment.status !== "Cancelled"
+      );
 
     setAppointments(savedAppointments);
 
+    const today = getToday();
+
+    // Sort active appointments by date and time
+    const sortedAppointments = [
+      ...activeAppointments,
+    ].sort((a, b) => {
+      const dateA = new Date(
+        `${a.date} ${a.time || "00:00"}`
+      );
+
+      const dateB = new Date(
+        `${b.date} ${b.time || "00:00"}`
+      );
+
+      return dateA - dateB;
+    });
+
+    // First priority: today's appointment
+    const todayAppointment =
+      sortedAppointments.find(
+        (appointment) =>
+          appointment.date === today
+      );
+
+    // If no appointment today,
+    // use the nearest future appointment
+    const nextAppointment =
+      sortedAppointments.find(
+        (appointment) =>
+          appointment.date >= today
+      );
+
+    const queueAppointment =
+      todayAppointment || nextAppointment || null;
+
     const savedCurrent = JSON.parse(
-      localStorage.getItem("currentAppointment") || "null"
+      localStorage.getItem("currentAppointment") ||
+        "null"
     );
 
+    // Keep saved current appointment only if
+    // it is still active and is the queue appointment
     if (
       savedCurrent &&
-      savedCurrent.status !== "Cancelled"
+      savedCurrent.status !== "Cancelled" &&
+      queueAppointment &&
+      savedCurrent.id === queueAppointment.id
     ) {
       setCurrentAppointment(savedCurrent);
-    } else if (activeAppointments.length > 0) {
-      const latest = activeAppointments[activeAppointments.length - 1];
-
-      setCurrentAppointment(latest);
+    } else if (queueAppointment) {
+      setCurrentAppointment(queueAppointment);
 
       localStorage.setItem(
         "currentAppointment",
-        JSON.stringify(latest)
+        JSON.stringify(queueAppointment)
       );
     } else {
       setCurrentAppointment(null);
+      localStorage.removeItem(
+        "currentAppointment"
+      );
     }
   };
 
@@ -48,12 +108,56 @@ function PatientDashboard({ goTo }) {
   }, []);
 
   const activeAppointments = appointments.filter(
-    (appointment) => appointment.status !== "Cancelled"
+    (appointment) =>
+      appointment.status !== "Cancelled"
   );
+
+  const today = getToday();
+
+  // Today's appointment first.
+  // If there is no appointment today,
+  // earliest future appointment becomes queue.
+  const sortedActiveAppointments = [
+    ...activeAppointments,
+  ].sort((a, b) => {
+    const dateA = new Date(
+      `${a.date} ${a.time || "00:00"}`
+    );
+
+    const dateB = new Date(
+      `${b.date} ${b.time || "00:00"}`
+    );
+
+    return dateA - dateB;
+  });
+
+  const queueAppointment =
+    sortedActiveAppointments.find(
+      (appointment) =>
+        appointment.date === today
+    ) ||
+    sortedActiveAppointments.find(
+      (appointment) =>
+        appointment.date >= today
+    ) ||
+    null;
+
+  // Next appointments should NOT include
+  // the appointment already shown in Your Queue.
+  const nextAppointments =
+    sortedActiveAppointments
+      .filter(
+        (appointment) =>
+          appointment.id !==
+          queueAppointment?.id &&
+          appointment.date >= today
+      )
+      .slice(0, 2);
 
   const cancelledAppointments = appointments
     .filter(
-      (appointment) => appointment.status === "Cancelled"
+      (appointment) =>
+        appointment.status === "Cancelled"
     )
     .slice(-2)
     .reverse();
@@ -75,15 +179,15 @@ function PatientDashboard({ goTo }) {
   };
 
   const handleCancel = (appointment) => {
-    const updatedAppointments = appointments.map(
-      (item) =>
+    const updatedAppointments =
+      appointments.map((item) =>
         item.id === appointment.id
           ? {
               ...item,
               status: "Cancelled",
             }
           : item
-    );
+      );
 
     localStorage.setItem(
       "appointments",
@@ -94,11 +198,19 @@ function PatientDashboard({ goTo }) {
       currentAppointment &&
       currentAppointment.id === appointment.id
     ) {
-      localStorage.removeItem("currentAppointment");
+      localStorage.removeItem(
+        "currentAppointment"
+      );
+
       setCurrentAppointment(null);
     }
 
     setAppointments(updatedAppointments);
+
+    // Refresh dashboard queue selection
+    setTimeout(() => {
+      loadAppointments();
+    }, 0);
   };
 
   const user = JSON.parse(
@@ -117,10 +229,8 @@ function PatientDashboard({ goTo }) {
       <main className="dashboard-main">
 
         {/* DASHBOARD HEADER */}
-
         <div className="dashboard-top">
           <div className="dashboard-welcome">
-
             <div>
               <span className="dashboard-section-label">
                 PATIENT DASHBOARD
@@ -142,14 +252,11 @@ function PatientDashboard({ goTo }) {
             >
               + Book Appointment
             </button>
-
           </div>
         </div>
 
         {/* STATS */}
-
         <div className="dashboard-stats">
-
           <StatCard
             icon="📅"
             title="Appointments"
@@ -168,7 +275,8 @@ function PatientDashboard({ goTo }) {
             icon="⏱️"
             title="Estimated Wait"
             value={
-              currentAppointment?.estimatedWait || "—"
+              currentAppointment?.estimatedWait ||
+              "—"
             }
           />
 
@@ -179,22 +287,20 @@ function PatientDashboard({ goTo }) {
               currentAppointment?.doctorName || "—"
             }
           />
-
         </div>
 
         {/* QUEUE + NEXT APPOINTMENT */}
-
         <div className="dashboard-grid">
 
+          {/* YOUR QUEUE */}
           <QueueCard
             appointment={currentAppointment}
             goTo={goTo}
           />
 
+          {/* NEXT APPOINTMENT */}
           <div className="next-appointment-card">
-
             <div className="card-header">
-
               <div>
                 <span className="small-label">
                   NEXT APPOINTMENT
@@ -204,56 +310,58 @@ function PatientDashboard({ goTo }) {
                   Upcoming Visit
                 </h2>
               </div>
-
             </div>
 
-            {currentAppointment ? (
+            {nextAppointments.length > 0 ? (
+              <div className="next-appointments-list">
 
-              <div className="next-appointment-content">
+                {nextAppointments.map(
+                  (appointment) => (
+                    <div
+                      className="next-appointment-content"
+                      key={appointment.id}
+                    >
+                      <div className="appointment-doctor-avatar">
+                        👨‍⚕️
+                      </div>
 
-                <div className="appointment-doctor-avatar">
-                  👨‍⚕️
-                </div>
+                      <h3>
+                        {appointment.doctorName}
+                      </h3>
 
-                <h3>
-                  {currentAppointment.doctorName}
-                </h3>
+                      <p>
+                        {appointment.specialty}
+                      </p>
 
-                <p>
-                  {currentAppointment.specialty}
-                </p>
+                      <div className="appointment-meta-grid">
+                        <span>
+                          📅 {appointment.date}
+                        </span>
 
-                <div className="appointment-meta-grid">
+                        <span>
+                          🕐 {appointment.time}
+                        </span>
 
-                  <span>
-                    📅 {currentAppointment.date}
-                  </span>
+                        <span>
+                          🎟️ {appointment.token}
+                        </span>
+                      </div>
 
-                  <span>
-                    🕐 {currentAppointment.time}
-                  </span>
-
-                  <span>
-                    🎟️ {currentAppointment.token}
-                  </span>
-
-                </div>
-
-                <button
-                  className="primary-btn"
-                  onClick={() =>
-                    handleTrack(currentAppointment)
-                  }
-                >
-                  View Queue →
-                </button>
+                      <button
+                        className="primary-btn"
+                        onClick={() =>
+                          handleTrack(appointment)
+                        }
+                      >
+                        View Queue →
+                      </button>
+                    </div>
+                  )
+                )}
 
               </div>
-
             ) : (
-
               <div className="dashboard-empty-card">
-
                 <div className="dashboard-empty-icon">
                   📅
                 </div>
@@ -269,25 +377,20 @@ function PatientDashboard({ goTo }) {
 
                 <button
                   className="primary-btn"
-                  onClick={() => goTo("doctors")}
+                  onClick={() =>
+                    goTo("doctors")
+                  }
                 >
                   Find a Doctor →
                 </button>
-
               </div>
-
             )}
-
           </div>
-
         </div>
 
         {/* RECENT APPOINTMENTS */}
-
         <div className="dashboard-section">
-
           <div className="dashboard-section-header">
-
             <div>
               <span className="dashboard-section-label">
                 ACTIVITY
@@ -300,46 +403,41 @@ function PatientDashboard({ goTo }) {
 
             <button
               className="text-btn"
-              onClick={() => goTo("appointments")}
+              onClick={() =>
+                goTo("appointments")
+              }
             >
               View All →
             </button>
-
           </div>
 
           {recentAppointments.length > 0 ? (
-
             <div className="dashboard-appointments-list">
 
               {recentAppointments.map(
                 (appointment) => (
-
                   <AppointmentCard
                     key={appointment.id}
                     appointment={appointment}
-
                     onTrack={
-                      appointment.status !== "Cancelled"
+                      appointment.status !==
+                      "Cancelled"
                         ? handleTrack
                         : undefined
                     }
-
                     onCancel={
-                      appointment.status !== "Cancelled"
+                      appointment.status !==
+                      "Cancelled"
                         ? handleCancel
                         : undefined
                     }
                   />
-
                 )
               )}
 
             </div>
-
           ) : (
-
             <div className="dashboard-empty-card">
-
               <div className="dashboard-empty-icon">
                 📋
               </div>
@@ -355,15 +453,14 @@ function PatientDashboard({ goTo }) {
 
               <button
                 className="primary-btn"
-                onClick={() => goTo("doctors")}
+                onClick={() =>
+                  goTo("doctors")
+                }
               >
                 Book Your First Appointment →
               </button>
-
             </div>
-
           )}
-
         </div>
 
       </main>
