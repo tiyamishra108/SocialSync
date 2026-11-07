@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -2908,200 +2907,6 @@ body.dark-mode .precautions-icon {
   .precautions-card {
     padding: 21px 18px;
   }
-}
-
-/* =========================================================
-   MEDICAL INFORMATION — PROFILE
-========================================================= */
-
-.medical-information-card {
-  margin-top: 22px;
-  width: 100%;
-}
-
-.medical-information-card .profile-card-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-}
-
-.medical-information-card .profile-card-heading > div:first-child {
-  flex: 1;
-}
-
-.medical-info-icon {
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  background: var(--soft-blue);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  font-size: 25px;
-}
-
-/* Medical form */
-
-.medical-information-form {
-  width: 100%;
-  margin-top: 24px;
-}
-
-.medical-information-form .input-group {
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.medical-information-form .input-group label {
-  display: block;
-  width: 100%;
-  margin-bottom: 9px;
-}
-
-/* Main textarea */
-
-.medical-information-form textarea {
-  display: block;
-  width: 100% !important;
-  min-width: 100%;
-  min-height: 170px;
-  box-sizing: border-box;
-
-  resize: vertical;
-
-  padding: 14px 16px;
-
-  border: 1px solid var(--border);
-  border-radius: 10px;
-
-  background: var(--white);
-  color: var(--text);
-
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 1.6;
-
-  outline: none;
-
-  transition: border-color .2s ease,
-              box-shadow .2s ease;
-}
-
-.medical-information-form textarea:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(40, 120, 168, .10);
-}
-
-.medical-information-form textarea::placeholder {
-  color: var(--muted);
-  white-space: pre-line;
-}
-
-/* Helper text */
-
-.medical-input-help {
-  display: block;
-  width: 100%;
-  margin-top: 8px;
-
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-/* Information note */
-
-.medical-information-note {
-  width: 100%;
-  box-sizing: border-box;
-
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-
-  margin-top: 18px;
-  padding: 14px 16px;
-
-  background: var(--soft-blue);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-
-.medical-information-note span {
-  flex-shrink: 0;
-  font-size: 16px;
-}
-
-.medical-information-note p {
-  margin: 0;
-
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-
-/* Save button */
-
-.medical-save-btn {
-  margin-top: 18px;
-}
-
-/* Success message */
-
-.profile-success-message {
-  width: 100%;
-  box-sizing: border-box;
-
-  margin-top: 14px;
-  padding: 11px 14px;
-
-  border-radius: 9px;
-
-  background: var(--soft-teal);
-  color: var(--teal);
-
-  font-size: 13px;
-  font-weight: 600;
-}
-
-/* =========================================================
-   MEDICAL INFORMATION — DARK MODE
-========================================================= */
-
-body.dark-mode .medical-information-form textarea {
-  background: #10222F;
-  color: #DCEAF4;
-  border-color: #385466;
-}
-
-body.dark-mode .medical-information-form textarea::placeholder {
-  color: #71899A;
-}
-
-body.dark-mode .medical-information-form textarea:focus {
-  border-color: #63B6E8;
-  box-shadow: 0 0 0 3px rgba(99, 182, 232, .12);
-}
-
-body.dark-mode .medical-information-note {
-  background: #102A38;
-  border-color: #294252;
-}
-
-body.dark-mode .medical-information-note p {
-  color: #91A7B8;
-}
-
-body.dark-mode .medical-info-icon {
-  background: #163448;
-  border-color: #294252;
-}
-
-body.dark-mode .profile-success-message {
-  background: #143A38;
-  color: #55C7B8;
 }
 
 /* =========================================================
@@ -6824,4 +6629,13 @@ body.dark-mode .emergency-back-btn {
 
 body.dark-mode .emergency-back-btn:hover {
   background: #253648;
+}
+
+
+/* HOMEPAGE HERO POSITION FIX - KEEP ORIGINAL ELEMENT SIZES */
+@media (min-width: 701px) {
+  .mq-hero {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
 }

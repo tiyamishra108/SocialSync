@@ -16,7 +16,6 @@ function Login({ goTo }) {
       return;
     }
 
-    // RECEPTIONIST LOGIN
     if (loginType === "receptionist") {
       const isValidReceptionist =
         emailOrPhone === "reception@mediqueue.com" &&
@@ -43,7 +42,6 @@ function Login({ goTo }) {
       return;
     }
 
-    // PATIENT LOGIN
     const registeredUser = JSON.parse(
       localStorage.getItem("registeredUser") || "null"
     );
@@ -94,8 +92,6 @@ function Login({ goTo }) {
         >
           ← {showLoginForm ? "Back to Portals" : "Back to Home"}
         </button>
-
-        
 
         {!showLoginForm ? (
           <>

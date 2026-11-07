@@ -73,10 +73,7 @@ function AdminDashboard({ goTo }) {
 
       <main className="dashboard-main receptionist-dashboard">
 
-        {/* WELCOME HEADER */}
-
         <div className="receptionist-welcome">
-
           <div>
             <span className="receptionist-eyebrow">
               RECEPTIONIST PORTAL
@@ -104,8 +101,6 @@ function AdminDashboard({ goTo }) {
           </div>
 
         </div>
-
-        {/* STATISTICS */}
 
         <div className="receptionist-stats">
 
@@ -147,14 +142,8 @@ function AdminDashboard({ goTo }) {
 
         </div>
 
-        {/* MAIN CONTENT */}
-
         <div className="receptionist-content-grid">
-
-          {/* RECENT APPOINTMENTS */}
-
           <section className="receptionist-panel">
-
             <div className="receptionist-panel-header">
               <div>
                 <span className="receptionist-eyebrow">
@@ -172,11 +161,8 @@ function AdminDashboard({ goTo }) {
             </div>
 
             {recentAppointments.length > 0 ? (
-
               <div className="receptionist-appointments">
-
                 {recentAppointments.map((appointment, index) => (
-
                   <div
                     className="receptionist-appointment"
                     key={appointment.id || index}
@@ -192,11 +178,9 @@ function AdminDashboard({ goTo }) {
                       <strong>
                         {appointment.patientName || "Patient"}
                       </strong>
-
                       <span>
                         {appointment.doctorName || "Doctor"}
                       </span>
-
                       <small>
                         {appointment.department || "General"}
                       </small>
@@ -206,7 +190,6 @@ function AdminDashboard({ goTo }) {
                       <strong>
                         {appointment.date || "Date unavailable"}
                       </strong>
-
                       <span>
                         {appointment.time || "Time unavailable"}
                       </span>
@@ -229,9 +212,7 @@ function AdminDashboard({ goTo }) {
                   </div>
 
                 ))}
-
               </div>
-
             ) : (
 
               <div className="receptionist-empty">
@@ -239,15 +220,10 @@ function AdminDashboard({ goTo }) {
                 <h3>No appointments yet</h3>
                 <p>Patient bookings will appear here.</p>
               </div>
-
             )}
-
           </section>
 
-          {/* QUICK ACTIONS */}
-
           <section className="receptionist-panel receptionist-actions-panel">
-
             <div className="receptionist-panel-header">
               <div>
                 <span className="receptionist-eyebrow">
@@ -258,42 +234,29 @@ function AdminDashboard({ goTo }) {
             </div>
 
             <div className="receptionist-actions">
-
               {actionCards.map((card) => (
-
                 <button
                   className="receptionist-action"
                   key={card.title}
                   onClick={() => goTo(card.page)}
                 >
-
                   <span className={`receptionist-action-icon ${card.color}`}>
                     {card.icon}
                   </span>
-
                   <span className="receptionist-action-text">
                     <strong>{card.title}</strong>
                     <small>{card.description}</small>
                   </span>
-
                   <span className="receptionist-action-arrow">
                     →
                   </span>
-
                 </button>
-
               ))}
-
             </div>
-
           </section>
-
         </div>
 
-        {/* APPOINTMENT STATUS */}
-
         <section className="receptionist-panel receptionist-summary">
-
           <div className="receptionist-panel-header">
             <div>
               <span className="receptionist-eyebrow">
@@ -304,7 +267,6 @@ function AdminDashboard({ goTo }) {
           </div>
 
           <div className="receptionist-summary-grid">
-
             <div className="receptionist-summary-item">
               <span className="summary-dot green-dot"></span>
               <div>
@@ -330,11 +292,8 @@ function AdminDashboard({ goTo }) {
             </div>
 
           </div>
-
         </section>
-
       </main>
-
     </div>
   );
 }

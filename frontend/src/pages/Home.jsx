@@ -37,9 +37,7 @@ function Home({ goTo, setSelectedDoctor }) {
   return (
     <div className="mq-home">
 
-      {/* NAVBAR */}
       <header className="mq-navbar">
-
         <div className="mq-logo" onClick={() => scrollToSection("home")}>
           Medi<span>Queue</span>
         </div>
@@ -53,12 +51,10 @@ function Home({ goTo, setSelectedDoctor }) {
 
         <div className="mq-nav-actions">
 
-  {/* THEME TOGGLE */}
   <div className="mq-theme-toggle">
     <ThemeToggle />
   </div>
 
-  {/* NOTIFICATIONS */}
   <div className="mq-notification-wrapper">
     <button
       className="mq-notification-btn"
@@ -96,7 +92,6 @@ function Home({ goTo, setSelectedDoctor }) {
     )}
   </div>
 
-  {/* EMERGENCY - RIGHT CORNER */}
   <button
     className="mq-nav-emergency"
     onClick={() => goTo("emergency")}
@@ -105,11 +100,8 @@ function Home({ goTo, setSelectedDoctor }) {
   </button>
 
 </div>
-    
       </header>
 
-
-      {/* HERO SECTION */}
       <section className="mq-hero" id="home">
         <div className="mq-hero-container">
 
@@ -177,8 +169,6 @@ function Home({ goTo, setSelectedDoctor }) {
         </div>
       </section>
 
-
-      {/* TOP DOCTORS */}
       <section className="mq-doctors-section" id="doctors">
         <div className="mq-doctors-header">
           <div>
@@ -230,8 +220,6 @@ function Home({ goTo, setSelectedDoctor }) {
         </div>
       </section>
 
-
-      {/* HOW IT WORKS */}
       <section className="mq-how-section" id="how-it-works">
         <div className="mq-section-heading">
           <span className="mq-eyebrow">SIMPLE PROCESS</span>
@@ -250,8 +238,6 @@ function Home({ goTo, setSelectedDoctor }) {
         </div>
       </section>
 
-
-      {/* ABOUT */}
       <section className="mq-about-section" id="about">
         <div className="mq-about-card">
           <div>
@@ -283,8 +269,6 @@ function Home({ goTo, setSelectedDoctor }) {
         </div>
       </section>
 
-
-      {/* FOOTER */}
       <footer className="mq-footer">
         <div className="mq-footer-content">
 

@@ -8,23 +8,11 @@ function StatCard({
 
   return (
     <div className="dashboard-stat">
-
-      <div className="stat-icon">
-        {icon}
-      </div>
-
+      <div className="stat-icon">{icon}</div>
       <div>
-
-        <span>
-          {displayTitle}
-        </span>
-
-        <strong>
-          {value}
-        </strong>
-
+        <span>{displayTitle} </span>
+        <strong>{value}</strong>
       </div>
-
     </div>
   );
 }

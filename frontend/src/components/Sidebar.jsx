@@ -2,9 +2,7 @@ import React from "react";
 
 function Sidebar({ currentPage, goTo }) {
   const userRole = localStorage.getItem("userRole");
-
   const isReceptionist = userRole === "receptionist";
-
   const menuItems = isReceptionist
     ? [
         {
