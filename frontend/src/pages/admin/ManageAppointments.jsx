@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 
 function ManageAppointments({ goTo }) {
-  const [appointments, setAppointments] =
-    useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   const loadAppointments = () => {
     const saved = JSON.parse(
@@ -19,15 +18,15 @@ function ManageAppointments({ goTo }) {
   }, []);
 
   const updateStatus = (id, status) => {
-    const updatedAppointments =
-      appointments.map((appointment) =>
+    const updatedAppointments = appointments.map(
+      (appointment) =>
         appointment.id === id
           ? {
               ...appointment,
               status,
             }
           : appointment
-      );
+    );
 
     localStorage.setItem(
       "appointments",
@@ -35,20 +34,13 @@ function ManageAppointments({ goTo }) {
     );
 
     const currentAppointment = JSON.parse(
-      localStorage.getItem(
-        "currentAppointment"
-      ) || "null"
+      localStorage.getItem("currentAppointment") || "null"
     );
 
-    if (
-      currentAppointment &&
-      currentAppointment.id === id
-    ) {
-      const updatedCurrent =
-        updatedAppointments.find(
-          (appointment) =>
-            appointment.id === id
-        );
+    if (currentAppointment && currentAppointment.id === id) {
+      const updatedCurrent = updatedAppointments.find(
+        (appointment) => appointment.id === id
+      );
 
       if (
         updatedCurrent &&
@@ -59,9 +51,7 @@ function ManageAppointments({ goTo }) {
           JSON.stringify(updatedCurrent)
         );
       } else {
-        localStorage.removeItem(
-          "currentAppointment"
-        );
+        localStorage.removeItem("currentAppointment");
       }
     }
 
@@ -70,89 +60,60 @@ function ManageAppointments({ goTo }) {
 
   return (
     <div className="dashboard-layout">
-
       <Sidebar
         currentPage="manageAppointments"
         goTo={goTo}
       />
 
       <main className="dashboard-main">
-
         <div className="dashboard-top">
-
           <div>
             <span className="dashboard-section-label">
-              ADMIN
+              RECEPTIONIST
             </span>
 
-            <h1>
-              Manage Appointments
-            </h1>
+            <h1>Manage Appointments</h1>
 
             <p>
-              Review and update patient
-              appointments.
+              Review and update patient appointments.
             </p>
           </div>
 
           <button
             className="text-btn"
-            onClick={() =>
-              goTo("adminDashboard")
-            }
+            onClick={() => goTo("receptionistDashboard")}
           >
             ← Dashboard
           </button>
-
         </div>
 
         <div className="dashboard-section">
-
           {appointments.length > 0 ? (
-
             <div className="admin-appointment-list">
-
               {appointments
                 .slice()
                 .reverse()
                 .map((appointment) => (
-
                   <div
                     className="admin-appointment-row"
                     key={appointment.id}
                   >
-
                     <div>
-
                       <strong>
-                        {appointment.patientName ||
-                          "Patient"}
+                        {appointment.patientName || "Patient"}
                       </strong>
 
-                      <span>
-                        {appointment.doctorName}
-                      </span>
+                      <span>{appointment.doctorName}</span>
 
-                      <small>
-                        {appointment.department}
-                      </small>
-
+                      <small>{appointment.department}</small>
                     </div>
 
                     <div>
+                      <span>📅 {appointment.date}</span>
 
-                      <span>
-                        📅 {appointment.date}
-                      </span>
+                      <span>🕐 {appointment.time}</span>
 
-                      <span>
-                        🕐 {appointment.time}
-                      </span>
-
-                      <span>
-                        🎟️ {appointment.token}
-                      </span>
-
+                      <span>🎟️ {appointment.token}</span>
                     </div>
 
                     <span className="status-badge">
@@ -160,12 +121,8 @@ function ManageAppointments({ goTo }) {
                     </span>
 
                     <div className="admin-appointment-actions">
-
-                      {appointment.status !==
-                        "Confirmed" &&
-                        appointment.status !==
-                          "Cancelled" && (
-
+                      {appointment.status !== "Confirmed" &&
+                        appointment.status !== "Cancelled" && (
                           <button
                             className="primary-btn"
                             onClick={() =>
@@ -177,14 +134,10 @@ function ManageAppointments({ goTo }) {
                           >
                             Confirm
                           </button>
-
                         )}
 
-                      {appointment.status !==
-                        "In Progress" &&
-                        appointment.status !==
-                          "Cancelled" && (
-
+                      {appointment.status !== "In Progress" &&
+                        appointment.status !== "Cancelled" && (
                           <button
                             className="secondary-btn"
                             onClick={() =>
@@ -196,59 +149,38 @@ function ManageAppointments({ goTo }) {
                           >
                             Start Queue
                           </button>
-
                         )}
 
-                      {appointment.status !==
-                        "Cancelled" && (
-
-                          <button
-                            className="cancel-btn"
-                            onClick={() =>
-                              updateStatus(
-                                appointment.id,
-                                "Cancelled"
-                              )
-                            }
-                          >
-                            Cancel
-                          </button>
-
-                        )}
-
+                      {appointment.status !== "Cancelled" && (
+                        <button
+                          className="cancel-btn"
+                          onClick={() =>
+                            updateStatus(
+                              appointment.id,
+                              "Cancelled"
+                            )
+                          }
+                        >
+                          Cancel
+                        </button>
+                      )}
                     </div>
-
                   </div>
-
                 ))}
-
             </div>
-
           ) : (
-
             <div className="empty-card">
+              <div className="empty-icon">📅</div>
 
-              <div className="empty-icon">
-                📅
-              </div>
-
-              <h3>
-                No appointments
-              </h3>
+              <h3>No appointments</h3>
 
               <p>
-                Patient appointments will appear
-                here.
+                Patient appointments will appear here.
               </p>
-
             </div>
-
           )}
-
         </div>
-
       </main>
-
     </div>
   );
 }

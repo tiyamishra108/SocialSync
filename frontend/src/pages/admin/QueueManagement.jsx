@@ -27,8 +27,7 @@ function QueueManagement({ goTo }) {
   const groupedQueues = activeAppointments.reduce(
     (groups, appointment) => {
       const doctor =
-        appointment.doctorName ||
-        "Unknown Doctor";
+        appointment.doctorName || "Unknown Doctor";
 
       if (!groups[doctor]) {
         groups[doctor] = [];
@@ -52,12 +51,10 @@ function QueueManagement({ goTo }) {
         <div className="dashboard-top">
           <div>
             <span className="dashboard-section-label">
-              ADMIN
+              RECEPTIONIST
             </span>
 
-            <h1>
-              Queue Management
-            </h1>
+            <h1>Queue Management</h1>
 
             <p>
               Monitor doctor-wise patient queues.
@@ -66,9 +63,7 @@ function QueueManagement({ goTo }) {
 
           <button
             className="text-btn"
-            onClick={() =>
-              goTo("adminDashboard")
-            }
+            onClick={() => goTo("receptionistDashboard")}
           >
             ← Dashboard
           </button>
@@ -88,9 +83,7 @@ function QueueManagement({ goTo }) {
                         DOCTOR QUEUE
                       </span>
 
-                      <h2>
-                        {doctorName}
-                      </h2>
+                      <h2>{doctorName}</h2>
                     </div>
 
                     <span className="status-badge">
@@ -102,29 +95,24 @@ function QueueManagement({ goTo }) {
                   </div>
 
                   <div className="queue-patients">
-                    {queue.map(
-                      (appointment, index) => (
-                        <div
-                          className="queue-patient-row"
-                          key={appointment.id}
-                        >
-                          <div>
-                            <strong>
-                              #{index + 1}
-                            </strong>
+                    {queue.map((appointment, index) => (
+                      <div
+                        className="queue-patient-row"
+                        key={appointment.id}
+                      >
+                        <div>
+                          <strong>#{index + 1}</strong>
 
-                            <span>
-                              {appointment.patientName ||
-                                "Patient"}
-                            </span>
-                          </div>
-
-                          <span className="queue-token">
-                            {appointment.token}
+                          <span>
+                            {appointment.patientName || "Patient"}
                           </span>
                         </div>
-                      )
-                    )}
+
+                        <span className="queue-token">
+                          {appointment.token}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )
@@ -132,17 +120,12 @@ function QueueManagement({ goTo }) {
           </div>
         ) : (
           <div className="empty-card">
-            <div className="empty-icon">
-              🎟️
-            </div>
+            <div className="empty-icon">🎟️</div>
 
-            <h3>
-              No active queues
-            </h3>
+            <h3>No active queues</h3>
 
             <p>
-              Active patient queues will appear
-              here.
+              Active patient queues will appear here.
             </p>
           </div>
         )}

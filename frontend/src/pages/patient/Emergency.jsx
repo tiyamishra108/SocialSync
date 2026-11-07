@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import Navbar from "../components/Navbar";
-
 function Emergency({ goTo }) {
 
   const [showMessage, setShowMessage] = useState(false);
@@ -10,8 +8,13 @@ function Emergency({ goTo }) {
 
     <div className="emergency-page">
 
-      <Navbar goTo={goTo} />
-
+      {/* BACK TO DASHBOARD */}
+      <button
+  className="emergency-back-btn"
+  onClick={() => goTo("home")}
+>
+  ← Back to Home
+</button>
 
       <div className="emergency-container">
 
@@ -19,22 +22,18 @@ function Emergency({ goTo }) {
           🚨
         </div>
 
-
         <span className="emergency-label">
           EMERGENCY ASSISTANCE
         </span>
-
 
         <h1>
           Need urgent medical attention?
         </h1>
 
-
         <p>
           If you are experiencing a genuine medical
           emergency, seek immediate professional help.
         </p>
-
 
         <div className="emergency-actions">
 
@@ -44,7 +43,6 @@ function Emergency({ goTo }) {
           >
             🚨 Request Emergency Token
           </button>
-
 
           <button
             className="secondary-btn"
@@ -57,13 +55,11 @@ function Emergency({ goTo }) {
 
         </div>
 
-
         <div className="emergency-note">
 
           <strong>
             Important
           </strong>
-
 
           <p>
             MediQueue is a queue management prototype.
@@ -74,7 +70,6 @@ function Emergency({ goTo }) {
         </div>
 
       </div>
-
 
       {/* CUSTOM EMERGENCY POPUP */}
 
@@ -97,27 +92,22 @@ function Emergency({ goTo }) {
               ×
             </button>
 
-
             <div className="emergency-modal-icon">
               🚨
             </div>
-
 
             <span className="emergency-modal-label">
               EMERGENCY REQUEST
             </span>
 
-
             <h2>
               Emergency request received
             </h2>
-
 
             <p>
               Please contact emergency medical
               services immediately for urgent help.
             </p>
-
 
             <div className="emergency-modal-actions">
 
@@ -129,7 +119,6 @@ function Emergency({ goTo }) {
               >
                 📞 Call 112
               </button>
-
 
               <button
                 className="emergency-modal-ok"

@@ -1,102 +1,101 @@
+import React from "react";
+
 function Sidebar({ currentPage, goTo }) {
+  const userRole = localStorage.getItem("userRole");
+
+  const isReceptionist = userRole === "receptionist";
+
+  const menuItems = isReceptionist
+    ? [
+        {
+          id: "receptionistDashboard",
+          label: "Dashboard",
+          icon: "▦",
+        },
+        {
+          id: "manageAppointments",
+          label: "Manage Appointments",
+          icon: "📅",
+        },
+        {
+          id: "queueManagement",
+          label: "Queue Management",
+          icon: "🎟️",
+        },
+      ]
+    : [
+        {
+          id: "dashboard",
+          label: "Dashboard",
+          icon: "▦",
+        },
+        {
+          id: "doctors",
+          label: "Doctors",
+          icon: "🩺",
+        },
+        {
+          id: "appointments",
+          label: "Appointments",
+          icon: "📅",
+        },
+        {
+          id: "token",
+          label: "My Token",
+          icon: "🎟️",
+        },
+        {
+          id: "queueStatus",
+          label: "Queue Status",
+          icon: "📍",
+        },
+        {
+          id: "profile",
+          label: "Profile",
+          icon: "👤",
+        },
+        {
+          id: "settings",
+          label: "Settings",
+          icon: "⚙️",
+        },
+      ];
+
   return (
     <aside className="sidebar">
-
-      {/* Logo */}
       <div className="sidebar-logo">
         <div className="logo-icon">+</div>
         <span>MediQueue</span>
       </div>
 
-      {/* Menu */}
       <div className="sidebar-menu">
+        {menuItems.map((item, index) => (
+          <React.Fragment key={item.id}>
+            {!isReceptionist && index === 5 && (
+              <div className="sidebar-divider"></div>
+            )}
 
-        <button
-          className={`sidebar-item ${
-            currentPage === "dashboard" ? "active" : ""
-          }`}
-          onClick={() => goTo("dashboard")}
-        >
-          <span>▦</span>
-          Dashboard
-        </button>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "doctors" ? "active" : ""
-          }`}
-          onClick={() => goTo("doctors")}
-        >
-          <span>🩺</span>
-          Doctors
-        </button>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "appointments" ? "active" : ""
-          }`}
-          onClick={() => goTo("appointments")}
-        >
-          <span>📅</span>
-          Appointments
-        </button>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "token" ? "active" : ""
-          }`}
-          onClick={() => goTo("token")}
-        >
-          <span>🎟️</span>
-          My Token
-        </button>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "queueStatus" ? "active" : ""
-          }`}
-          onClick={() => goTo("queueStatus")}
-        >
-          <span>📍</span>
-          Queue Status
-        </button>
-
-        <div className="sidebar-divider"></div>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "profile" ? "active" : ""
-          }`}
-          onClick={() => goTo("profile")}
-        >
-          <span>👤</span>
-          Profile
-        </button>
-
-        <button
-          className={`sidebar-item ${
-            currentPage === "settings" ? "active" : ""
-          }`}
-          onClick={() => goTo("settings")}
-        >
-          <span>⚙️</span>
-          Settings
-        </button>
-
+            <button
+              className={`sidebar-item ${
+                currentPage === item.id ? "active" : ""
+              }`}
+              onClick={() => goTo(item.id)}
+            >
+              <span>{item.icon}</span>
+              {item.label}
+            </button>
+          </React.Fragment>
+        ))}
       </div>
 
-      {/* Bottom Emergency */}
       <div className="sidebar-bottom">
-
         <button
           className="sidebar-emergency"
           onClick={() => goTo("emergency")}
         >
           🚨 Emergency
         </button>
-
       </div>
-
     </aside>
   );
 }

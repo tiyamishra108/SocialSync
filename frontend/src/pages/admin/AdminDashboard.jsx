@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-
 import Sidebar from "../../components/Sidebar";
-import StatCard from "../../components/StatCard";
 
 function AdminDashboard({ goTo }) {
-  const [appointments, setAppointments] =
-    useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   const loadAppointments = () => {
     const saved = JSON.parse(
@@ -19,353 +16,322 @@ function AdminDashboard({ goTo }) {
     loadAppointments();
   }, []);
 
-  const activeAppointments =
-    appointments.filter(
-      (appointment) =>
-        appointment.status !== "Cancelled"
-    );
+  const activeAppointments = appointments.filter(
+    (appointment) => appointment.status !== "Cancelled"
+  );
 
-  const cancelledAppointments =
-    appointments.filter(
-      (appointment) =>
-        appointment.status === "Cancelled"
-    );
+  const cancelledAppointments = appointments.filter(
+    (appointment) => appointment.status === "Cancelled"
+  );
 
-  const inProgress =
-    appointments.filter(
-      (appointment) =>
-        appointment.status === "In Progress"
-    );
+  const inProgress = appointments.filter(
+    (appointment) => appointment.status === "In Progress"
+  );
 
-  const confirmed =
-    appointments.filter(
-      (appointment) =>
-        appointment.status === "Confirmed" ||
-        appointment.status === "Upcoming"
-    );
+  const confirmed = appointments.filter(
+    (appointment) =>
+      appointment.status === "Confirmed" ||
+      appointment.status === "Upcoming"
+  );
+
+  const actionCards = [
+    {
+      icon: "📅",
+      title: "Manage Appointments",
+      description: "Review and update patient bookings.",
+      page: "manageAppointments",
+      color: "blue"
+    },
+    {
+      icon: "🎟️",
+      title: "Queue Management",
+      description: "Monitor doctor-wise patient queues.",
+      page: "queueManagement",
+      color: "purple"
+    },
+    {
+      icon: "🚨",
+      title: "Emergency Assistance",
+      description: "Access emergency assistance.",
+      page: "emergency",
+      color: "red"
+    }
+  ];
+
+  const recentAppointments = appointments
+    .slice()
+    .reverse()
+    .slice(0, 5);
 
   return (
     <div className="dashboard-layout">
 
       <Sidebar
-        currentPage="adminDashboard"
+        currentPage="receptionistDashboard"
         goTo={goTo}
       />
 
-      <main className="dashboard-main">
+      <main className="dashboard-main receptionist-dashboard">
 
-        <div className="dashboard-top">
+        {/* WELCOME HEADER */}
 
-          <div className="dashboard-welcome">
+        <div className="receptionist-welcome">
 
+          <div>
+            <span className="receptionist-eyebrow">
+              RECEPTIONIST PORTAL
+            </span>
+
+            <h1>Welcome Back! 👋</h1>
+
+            <p>
+              Here's what's happening at your hospital today.
+            </p>
+          </div>
+
+          <div className="receptionist-date">
+            <span>📅</span>
             <div>
-              <span className="dashboard-section-label">
-                ADMIN DASHBOARD
-              </span>
-
-              <h1>
-                Hospital Overview 👋
-              </h1>
-
-              <p>
-                Manage appointments and monitor
-                today's patient queues.
-              </p>
+              <small>TODAY</small>
+              <strong>
+                {new Date().toLocaleDateString("en-IN", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+                })}
+              </strong>
             </div>
-
           </div>
 
         </div>
 
-        {/* STATS */}
+        {/* STATISTICS */}
 
-        <div className="dashboard-stats">
+        <div className="receptionist-stats">
 
-          <StatCard
-            icon="📅"
-            title="Total Appointments"
-            label="Total Appointments"
-            value={appointments.length}
-          />
-
-          <StatCard
-            icon="👥"
-            title="Active Patients"
-            label="Active Patients"
-            value={activeAppointments.length}
-          />
-
-          <StatCard
-            icon="⏳"
-            title="In Progress"
-            label="In Progress"
-            value={inProgress.length}
-          />
-
-          <StatCard
-            icon="✓"
-            title="Confirmed"
-            label="Confirmed"
-            value={confirmed.length}
-          />
-
-        </div>
-
-        {/* ADMIN ACTIONS */}
-
-        <div className="dashboard-section">
-
-          <div className="dashboard-section-header">
-
-            <div>
-              <span className="dashboard-section-label">
-                MANAGEMENT
-              </span>
-
-              <h2>
-                Quick Actions
-              </h2>
+          <div className="receptionist-stat-card">
+            <div className="receptionist-stat-top">
+              <span>Total Appointments</span>
+              <div className="receptionist-stat-icon blue">📅</div>
             </div>
-
+            <h2>{appointments.length}</h2>
+            <small>All patient bookings</small>
           </div>
 
-          <div className="admin-actions">
+          <div className="receptionist-stat-card">
+            <div className="receptionist-stat-top">
+              <span>Active Patients</span>
+              <div className="receptionist-stat-icon green">👥</div>
+            </div>
+            <h2>{activeAppointments.length}</h2>
+            <small>Currently active bookings</small>
+          </div>
 
-            <button
-              className="admin-action-card"
-              onClick={() =>
-                goTo("manageAppointments")
-              }
-            >
-              <span>📅</span>
+          <div className="receptionist-stat-card">
+            <div className="receptionist-stat-top">
+              <span>In Progress</span>
+              <div className="receptionist-stat-icon orange">⏳</div>
+            </div>
+            <h2>{inProgress.length}</h2>
+            <small>Patients being attended</small>
+          </div>
 
-              <div>
-                <h3>
-                  Manage Appointments
-                </h3>
-
-                <p>
-                  Confirm, cancel and update
-                  patient appointments.
-                </p>
-              </div>
-
-              <strong>→</strong>
-            </button>
-
-            <button
-              className="admin-action-card"
-              onClick={() =>
-                goTo("manageDoctors")
-              }
-            >
-              <span>🩺</span>
-
-              <div>
-                <h3>
-                  Manage Doctors
-                </h3>
-
-                <p>
-                  View doctors and departments.
-                </p>
-              </div>
-
-              <strong>→</strong>
-            </button>
-
-            <button
-              className="admin-action-card"
-              onClick={() =>
-                goTo("queueManagement")
-              }
-            >
-              <span>🎟️</span>
-
-              <div>
-                <h3>
-                  Queue Management
-                </h3>
-
-                <p>
-                  Monitor doctor-wise patient
-                  queues.
-                </p>
-              </div>
-
-              <strong>→</strong>
-            </button>
-
-            <button
-              className="admin-action-card"
-              onClick={() =>
-                goTo("emergency")
-              }
-            >
-              <span>🚨</span>
-
-              <div>
-                <h3>
-                  Emergency
-                </h3>
-
-                <p>
-                  Open the emergency assistance
-                  screen.
-                </p>
-              </div>
-
-              <strong>→</strong>
-            </button>
-
+          <div className="receptionist-stat-card">
+            <div className="receptionist-stat-top">
+              <span>Confirmed</span>
+              <div className="receptionist-stat-icon purple">✓</div>
+            </div>
+            <h2>{confirmed.length}</h2>
+            <small>Confirmed or upcoming</small>
           </div>
 
         </div>
 
-        {/* RECENT APPOINTMENTS */}
+        {/* MAIN CONTENT */}
 
-        <div className="dashboard-section">
+        <div className="receptionist-content-grid">
 
-          <div className="dashboard-section-header">
+          {/* RECENT APPOINTMENTS */}
 
-            <div>
-              <span className="dashboard-section-label">
-                RECENT ACTIVITY
-              </span>
+          <section className="receptionist-panel">
 
-              <h2>
-                Recent Appointments
-              </h2>
+            <div className="receptionist-panel-header">
+              <div>
+                <span className="receptionist-eyebrow">
+                  PATIENT ACTIVITY
+                </span>
+                <h2>Recent Appointments</h2>
+              </div>
+
+              <button
+                className="receptionist-view-all"
+                onClick={() => goTo("manageAppointments")}
+              >
+                View All →
+              </button>
             </div>
 
-            <button
-              className="text-btn"
-              onClick={() =>
-                goTo("manageAppointments")
-              }
-            >
-              View All →
-            </button>
+            {recentAppointments.length > 0 ? (
 
-          </div>
+              <div className="receptionist-appointments">
 
-          {appointments.length > 0 ? (
-
-            <div className="admin-appointment-list">
-
-              {appointments
-                .slice()
-                .reverse()
-                .slice(0, 5)
-                .map((appointment) => (
+                {recentAppointments.map((appointment, index) => (
 
                   <div
-                    className="admin-appointment-row"
-                    key={appointment.id}
+                    className="receptionist-appointment"
+                    key={appointment.id || index}
                   >
 
-                    <div>
+                    <div className="receptionist-patient-avatar">
+                      {(appointment.patientName || "P")
+                        .charAt(0)
+                        .toUpperCase()}
+                    </div>
 
+                    <div className="receptionist-patient-details">
                       <strong>
-                        {appointment.patientName ||
-                          "Patient"}
+                        {appointment.patientName || "Patient"}
                       </strong>
 
                       <span>
-                        {appointment.doctorName}
+                        {appointment.doctorName || "Doctor"}
                       </span>
 
+                      <small>
+                        {appointment.department || "General"}
+                      </small>
                     </div>
 
-                    <div>
+                    <div className="receptionist-appointment-date">
+                      <strong>
+                        {appointment.date || "Date unavailable"}
+                      </strong>
 
                       <span>
-                        {appointment.date}
+                        {appointment.time || "Time unavailable"}
                       </span>
-
-                      <span>
-                        {appointment.time}
-                      </span>
-
                     </div>
 
-                    <span className="status-badge">
-                      {appointment.status}
+                    <span
+                      className={`receptionist-status ${
+                        appointment.status === "Cancelled"
+                          ? "status-cancelled"
+                          : appointment.status === "In Progress"
+                          ? "status-progress"
+                          : appointment.status === "Confirmed"
+                          ? "status-confirmed"
+                          : "status-upcoming"
+                      }`}
+                    >
+                      {appointment.status || "Upcoming"}
                     </span>
 
                   </div>
 
                 ))}
 
-            </div>
-
-          ) : (
-
-            <div className="empty-card">
-
-              <div className="empty-icon">
-                📋
               </div>
 
-              <h3>
-                No appointments yet
-              </h3>
+            ) : (
 
-              <p>
-                Patient bookings will appear
-                here.
-              </p>
+              <div className="receptionist-empty">
+                <span>📋</span>
+                <h3>No appointments yet</h3>
+                <p>Patient bookings will appear here.</p>
+              </div>
+
+            )}
+
+          </section>
+
+          {/* QUICK ACTIONS */}
+
+          <section className="receptionist-panel receptionist-actions-panel">
+
+            <div className="receptionist-panel-header">
+              <div>
+                <span className="receptionist-eyebrow">
+                  SHORTCUTS
+                </span>
+                <h2>Quick Actions</h2>
+              </div>
+            </div>
+
+            <div className="receptionist-actions">
+
+              {actionCards.map((card) => (
+
+                <button
+                  className="receptionist-action"
+                  key={card.title}
+                  onClick={() => goTo(card.page)}
+                >
+
+                  <span className={`receptionist-action-icon ${card.color}`}>
+                    {card.icon}
+                  </span>
+
+                  <span className="receptionist-action-text">
+                    <strong>{card.title}</strong>
+                    <small>{card.description}</small>
+                  </span>
+
+                  <span className="receptionist-action-arrow">
+                    →
+                  </span>
+
+                </button>
+
+              ))}
 
             </div>
 
-          )}
+          </section>
 
         </div>
 
-        {/* SUMMARY */}
+        {/* APPOINTMENT STATUS */}
 
-        <div className="dashboard-section">
+        <section className="receptionist-panel receptionist-summary">
 
-          <div className="dashboard-section-header">
-
+          <div className="receptionist-panel-header">
             <div>
-              <span className="dashboard-section-label">
-                SUMMARY
+              <span className="receptionist-eyebrow">
+                OVERVIEW
               </span>
+              <h2>Appointment Status</h2>
+            </div>
+          </div>
 
-              <h2>
-                Appointment Status
-              </h2>
+          <div className="receptionist-summary-grid">
+
+            <div className="receptionist-summary-item">
+              <span className="summary-dot green-dot"></span>
+              <div>
+                <strong>{confirmed.length}</strong>
+                <span>Confirmed</span>
+              </div>
+            </div>
+
+            <div className="receptionist-summary-item">
+              <span className="summary-dot orange-dot"></span>
+              <div>
+                <strong>{inProgress.length}</strong>
+                <span>In Progress</span>
+              </div>
+            </div>
+
+            <div className="receptionist-summary-item">
+              <span className="summary-dot red-dot"></span>
+              <div>
+                <strong>{cancelledAppointments.length}</strong>
+                <span>Cancelled</span>
+              </div>
             </div>
 
           </div>
 
-          <div className="dashboard-stats">
-
-            <StatCard
-              icon="✓"
-              title="Confirmed"
-              label="Confirmed"
-              value={confirmed.length}
-            />
-
-            <StatCard
-              icon="▶"
-              title="In Progress"
-              label="In Progress"
-              value={inProgress.length}
-            />
-
-            <StatCard
-              icon="×"
-              title="Cancelled"
-              label="Cancelled"
-              value={cancelledAppointments.length}
-            />
-
-          </div>
-
-        </div>
+        </section>
 
       </main>
 
