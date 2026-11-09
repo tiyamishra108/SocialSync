@@ -34,6 +34,27 @@ function Home({ goTo, setSelectedDoctor }) {
     goTo("login");
   };
 
+  const handleTrackQueue = () => {
+    const isLoggedIn =
+      localStorage.getItem("isLoggedIn") === "true";
+
+    const userRole = localStorage.getItem("userRole");
+
+    if (!isLoggedIn) {
+      sessionStorage.setItem("redirectAfterLogin", "queueStatus");
+      goTo("login");
+      return;
+    }
+
+    if (userRole === "user") {
+      goTo("queueStatus");
+    } else if (userRole === "receptionist") {
+      goTo("receptionistDashboard");
+    } else {
+      goTo("login");
+    }
+  };
+
   return (
     <div className="mq-home">
 
@@ -51,55 +72,55 @@ function Home({ goTo, setSelectedDoctor }) {
 
         <div className="mq-nav-actions">
 
-  <div className="mq-theme-toggle">
-    <ThemeToggle />
-  </div>
+          <div className="mq-theme-toggle">
+            <ThemeToggle />
+          </div>
 
-  <div className="mq-notification-wrapper">
-    <button
-      className="mq-notification-btn"
-      onClick={() => setShowNotifications(!showNotifications)}
-      aria-label="Notifications"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        width="20"
-        height="20"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
-        <path d="M10 21h4" />
-      </svg>
-      <span className="mq-notification-dot"></span>
-    </button>
+          <div className="mq-notification-wrapper">
+            <button
+              className="mq-notification-btn"
+              onClick={() => setShowNotifications(!showNotifications)}
+              aria-label="Notifications"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
+                <path d="M10 21h4" />
+              </svg>
+              <span className="mq-notification-dot"></span>
+            </button>
 
-    {showNotifications && (
-      <div className="mq-notification-panel">
-        <div className="mq-notification-heading">
-          <h3>Notifications</h3>
-          <button onClick={() => setShowNotifications(false)}>×</button>
+            {showNotifications && (
+              <div className="mq-notification-panel">
+                <div className="mq-notification-heading">
+                  <h3>Notifications</h3>
+                  <button onClick={() => setShowNotifications(false)}>×</button>
+                </div>
+                <div className="mq-notification-empty">
+                  <span>🔔</span>
+                  <h4>You're all caught up!</h4>
+                  <p>There are no new notifications right now.</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <button
+            className="mq-nav-emergency"
+            onClick={() => goTo("emergency")}
+          >
+            <span>✚</span> Emergency
+          </button>
+
         </div>
-        <div className="mq-notification-empty">
-          <span>🔔</span>
-          <h4>You're all caught up!</h4>
-          <p>There are no new notifications right now.</p>
-        </div>
-      </div>
-    )}
-  </div>
-
-  <button
-    className="mq-nav-emergency"
-    onClick={() => goTo("emergency")}
-  >
-    <span>✚</span> Emergency
-  </button>
-
-</div>
       </header>
 
       <section className="mq-hero" id="home">
@@ -129,7 +150,7 @@ function Home({ goTo, setSelectedDoctor }) {
 
               <button
                 className="mq-btn-secondary"
-                onClick={() => goTo("queueStatus")}
+                onClick={handleTrackQueue}
               >
                 Track Your Queue
               </button>
@@ -139,7 +160,6 @@ function Home({ goTo, setSelectedDoctor }) {
               <span>✦</span> Smarter appointments. Better care.
             </div>
           </div>
-
 
           <div className="mq-doctor-area">
             <div className="mq-doctor-arch">
@@ -151,7 +171,6 @@ function Home({ goTo, setSelectedDoctor }) {
               Your health comes first
             </div>
           </div>
-
 
           <div className="mq-hero-features">
             {features.map((feature, index) => (
