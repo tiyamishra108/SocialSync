@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Emergency from "./pages/patient/Emergency";
 
+import doctors from "./data/doctors";
+
 import BookAppointment from "./pages/patient/BookAppointment";
 import MyAppointments from "./pages/patient/MyAppointments";
 import QueueStatus from "./pages/patient/QueueStatus";
