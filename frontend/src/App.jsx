@@ -3,15 +3,12 @@ import { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+
 import Emergency from "./pages/patient/Emergency";
-
-import doctors from "./data/doctors";
-
 import BookAppointment from "./pages/patient/BookAppointment";
 import MyAppointments from "./pages/patient/MyAppointments";
 import QueueStatus from "./pages/patient/QueueStatus";
 import Token from "./pages/patient/Token";
-
 import Profile from "./pages/patient/Profile";
 import Settings from "./pages/patient/Settings";
 
@@ -22,25 +19,55 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageAppointments from "./pages/admin/ManageAppointments";
 import QueueManagement from "./pages/admin/QueueManagement";
 
+import doctors from "./data/doctors";
+
 import "./index.css";
+
 
 function App() {
   const [page, setPage] = useState("home");
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+
   const goTo = (newPage) => {
     setPage(newPage);
     window.scrollTo(0, 0);
   };
 
-  if (page === "login") {return <Login goTo={goTo} />;}
-  if (page === "register") { return <Register goTo={goTo} />;}
-  if (page === "dashboard") {return <Dashboard goTo={goTo} />;}
-  if (page === "receptionistDashboard") {return <AdminDashboard goTo={goTo} />; }
-  if (page === "manageAppointments") {return <ManageAppointments goTo={goTo} />;}
-  if (page === "queueManagement") {return <QueueManagement goTo={goTo} />;}
-  if (page === "appointments") {return <MyAppointments goTo={goTo} />;}
-  if (page === "token") {return <Token goTo={goTo} />;}
-  if (page === "queueStatus") { return <QueueStatus goTo={goTo} />;}
+  if (page === "login") {
+    return <Login goTo={goTo} />;
+  }
+
+  if (page === "register") {
+    return <Register goTo={goTo} />;
+  }
+
+  if (page === "dashboard") {
+    return <Dashboard goTo={goTo} />;
+  }
+
+  if (page === "receptionistDashboard") {
+    return <AdminDashboard goTo={goTo} />;
+  }
+
+  if (page === "manageAppointments") {
+    return <ManageAppointments goTo={goTo} />;
+  }
+
+  if (page === "queueManagement") {
+    return <QueueManagement goTo={goTo} />;
+  }
+
+  if (page === "appointments") {
+    return <MyAppointments goTo={goTo} />;
+  }
+
+  if (page === "token") {
+    return <Token goTo={goTo} />;
+  }
+
+  if (page === "queueStatus") {
+    return <QueueStatus goTo={goTo} />;
+  }
 
   if (page === "doctors") {
     return (
@@ -58,13 +85,20 @@ function App() {
         goTo={goTo}
       />
     );
-
   }
 
-  if (page === "emergency") {return <Emergency goTo={goTo} />;}
-  if (page === "profile") {return <Profile goTo={goTo} />;}
+  if (page === "emergency") {
+    return <Emergency goTo={goTo} />;
+  }
 
-  if (page === "settings") {return <Settings goTo={goTo} />;}
+  if (page === "profile") {
+    return <Profile goTo={goTo} />;
+  }
+
+  if (page === "settings") {
+    return <Settings goTo={goTo} />;
+  }
+
   return (
     <Home
       goTo={goTo}
@@ -73,18 +107,31 @@ function App() {
   );
 }
 
+
+/* =========================
+   CONSULTATION FEE
+========================= */
+
 const getConsultationFee = (doctor) => {
   if (doctor.consultation_fee != null) {
     return Number(doctor.consultation_fee);
   }
+
   const years = parseInt(doctor.experience);
+
   if (years >= 7 && years <= 8) return 500;
   if (years >= 9 && years <= 10) return 600;
   if (years >= 11 && years <= 12) return 700;
   if (years >= 13 && years <= 14) return 800;
   if (years === 15) return 900;
+
   return 500;
 };
+
+
+/* =========================
+   DOCTORS PAGE
+========================= */
 
 function Doctors({ goTo, setSelectedDoctor }) {
   const departments = [
@@ -111,29 +158,67 @@ function Doctors({ goTo, setSelectedDoctor }) {
 
   return (
     <div className="doctors-page">
-      <Navbar goTo={goTo} />
+
       <div className="doctors-container">
-        <div className="doctors-heading">
-          <span className="hero-badge">
-            🩺 Find Your Doctor
-          </span>
-          <h1>
-            Choose the right doctor
-            <br />
-            for your care.
-          </h1>
-          <p>
-            Choose a department first, then select
-            a doctor for your appointment.
-          </p>
+
+        {/* DOCTORS HEADER */}
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            gap: "20px",
+            flexWrap: "wrap",
+            marginBottom: "35px"
+          }}
+        >
+
+          <div className="doctors-heading">
+
+            <span className="hero-badge">
+              🩺 Find Your Doctor
+            </span>
+
+            <h1>
+              Choose the right doctor
+              <br />
+              for your care.
+            </h1>
+
+            <p>
+              Choose a department first, then select
+              a doctor for your appointment.
+            </p>
+
+          </div>
+
+          {/* BACK TO DASHBOARD */}
+
+          <button
+            className="back-button"
+            onClick={() => goTo("dashboard")}
+            style={{
+              flexShrink: 0,
+              marginTop: "5px"
+            }}
+          >
+            ← Back to Dashboard
+          </button>
+
         </div>
+
+
+        {/* DEPARTMENT TABS */}
 
         <div
           className="department-tabs"
           role="tablist"
           aria-label="Doctor departments"
         >
+
           {departments.map((department) => (
+
             <button
               key={department}
               className={`department-tab ${
@@ -147,37 +232,38 @@ function Doctors({ goTo, setSelectedDoctor }) {
             >
               {department}
             </button>
+
           ))}
+
         </div>
 
+
+        {/* DEPARTMENT RESULTS */}
+
         <div className="department-results-label">
+
           <span className="small-label">
             {activeDepartment === "All Departments"
-
               ? "ALL SPECIALISTS"
-
               : activeDepartment.toUpperCase()}
-
           </span>
 
           <strong>
-
             {visibleDoctors.length} doctors available
-
           </strong>
 
         </div>
+
+
+        {/* DOCTOR CARDS */}
 
         <div className="doctor-grid">
 
           {visibleDoctors.map((doctor) => (
 
             <div
-
               className="doctor-card"
-
               key={doctor.id}
-
             >
 
               <div className="doctor-card-top">
@@ -185,73 +271,51 @@ function Doctors({ goTo, setSelectedDoctor }) {
                 <div className="doctor-large-avatar">
 
                   <img
-
                     src={doctor.image}
-
                     alt={doctor.name}
-
                   />
 
                 </div>
 
                 <span className="available-badge">
-
                   ● {doctor.availability || "Available Today"}
-
                 </span>
 
               </div>
 
               <h3>
-
                 {doctor.name}
-
               </h3>
 
               <p className="doctor-specialty">
-
                 {doctor.specialty}
-
               </p>
 
               <p className="doctor-department-label">
-
                 {doctor.department}
-
               </p>
 
               <div className="doctor-details">
 
                 <span>
-
                   ⭐ {doctor.rating}
-
                 </span>
 
                 <span>
-
-                  {doctor.experience} · ₹{getConsultationFee(doctor)}
-
+                  {doctor.experience} · ₹
+                  {getConsultationFee(doctor)}
                 </span>
 
               </div>
 
               <button
-
                 className="primary-btn doctor-book-btn"
-
                 onClick={() => {
-
                   setSelectedDoctor(doctor);
-
                   goTo("bookAppointment");
-
                 }}
-
               >
-
                 Book Appointment →
-
               </button>
 
             </div>
@@ -263,193 +327,217 @@ function Doctors({ goTo, setSelectedDoctor }) {
       </div>
 
     </div>
-
   );
-
 }
 
-/* =========================*
 
-*   DASHBOARD*
-
-*========================= */
+/* =========================
+   DASHBOARD
+========================= */
 
 function Dashboard({ goTo }) {
 
-  const appointments = JSON.parse(
+  // CURRENT USER
 
-    localStorage.getItem("appointments") || "[]"
+  const currentUser = (() => {
+    try {
+      return JSON.parse(
+        localStorage.getItem("currentUser") ||
+        localStorage.getItem("registeredUser") ||
+        "{}"
+      );
+    } catch {
+      return {};
+    }
+  })();
 
-  );
+  const userName =
+    currentUser.name ||
+    currentUser.fullName ||
+    currentUser.username ||
+    (currentUser.email
+      ? currentUser.email.split("@")[0]
+      : "") ||
+    "Patient";
 
-  const currentAppointment = JSON.parse(
+  const rawUserRole =
+    currentUser.role ||
+    localStorage.getItem("userRole") ||
+    "Patient";
 
-    localStorage.getItem("currentAppointment") || "null"
+  const userRole =
+    rawUserRole.toLowerCase() === "user"
+      ? "Patient"
+      : rawUserRole.charAt(0).toUpperCase() +
+        rawUserRole.slice(1);
 
-  );
 
-  /* ACTIVE STATUS */
+  // GREETING
 
-  const isActiveAppointment = (item) => {
+  const getGreeting = () => {
+    const hour = new Date().getHours();
 
-    return [
+    if (hour >= 5 && hour < 12) return "Good morning";
+    if (hour >= 12 && hour < 17) return "Good afternoon";
 
-      "Confirmed",
-
-      "Upcoming",
-
-      "In Progress"
-
-    ].includes(item?.status);
-
+    return "Good evening";
   };
 
-  /* LOCAL TODAY */
+
+  // USER-SPECIFIC APPOINTMENTS
+
+  const allAppointments = JSON.parse(
+    localStorage.getItem("appointments") || "[]"
+  );
+
+  const currentUserId =
+    currentUser.id ||
+    currentUser.email?.toLowerCase();
+
+  const appointments = allAppointments.filter(
+    (appointment) => {
+      const appointmentOwner =
+        appointment.userId ||
+        appointment.userEmail?.toLowerCase();
+
+      return Boolean(
+        currentUserId &&
+        appointmentOwner === currentUserId
+      );
+    }
+  );
+
+
+  // CURRENT APPOINTMENT
+
+  const savedCurrentAppointment = JSON.parse(
+    localStorage.getItem("currentAppointment") || "null"
+  );
+
+  const currentAppointment =
+    savedCurrentAppointment &&
+    (
+      savedCurrentAppointment.userId ||
+      savedCurrentAppointment.userEmail?.toLowerCase()
+    ) === currentUserId
+      ? savedCurrentAppointment
+      : null;
+
+
+  // ACTIVE STATUS
+
+  const isActiveAppointment = (item) => {
+    return [
+      "Confirmed",
+      "Upcoming",
+      "In Progress"
+    ].includes(item?.status);
+  };
+
+
+  // LOCAL TODAY
 
   const currentDate = new Date();
 
   const today =
-
     `${currentDate.getFullYear()}-${String(
-
       currentDate.getMonth() + 1
-
     ).padStart(2, "0")}-${String(
-
       currentDate.getDate()
-
     ).padStart(2, "0")}`;
 
-  /* DATE + TIME */
+
+  // DATE + TIME
 
   const getAppointmentDateTime = (item) => {
-
     if (!item?.date) {
-
       return Number.MAX_SAFE_INTEGER;
-
     }
 
     const date = item.date;
-
     const time = item.time || "12:00 AM";
 
     const parsed = new Date(
-
       `${date} ${time}`
-
     ).getTime();
 
     if (Number.isNaN(parsed)) {
-
       return new Date(date).getTime();
-
     }
 
     return parsed;
-
   };
 
-  /* ACTIVE APPOINTMENTS */
+
+  // ACTIVE APPOINTMENTS
 
   const activeAppointments = appointments
-
     .filter(isActiveAppointment)
-
     .slice()
-
     .sort(
-
       (a, b) =>
-
         getAppointmentDateTime(a) -
-
         getAppointmentDateTime(b)
-
     );
 
-  /* UPCOMING APPOINTMENTS */
+
+  // UPCOMING APPOINTMENTS
 
   const upcomingAppointments =
-
     activeAppointments.filter(
-
       (item) =>
-
         item.date &&
-
         item.date >= today
-
     );
 
-  /* YOUR QUEUE */
+
+  // YOUR QUEUE
 
   const queueAppointment =
-
     upcomingAppointments.length > 0
-
       ? upcomingAppointments[0]
-
       : null;
 
-  /* NEXT APPOINTMENTS */
+
+  // NEXT APPOINTMENTS
 
   const nextAppointments =
-
     upcomingAppointments.slice(1, 3);
 
   const nextAppointment =
-
     nextAppointments.length > 0
-
       ? nextAppointments[0]
-
       : null;
 
-  /* LATEST PAST APPOINTMENT */
+
+  // LATEST PAST APPOINTMENT
 
   const latestPastAppointment =
-
     appointments
-
       .filter(
-
         (item) =>
-
           item.date &&
-
           item.date < today
-
       )
-
       .slice()
-
       .sort(
-
         (a, b) =>
-
           getAppointmentDateTime(b) -
-
           getAppointmentDateTime(a)
-
       )[0];
 
-  /* RECENT APPOINTMENTS */
+
+  // RECENT APPOINTMENTS
 
   const recentAppointments = [
-
     ...upcomingAppointments,
-
     ...(latestPastAppointment
-
       ? [latestPastAppointment]
-
       : [])
-
   ];
 
-  return (
 
+  return (
     <div className="dashboard-layout">
 
       {/* SIDEBAR */}
@@ -459,192 +547,136 @@ function Dashboard({ goTo }) {
         <div className="sidebar-logo">
 
           <div className="logo-icon">
-
             +
-
           </div>
 
           <span>
-
             MediQueue
-
           </span>
 
         </div>
 
+
         <div className="sidebar-menu">
 
           <button
-
             className="sidebar-item active"
-
             title="Dashboard"
-
           >
-
             <span>▦</span>
 
             <span className="sidebar-label">
-
               Dashboard
-
             </span>
-
           </button>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("doctors")}
-
             title="Doctors"
-
           >
-
             <span>🩺</span>
 
             <span className="sidebar-label">
-
               Doctors
-
             </span>
-
           </button>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("appointments")}
-
             title="Appointments"
-
           >
-
             <span>📅</span>
 
             <span className="sidebar-label">
-
               Appointments
-
             </span>
-
           </button>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("token")}
-
             title="My Token"
-
           >
-
             <span>🎟️</span>
 
             <span className="sidebar-label">
-
               My Token
-
             </span>
-
           </button>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("queueStatus")}
-
             title="Queue Status"
-
           >
-
             <span>📍</span>
 
             <span className="sidebar-label">
-
               Queue Status
-
             </span>
-
           </button>
+
 
           <div className="sidebar-divider"></div>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("profile")}
-
             title="Profile"
-
           >
-
             <span>👤</span>
 
             <span className="sidebar-label">
-
               Profile
-
             </span>
-
           </button>
 
+
           <button
-
             className="sidebar-item"
-
             onClick={() => goTo("settings")}
-
             title="Settings"
-
           >
-
             <span>⚙️</span>
 
             <span className="sidebar-label">
-
               Settings
-
             </span>
-
           </button>
 
         </div>
 
+
         <div className="sidebar-bottom">
 
           <button
-
             className="sidebar-emergency"
-
             onClick={() => goTo("emergency")}
-
             title="Emergency"
-
           >
-
             <span>🚨</span>
 
             <span className="sidebar-label">
-
               Emergency
-
             </span>
-
           </button>
 
         </div>
 
       </aside>
 
+
       {/* MAIN DASHBOARD */}
 
       <main className="dashboard-main">
+
 
         {/* TOP */}
 
@@ -653,18 +685,15 @@ function Dashboard({ goTo }) {
           <div>
 
             <span className="small-label">
-
               PATIENT DASHBOARD
-
             </span>
 
             <h1>
-
-              Good morning, Tiya 👋
-
+              {getGreeting()}, {userName} 👋
             </h1>
 
           </div>
+
 
           <div className="dashboard-actions">
 
@@ -673,29 +702,21 @@ function Dashboard({ goTo }) {
             <div className="dashboard-user">
 
               <span className="notification">
-
                 🔔
-
               </span>
 
               <div className="user-avatar">
-
-                T
-
+                {userName.charAt(0).toUpperCase()}
               </div>
 
               <div>
 
                 <strong>
-
-                  Tiya
-
+                  {userName}
                 </strong>
 
                 <span>
-
-                  Patient
-
+                  {userRole}
                 </span>
 
               </div>
@@ -706,63 +727,46 @@ function Dashboard({ goTo }) {
 
         </div>
 
+
         {/* STATS */}
 
         <div className="dashboard-stats">
 
           <DashboardStat
-
             icon="📅"
-
             label="Upcoming"
-
             value={upcomingAppointments.length}
-
           />
 
           <DashboardStat
-
             icon="🎟️"
-
             label="My Token"
-
             value={
-
               queueAppointment
-
                 ? queueAppointment.token
-
                 : "—"
-
             }
-
           />
 
           <DashboardStat
-
             icon="👥"
-
             label="Ahead of You"
-
             value={queueAppointment ? "3" : "—"}
-
           />
 
           <DashboardStat
-
             icon="🟢"
-
             label="Status"
-
             value={queueAppointment ? "Live" : "—"}
-
           />
 
         </div>
 
+
         {/* QUEUE + NEXT APPOINTMENT */}
 
         <div className="dashboard-grid">
+
 
           {/* LIVE QUEUE */}
 
@@ -773,30 +777,23 @@ function Dashboard({ goTo }) {
               <div>
 
                 <span className="small-label">
-
                   LIVE QUEUE
-
                 </span>
 
                 <h2>
-
                   Your Queue
-
                 </h2>
 
               </div>
 
               {queueAppointment && (
-
                 <span className="live-badge">
-
                   ● LIVE
-
                 </span>
-
               )}
 
             </div>
+
 
             {queueAppointment ? (
 
@@ -805,101 +802,77 @@ function Dashboard({ goTo }) {
                 <div className="queue-doctor">
 
                   <div className="doctor-large-avatar">
-
                     👨‍⚕️
-
                   </div>
 
                   <div>
 
                     <h3>
-
                       {queueAppointment.doctorName}
-
                     </h3>
 
                     <p>
-
                       {queueAppointment.specialty}
-
                     </p>
 
                   </div>
 
                 </div>
 
+
                 <div className="queue-tokens">
 
                   <div>
 
                     <span>
-
                       Current Token
-
                     </span>
 
                     <strong>
-
                       T-021
-
                     </strong>
 
                   </div>
 
                   <div className="token-arrow">
-
                     →
-
                   </div>
 
                   <div>
 
                     <span>
-
                       Your Token
-
                     </span>
 
                     <strong>
-
                       {queueAppointment.token}
-
                     </strong>
 
                   </div>
 
                 </div>
 
+
                 <div className="queue-info">
 
                   <div>
-
                     <span>👥</span>
-
                     <strong>3 patients ahead</strong>
-
                   </div>
 
                   <div>
-
                     <span>⏱️</span>
-
-                    <strong>\~30 min wait</strong>
-
+                    <strong>~30 min wait</strong>
                   </div>
 
                 </div>
 
+
                 <button
-
                   className="primary-btn track-btn"
-
                   onClick={() => goTo("queueStatus")}
-
                 >
-
                   Track Queue →
-
                 </button>
 
               </>
@@ -909,51 +882,34 @@ function Dashboard({ goTo }) {
               <div className="empty-dashboard">
 
                 <div>
-
                   📅
-
                 </div>
 
                 <h3>
-
                   No active queue today
-
                 </h3>
 
                 <p>
-
                   You don't have an appointment
-
                   scheduled for today.
-
                 </p>
 
                 {nextAppointment ? (
 
                   <button
-
                     className="primary-btn"
-
                     onClick={() => goTo("appointments")}
-
                   >
-
                     View Next Appointment →
-
                   </button>
 
                 ) : (
 
                   <button
-
                     className="primary-btn"
-
                     onClick={() => goTo("doctors")}
-
                   >
-
                     Find a Doctor →
-
                   </button>
 
                 )}
@@ -964,6 +920,7 @@ function Dashboard({ goTo }) {
 
           </div>
 
+
           {/* NEXT APPOINTMENT */}
 
           <div className="next-appointment-card">
@@ -973,30 +930,23 @@ function Dashboard({ goTo }) {
               <div>
 
                 <span className="small-label">
-
                   NEXT APPOINTMENT
-
                 </span>
 
                 <h2>
-
                   {nextAppointments.length > 0
-
                     ? nextAppointments[0].time
-
                     : "No booking"}
-
                 </h2>
 
               </div>
 
               <span className="appointment-icon">
-
                 📅
-
               </span>
 
             </div>
+
 
             {nextAppointments.length > 0 ? (
 
@@ -1005,37 +955,26 @@ function Dashboard({ goTo }) {
                 {nextAppointments.map((appointment) => (
 
                   <div
-
                     className="next-doctor"
-
                     key={appointment.id}
-
                   >
 
                     <div className="doctor-small-avatar">
-
                       👨‍⚕️
-
                     </div>
 
                     <div>
 
                       <h3>
-
                         {appointment.doctorName}
-
                       </h3>
 
                       <p>
-
                         {appointment.specialty}
-
                       </p>
 
                       <span>
-
                         {appointment.date} • {appointment.time}
-
                       </span>
 
                     </div>
@@ -1049,28 +988,23 @@ function Dashboard({ goTo }) {
             ) : (
 
               <p className="empty-text">
-
                 You don't have any upcoming appointments.
-
               </p>
 
             )}
 
+
             <button
-
               className="secondary-btn full-btn"
-
               onClick={() => goTo("appointments")}
-
             >
-
               View Appointment →
-
             </button>
 
           </div>
 
         </div>
+
 
         {/* RECENT APPOINTMENTS */}
 
@@ -1081,32 +1015,24 @@ function Dashboard({ goTo }) {
             <div>
 
               <span className="small-label">
-
                 ACTIVITY
-
               </span>
 
               <h2>
-
                 Recent Appointments
-
               </h2>
 
             </div>
 
             <button
-
               className="view-all"
-
               onClick={() => goTo("appointments")}
-
             >
-
               View Full History →
-
             </button>
 
           </div>
+
 
           {recentAppointments.length > 0 ? (
 
@@ -1115,65 +1041,50 @@ function Dashboard({ goTo }) {
               <div className="table-header">
 
                 <span>Doctor</span>
-
                 <span>Date</span>
-
                 <span>Token</span>
-
                 <span>Status</span>
 
               </div>
 
+
               {recentAppointments.map((item) => (
 
                 <div
-
                   className="table-row"
-
                   key={
-
                     item.id ||
-
                     `${item.doctorName}-${item.date}-${item.time}`
-
                   }
-
                 >
 
                   <span>
 
                     <strong>
-
                       {item.doctorName}
-
                     </strong>
 
                     <small>
-
                       {item.specialty}
-
                     </small>
 
                   </span>
 
-                  <span>
 
+                  <span>
                     {item.date}
-
                   </span>
+
 
                   <span>
-
                     {item.token || "—"}
-
                   </span>
+
 
                   <span>
 
                     <em className="status-confirmed">
-
                       {item.status}
-
                     </em>
 
                   </span>
@@ -1189,53 +1100,63 @@ function Dashboard({ goTo }) {
             <div className="empty-table">
 
               <span>
-
                 📋
-
               </span>
 
               <p>
-
                 No appointments found.
-
               </p>
 
               <button
-
                 className="secondary-btn"
-
                 onClick={() => goTo("doctors")}
-
               >
-
                 Book Your First Appointment
               </button>
+
             </div>
+
           )}
+
         </div>
+
       </main>
+
     </div>
   );
 }
 
+
+/* =========================
+   DASHBOARD STAT
+========================= */
+
 function DashboardStat({ icon, label, value }) {
 
   return (
+
     <div className="dashboard-stat">
+
       <div className="stat-icon">
         {icon}
       </div>
 
       <div>
+
         <span>
           {label}
         </span>
+
         <strong>
           {value}
         </strong>
+
       </div>
+
     </div>
+
   );
 }
+
 
 export default App;
