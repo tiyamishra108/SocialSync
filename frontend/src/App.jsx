@@ -1137,8 +1137,7 @@ function DashboardStat({ icon, label, value }) {
 
     <div className="dashboard-stat">
 
-      <div className="stat-icon">git commit -m "Fix patient appointments and update doctors page navigation"
-        {icon}
+      <div className="stat-icon"></div>
       </div>
 
       <div>
