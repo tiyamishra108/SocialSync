@@ -23,7 +23,6 @@ import doctors from "./data/doctors";
 
 import "./index.css";
 
-
 function App() {
   const [page, setPage] = useState("home");
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -1137,7 +1136,8 @@ function DashboardStat({ icon, label, value }) {
 
     <div className="dashboard-stat">
 
-      <div className="stat-icon"></div>
+      <div className="stat-icon">
+        {icon}
       </div>
 
       <div>
